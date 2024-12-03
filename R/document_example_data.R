@@ -1,16 +1,13 @@
-#' Example Dataset for tiDML
+#' Load Example Data
 #'
-#' A simulated dataset for demonstrating Double Machine Learning (DML) methods.
+#' Provides example data for the tiDML package.
 #'
-#' @format A dataframe with 500 rows and 4 variables:
-#' \describe{
-#'   \item{Y}{Outcome variable (numeric).}
-#'   \item{D}{Treatment variable (numeric).}
-#'   \item{X1}{Confounder 1 (numeric).}
-#'   \item{X2}{Confounder 2 (numeric).}
-#' }
-#' @source Simulated data
+#' @return A dataframe with simulated data for DML.
 #' @examples
-#' data <- tiDML::example_data()
-#' summary(data)
-"example_data"
+#' df <- tiDML::load_example_data()
+#' head(df)
+#' @export
+load_example_data <- function() {
+  data("example_data", package = "tiDML")
+  example_data
+}
