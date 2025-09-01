@@ -28,13 +28,16 @@ dml_plr <- function(
   grid_size = list(m = 15, g = 15),
   vcov_type = "HC2"
 ) {
-  y <- rlang::ensym(y)
-  d <- rlang::ensym(d)
-  x <- rlang::as_character(x)
+  y_sym <- rlang::ensym(y)
+  d_sym <- rlang::ensym(d)
+  y_name <- rlang::as_name(y_sym)
+  d_name <- rlang::as_name(d_sym)
+  x <- vapply(x, rlang::as_name, character(1))
 
-  df <- df |>
-    tidyr::drop_na(!!y, !!d, dplyr::all_of(x)) |>
-    dplyr::arrange(dplyr::across(dplyr::everything()))
+  df <- do.call(
+    tidyr::drop_na,
+    c(list(df), as.list(unname(c(y_name, d_name, x))))
+  )
 
   # recipes
   shared_factory <- resolve_recipe_factory(recipe_shared)
@@ -55,8 +58,8 @@ dml_plr <- function(
   }
 
   # tuning (global; fast)
-  rec_m <- m_factory(df, !!d, x)
-  rec_g <- g_factory(df, !!y, x)
+  rec_m <- m_factory(df, d_name, x)
+  rec_g <- g_factory(df, y_name, x)
   tuned_m <- tune_any(
     m_spec,
     rec_m,
@@ -75,7 +78,7 @@ dml_plr <- function(
   # cross-fitting (shared outer folds)
   res_d <- crossfit_residuals(
     df,
-    !!d,
+    d_name,
     x,
     tuned_m$final_spec,
     folds_outer,
@@ -83,7 +86,7 @@ dml_plr <- function(
   )
   res_y <- crossfit_residuals(
     df,
-    !!y,
+    y_name,
     x,
     tuned_g$final_spec,
     folds_outer,

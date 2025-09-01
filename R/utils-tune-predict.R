@@ -88,20 +88,34 @@ crossfit_residuals <- function(
   folds,
   recipe_factory
 ) {
-  out <- rlang::ensym(outcome)
+  outcome_name <- if (is.character(outcome)) {
+    outcome
+  } else {
+    rlang::as_name(rlang::ensym(outcome))
+  }
+  stopifnot(is.character(predictors), length(predictors) >= 1)
+
   res <- rep(NA_real_, nrow(df))
+
   for (i in seq_along(folds$splits)) {
     split <- folds$splits[[i]]
     tr <- rsample::analysis(split)
     te <- rsample::assessment(split)
-    rec <- recipe_factory(tr, !!out, predictors)
+
+    rec <- recipe_factory(tr, outcome_name, predictors)
+
     wf <- workflows::workflow() |>
       workflows::add_recipe(rec) |>
       workflows::add_model(spec)
-    fit_wf <- parsnip::fit(wf, tr)
+
+    fit_wf <- workflows::fit(wf, tr)
+
     pred <- numeric_pred(fit_wf, te)
-    idx <- as.integer(rownames(te))
-    res[idx] <- dplyr::pull(te, !!out) - pred
+
+    # use the stable id added in dml_plr()
+    idx <- te$.row_id
+
+    res[idx] <- te[[outcome_name]] - pred
   }
   res
 }

@@ -1,0 +1,39 @@
+---
+title: "package-replication"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{package-replication}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+
+library(tiDML)
+library(DoubleML)
+
+# Get 401k data from DoubleML package
+df <- DoubleML::fetch_401k(return_type = "data.frame", instrument = TRUE)
+
+# run tiDML with random forest
+set.seed(401)
+
+fit <- dml_plr(
+  df = df,
+  y = "net_tfa",
+  d = "e401",
+  x = c("age", "inc", "educ", "fsize", "marr", "twoearn", "db", "pira", "hown"),
+  m_model = "rf",
+  g_model = "rf"
+)
+
+print(fit)
+
+```
