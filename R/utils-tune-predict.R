@@ -97,12 +97,25 @@ crossfit_residuals <- function(
 
   res <- rep(NA_real_, nrow(df))
 
+  message(
+    "crossfit_residuals: outcome = ",
+    outcome_name,
+    " | predictors = ",
+    paste(predictors, collapse = ", "),
+    " | nrow(df) = ",
+    nrow(df)
+  )
+
   for (i in seq_along(folds$splits)) {
     split <- folds$splits[[i]]
     tr <- rsample::analysis(split)
     te <- rsample::assessment(split)
 
+    message("\n--- Fold ", i, " ---")
+    message("Train rows: ", nrow(tr), " | Test rows: ", nrow(te))
+
     rec <- recipe_factory(tr, outcome_name, predictors)
+    message("Recipe built: outcome = ", outcome_name)
 
     wf <- workflows::workflow() |>
       workflows::add_recipe(rec) |>
@@ -114,6 +127,7 @@ crossfit_residuals <- function(
 
     # use the stable id added in dml_plr()
     idx <- te$.row_id
+    message("First 5 idx: ", paste(head(idx), collapse = ", "))
 
     res[idx] <- te[[outcome_name]] - pred
   }

@@ -39,11 +39,17 @@ dml_plr <- function(
     c(list(df), as.list(unname(c(y_name, d_name, x))))
   )
 
+  if (!(".row_id" %in% names(df))) {
+    df$.row_id <- seq_len(nrow(df))
+  }
+
   # recipes
   shared_factory <- resolve_recipe_factory(recipe_shared)
+
   m_factory <- resolve_recipe_factory(
     if (!is.null(recipe_m)) recipe_m else shared_factory
   )
+
   g_factory <- resolve_recipe_factory(
     if (!is.null(recipe_g)) recipe_g else shared_factory
   )
@@ -53,6 +59,7 @@ dml_plr <- function(
   g_spec <- resolve_spec(g_model, mode = "regression")
   m_spec <- ensure_mode(m_spec, df[[rlang::as_name(d)]])
   g_spec <- ensure_mode(g_spec, df[[rlang::as_name(y)]])
+
   if (m_spec$mode != "regression" || g_spec$mode != "regression") {
     stop("PLR requires regression specs for both m(X): D~X and g(X): Y~X.")
   }
@@ -60,6 +67,7 @@ dml_plr <- function(
   # tuning (global; fast)
   rec_m <- m_factory(df, d_name, x)
   rec_g <- g_factory(df, y_name, x)
+
   tuned_m <- tune_any(
     m_spec,
     rec_m,
