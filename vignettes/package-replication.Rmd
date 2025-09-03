@@ -15,16 +15,13 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-
 library(tiDML)
-library(DoubleML)
-
 # Get 401k data from DoubleML package
+library(DoubleML)
 df <- DoubleML::fetch_401k(return_type = "data.frame", instrument = TRUE)
 
-# run tiDML with random forest
+# run tiDML with random forest defaults
 set.seed(401)
-
 fit <- dml_plr(
   df = df,
   y = "net_tfa",
@@ -33,7 +30,6 @@ fit <- dml_plr(
   m_model = "rf",
   g_model = "rf"
 )
-
 print(fit)
 
 ```
