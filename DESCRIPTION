@@ -27,6 +27,7 @@ Imports:
     workflows,
     yardstick
 Suggests: 
+    DoubleML,
     knitr,
     pkgdown,
     rmarkdown,
