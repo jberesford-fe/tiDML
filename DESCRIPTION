@@ -28,6 +28,8 @@ Imports:
     yardstick
 Suggests: 
     DoubleML,
+    ranger,
+    randomForest,
     knitr,
     pkgdown,
     rmarkdown,
