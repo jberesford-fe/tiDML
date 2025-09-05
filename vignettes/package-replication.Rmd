@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+library(tiDML)
 library(dplyr)
 library(purrr)
 library(tibble)
