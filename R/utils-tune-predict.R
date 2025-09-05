@@ -28,15 +28,17 @@ tune_any <- function(
   wf <- workflows::workflow() |>
     workflows::add_recipe(rec) |>
     workflows::add_model(spec)
+
   grid <- auto_grid(spec, data_x, size = grid_size)
   if (is.null(grid)) {
     return(list(
       final_wf = wf,
-      final_spec = spec,
+      final_spec = workflows::extract_spec_parsnip(wf),
       tune_results = NULL,
       best = NULL
     ))
   }
+
   if (is.null(metrics)) {
     metrics <- if (spec$mode == "regression") {
       yardstick::metric_set(yardstick::rmse)
@@ -44,6 +46,8 @@ tune_any <- function(
       yardstick::metric_set(yardstick::roc_auc)
     }
   }
+  metric_name <- if (spec$mode == "regression") "rmse" else "roc_auc"
+
   res <- tune::tune_grid(
     wf,
     resamples = resamples,
@@ -51,8 +55,10 @@ tune_any <- function(
     metrics = metrics,
     control = tune::control_grid(save_pred = FALSE)
   )
-  best <- tune::select_best(res, metric = metrics$.metrics[[1]])
+
+  best <- tune::select_best(res, metric = metric_name)
   wf_final <- tune::finalize_workflow(wf, best)
+
   list(
     final_wf = wf_final,
     final_spec = workflows::extract_spec_parsnip(wf_final),
@@ -61,22 +67,24 @@ tune_any <- function(
   )
 }
 
+
 #' Coerce predictions to numeric vector (regression or class prob)
 #' @keywords internal
 numeric_pred <- function(fitted_wf, new_data, positive_class = NULL) {
   mode <- workflows::extract_spec_parsnip(fitted_wf)$mode
   if (mode == "regression") {
-    return(stats::predict(fitted_wf, new_data)[[1]])
+    return(predict(fitted_wf, new_data)[[1]])
   }
-  prob <- stats::predict(fitted_wf, new_data, type = "prob")
+  prob <- predict(fitted_wf, new_data, type = "prob")
   if (ncol(prob) == 1) {
     return(prob[[1]])
   }
   if (is.null(positive_class)) {
-    positive_class <- colnames(prob)[1]
+    positive_class <- colnames(prob)[2L]
   }
   prob[[positive_class]]
 }
+
 
 #' Cross-fit residuals across outer folds
 #' @keywords internal

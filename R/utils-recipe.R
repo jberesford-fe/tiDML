@@ -19,14 +19,6 @@ base_recipe <- function(data, outcome, predictors) {
     predictors_chr <- vapply(predictors, rlang::as_name, character(1))
   }
 
-  # (your helpful prints)
-  print(paste("base_recipe outcome_name:", outcome_name))
-  print(paste(
-    "base_recipe predictors_chr:",
-    paste(predictors_chr, collapse = ", ")
-  ))
-  print(paste("base_recipe colnames:", paste(colnames(data), collapse = ", ")))
-
   missing_cols <- setdiff(c(outcome_name, predictors_chr), colnames(data))
   if (length(missing_cols) > 0) {
     stop(paste0(
@@ -59,20 +51,20 @@ resolve_recipe_factory <- function(recipe_in = NULL) {
   if (is.null(recipe_in)) {
     return(base_recipe)
   }
+
   if (inherits(recipe_in, "recipe")) {
-    rec_obj <- recipe_in
+    template <- recipe_in
     return(function(data, outcome, predictors) {
-      if (is.null(rec_obj$term_info) || nrow(rec_obj$term_info) == 0) {
-        outcome <- rlang::ensym(outcome)
-        form <- stats::as.formula(paste(rlang::as_name(outcome), "~ ."))
-        rec_obj <<- recipes::update_recipe(rec_obj, formula = form)
-      }
-      rec_obj
+      outcome <- rlang::as_name(rlang::ensym(outcome))
+      df_sub <- dplyr::select(data, dplyr::all_of(c(outcome, predictors)))
+      recipes::recipe(stats::as.formula(paste(outcome, "~ .")), data = df_sub)
     })
   }
+
   if (is.function(recipe_in)) {
     return(recipe_in)
   }
+
   stop(
     "`recipe_*` must be NULL, a recipes::recipe, or a function(data, outcome, predictors) -> recipe."
   )

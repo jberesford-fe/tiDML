@@ -85,6 +85,7 @@ resolve_spec <- function(model_in, mode = "regression") {
     }
     return(model_in)
   }
+
   if (is.character(model_in)) {
     kind <- match.arg(model_in, c("rf", "xgb", "glmnet", "linear"))
     spec <- switch(
@@ -101,9 +102,10 @@ resolve_spec <- function(model_in, mode = "regression") {
       c(list(object = spec, engine = eng$engine), eng$args)
     )
     if (kind %in% c("rf", "xgb")) {
-      spec$args$trees <- rlang::quo(1200L)
+      spec <- parsnip::set_args(spec, trees = 1200L)
     }
     return(spec)
   }
+
   stop("model must be a parsnip spec or one of: 'rf','xgb','glmnet','linear'.")
 }
