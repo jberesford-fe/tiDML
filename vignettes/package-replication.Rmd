@@ -27,7 +27,6 @@ library(mlr3learners)
 
 ```{r run-comparison}
 ## ---- setup, message=FALSE, warning=FALSE --------------------------------
-devtools::load_all()
 
 # Data and columns (keep instrument = FALSE for PLR)
 df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
