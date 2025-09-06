@@ -1,14 +1,15 @@
-
-# tiDML
-
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of tiDML is to ...
+# tiDML
+
+The goal of tiDML is twofold:
+1. Provide an ultra user-friendly way of implementing Double Machine Learning (DML) models in R, only defining the data and the model (random forest, glm or ...). All parameters default to sensible values and this can be used as a first pass to answer "do my OLS results change materially if I switch to DML".
+
 
 ## Installation
 
-You can install the development version of tiDML from [GitHub](https://github.com/) with:
+You can install the development version of tiDML from [GitHub](https://github.com/) via `pak`, `pacman` or `remotes`:
 
 ``` r
 # Using pak

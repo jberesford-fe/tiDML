@@ -1,0 +1,19 @@
+---
+title: "User-defined-recipies"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{User-defined-recipies}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tiDML)
+```
