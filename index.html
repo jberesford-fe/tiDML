@@ -37,6 +37,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/package-replication.html">package-replication</a></li>
+    <li><a class="dropdown-item" href="articles/Quick-start.html">Quick-start</a></li>
+    <li><a class="dropdown-item" href="articles/User-defined-recipies.html">User-defined-recipies</a></li>
   </ul>
 </li>
       </ul>
@@ -56,13 +58,11 @@
 <img src="logo.png" class="logo" alt=""><h1 id="tidml">tiDML<a class="anchor" aria-label="anchor" href="#tidml"></a>
 </h1>
 </div>
-<!-- badges: start -->
-<!-- badges: end -->
-<p>The goal of tiDML is to …</p>
+<p>The goal of tiDML is twofold: 1. Provide an ultra user-friendly way of implementing Double Machine Learning (DML) models in R, only defining the data and the model (random forest, glm or …). All parameters default to sensible values and this can be used as a first pass to answer “do my OLS results change materially if I switch to DML”.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of tiDML from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of tiDML from <a href="https://github.com/" class="external-link">GitHub</a> via <code>pak</code>, <code>pacman</code> or <code>remotes</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Using pak</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"jberesford-fe/tiDML"</span><span class="op">)</span></span>
