@@ -14,7 +14,7 @@
 #' @return list with estimate, SE, CI, and objects for audit
 #' @export
 dml_plr <- function(
-  df,
+  data,
   y,
   d,
   x,

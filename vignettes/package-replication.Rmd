@@ -42,7 +42,7 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 
   ## tiDML :: dml_plr
   fit_tidml <- dml_plr(
-    df = df,
+    data = df,
     y = !!rlang::sym(y_col),
     d = !!rlang::sym(d_col),
     x = x_cols,
