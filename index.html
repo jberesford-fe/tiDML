@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Double Machine Learning with Tidymodels • tiDML</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -19,7 +24,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">tiDML</a>
 
@@ -58,7 +63,11 @@
 <img src="logo.png" class="logo" alt=""><h1 id="tidml">tiDML<a class="anchor" aria-label="anchor" href="#tidml"></a>
 </h1>
 </div>
-<p>The goal of tiDML is twofold: 1. Provide an ultra user-friendly way of implementing Double Machine Learning (DML) models in R, only defining the data and the model (random forest, glm or …). All parameters default to sensible values and this can be used as a first pass to answer “do my OLS results change materially if I switch to DML”.</p>
+<p>The goal of tiDML is twofold:</p>
+<ol style="list-style-type: decimal">
+<li><p>Provide an ultra user-friendly way of implementing Double Machine Learning (DML) models in R, only defining the data and the model (random forest, glm or …). All parameters default to sensible values and this can be used as a first pass to answer “do my OLS results change materially if I switch to DML”.</p></li>
+<li><p>Provide a more flexible framework for implementing DML models, allowing users to define their own nuisance models in a way that is consistent with the tidymodels framework. In paritcular, defining the first and second stage models as parsnip models, and using workflows to define pre-processing steps.</p></li>
+</ol>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
