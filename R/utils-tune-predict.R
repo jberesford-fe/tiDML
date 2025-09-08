@@ -1,7 +1,9 @@
 #' @keywords internal
 ensure_mode <- function(spec, outcome_col) {
-  mode <- spec$mode %||%
-    if (is.numeric(outcome_col)) "regression" else "classification"
+  mode <- spec$mode
+  if (is.null(mode) || is.na(mode)) {
+    mode <- if (is.numeric(outcome_col)) "regression" else "classification"
+  }
   parsnip::set_mode(spec, mode)
 }
 
@@ -89,41 +91,38 @@ numeric_pred <- function(fitted_wf, new_data, positive_class = NULL) {
 #' Cross-fit residuals across outer folds
 #' @keywords internal
 crossfit_residuals <- function(
-  df,
+  data,
   outcome,
   predictors,
   spec,
-  folds,
+  folds_idx,
   recipe_factory
 ) {
-  outcome_name <- if (is.character(outcome)) {
+  outcome <- if (is.character(outcome) && length(outcome) == 1) {
     outcome
   } else {
     rlang::as_name(rlang::ensym(outcome))
   }
-  stopifnot(is.character(predictors), length(predictors) >= 1)
 
-  res <- rep(NA_real_, nrow(df))
+  res <- rep(NA_real_, nrow(data))
 
-  for (i in seq_along(folds$splits)) {
-    split <- folds$splits[[i]]
-    tr <- rsample::analysis(split)
-    te <- rsample::assessment(split)
+  for (te_idx in folds_idx) {
+    tr_idx <- setdiff(seq_len(nrow(data)), te_idx)
 
-    rec <- recipe_factory(tr, outcome_name, predictors)
+    tr <- data[tr_idx, , drop = FALSE]
+    te <- data[te_idx, , drop = FALSE]
 
+    rec <- recipe_factory(tr, outcome, predictors)
     wf <- workflows::workflow() |>
       workflows::add_recipe(rec) |>
       workflows::add_model(spec)
 
-    fit_wf <- workflows::fit(wf, tr)
-
-    pred <- numeric_pred(fit_wf, te)
-
-    # use the stable id added in dml_plr()
-    idx <- te$.row_id
-
-    res[idx] <- te[[outcome_name]] - pred
+    fit <- workflows::fit(wf, tr)
+    pred <- numeric_pred(fit, te)
+    res[te_idx] <- te[[outcome]] - pred
+  }
+  if (anyNA(res)) {
+    stop("Missing residuals for some rows.")
   }
   res
 }

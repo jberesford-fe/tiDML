@@ -1,6 +1,6 @@
 #' DML-PLR (Partially Linear Regression) with tidymodels
 #'
-#' @param df Data frame
+#' @param data Data frame
 #' @param y Outcome column
 #' @param d Treatment column
 #' @param x Character vector of predictors
@@ -18,13 +18,14 @@ dml_plr <- function(
   y,
   d,
   x,
-  folds_outer = make_folds(df, v = 5),
-  resamples_tune = rsample::vfold_cv(df, v = 5),
+  folds_outer = make_folds(data, v = 5),
+  resamples_tune = rsample::vfold_cv(data, v = 5),
   m_model = "rf",
   g_model = "rf",
   recipe_shared = NULL,
   recipe_m = NULL,
   recipe_g = NULL,
+  impute_predictors = FALSE,
   grid_size = list(m = 15, g = 15),
   vcov_type = "HC2"
 ) {
@@ -34,58 +35,59 @@ dml_plr <- function(
   d_name <- rlang::as_name(d_sym)
   x <- vapply(x, rlang::as_name, character(1))
 
-  df <- do.call(
-    tidyr::drop_na,
-    c(list(df), as.list(unname(c(y_name, d_name, x))))
-  )
-
-  if (!(".row_id" %in% names(df))) {
-    df$.row_id <- seq_len(nrow(df))
-  }
+  # Error if y or d have NAs
+  check_na_y_d(data, y_name, d_name)
 
   # recipes
   shared_factory <- resolve_recipe_factory(recipe_shared)
-
-  m_factory <- resolve_recipe_factory(
+  m_factory0 <- resolve_recipe_factory(
     if (!is.null(recipe_m)) recipe_m else shared_factory
   )
-
-  g_factory <- resolve_recipe_factory(
+  g_factory0 <- resolve_recipe_factory(
     if (!is.null(recipe_g)) recipe_g else shared_factory
   )
+
+  if (impute_predictors) {
+    m_factory <- add_imputation_steps(m_factory0, TRUE)
+    g_factory <- add_imputation_steps(g_factory0, TRUE)
+  } else {
+    check_na_x(data, x)
+    m_factory <- m_factory0
+    g_factory <- g_factory0
+  }
 
   # specs (force regression for PLR)
   m_spec <- resolve_spec(m_model, mode = "regression")
   g_spec <- resolve_spec(g_model, mode = "regression")
-  m_spec <- ensure_mode(m_spec, df[[rlang::as_name(d)]])
-  g_spec <- ensure_mode(g_spec, df[[rlang::as_name(y)]])
+  m_spec <- ensure_mode(m_spec, data[[d_name]])
+  g_spec <- ensure_mode(g_spec, data[[y_name]])
 
   if (m_spec$mode != "regression" || g_spec$mode != "regression") {
     stop("PLR requires regression specs for both m(X): D~X and g(X): Y~X.")
   }
 
   # tuning (global; fast)
-  rec_m <- m_factory(df, d_name, x)
-  rec_g <- g_factory(df, y_name, x)
+  rec_m <- m_factory(data, d_name, x)
+  rec_g <- g_factory(data, y_name, x)
 
   tuned_m <- tune_any(
     m_spec,
     rec_m,
     resamples_tune,
-    df[, x, drop = FALSE],
+    data[, x, drop = FALSE],
     grid_size = grid_size$m
   )
   tuned_g <- tune_any(
     g_spec,
     rec_g,
     resamples_tune,
-    df[, x, drop = FALSE],
+    data[, x, drop = FALSE],
     grid_size = grid_size$g
   )
 
   # cross-fitting (shared outer folds)
   res_d <- crossfit_residuals(
-    df,
+    data,
     d_name,
     x,
     tuned_m$final_spec,
@@ -93,7 +95,7 @@ dml_plr <- function(
     m_factory
   )
   res_y <- crossfit_residuals(
-    df,
+    data,
     y_name,
     x,
     tuned_g$final_spec,
@@ -102,8 +104,8 @@ dml_plr <- function(
   )
 
   # final stage
-  fin <- tibble::tibble(res_y = res_y, res_d = res_d) |> tidyr::drop_na()
-  ols <- stats::lm(res_y ~ res_d, data = fin)
+  fin <- tibble::tibble(res_y = res_y, res_d = res_d)
+  ols <- stats::lm(res_y ~ 0 + res_d, data = fin)
   V <- sandwich::vcovHC(ols, type = vcov_type)
   ct <- lmtest::coeftest(ols, vcov. = V)
 

@@ -4,7 +4,7 @@
 \alias{crossfit_residuals}
 \title{Cross-fit residuals across outer folds}
 \usage{
-crossfit_residuals(df, outcome, predictors, spec, folds, recipe_factory)
+crossfit_residuals(data, outcome, predictors, spec, folds_idx, recipe_factory)
 }
 \description{
 Cross-fit residuals across outer folds

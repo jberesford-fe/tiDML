@@ -65,10 +65,9 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   ml_g <- lrn("regr.ranger",
               num.trees = grid_trees, num.threads = 1,
               respect.unordered.factors = "order")
-  ml_m <- lrn("classif.ranger",
-              predict_type = "prob",
-              num.trees = grid_trees, num.threads = 1,
-              respect.unordered.factors = "order")
+  ml_m <- lrn("regr.ranger",
+            num.trees = 1200, num.threads = 1,
+            respect.unordered.factors = "order")
 
   dml_data <- DoubleMLData$new(
     data = df, y_col = y, d_cols = d, x_cols = x
@@ -94,7 +93,7 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 
 # Replications --------------------------------------------------------------
 
-replications <- 2L
+replications <- 50L
 
 # Keep this small for CRAN; bump locally
 seeds <- 401 + 0:replications-1  # 10 reps for vignette speed

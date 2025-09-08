@@ -311,9 +311,9 @@
     },
     "future": {
       "Package": "future",
-      "Version": "1.58.0",
+      "Version": "1.67.0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "R",
         "digest",
@@ -323,7 +323,7 @@
         "parallelly",
         "utils"
       ],
-      "Hash": "b096716c11b90643e3cecdcbef564259"
+      "Hash": "887043db011e3cb2e507390950a2ea0f"
     },
     "future.apply": {
       "Package": "future.apply",
@@ -660,15 +660,15 @@
     },
     "parallelly": {
       "Package": "parallelly",
-      "Version": "1.45.0",
+      "Version": "1.45.1",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "parallel",
         "tools",
         "utils"
       ],
-      "Hash": "eec07caa14285c8a9f9de8276473e7a1"
+      "Hash": "1e127bc944e0c1ec7c0297d685917dfe"
     },
     "parsnip": {
       "Package": "parsnip",
@@ -853,9 +853,14 @@
     },
     "rsample": {
       "Package": "rsample",
-      "Version": "1.3.1",
-      "Source": "Repository",
-      "Repository": "RSPM",
+      "Version": "1.3.1.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "tidymodels",
+      "RemoteRepo": "rsample",
+      "RemoteRef": "main",
+      "RemoteSha": "1e2e3e798458e1203c1a42b01933a5d93219d292",
       "Requirements": [
         "R",
         "cli",
@@ -874,7 +879,7 @@
         "tidyselect",
         "vctrs"
       ],
-      "Hash": "bfd4e2f4937058a7bd80a4fa373b7929"
+      "Hash": "5055b4db3e942b01913476c3366b119b"
     },
     "sandwich": {
       "Package": "sandwich",

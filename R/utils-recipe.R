@@ -5,14 +5,12 @@
 #' @return a recipes::recipe
 #' @export
 base_recipe <- function(data, outcome, predictors) {
-  # If outcome is a character, this forces evaluation and uses it directly.
   outcome_name <- if (is.character(outcome) && length(outcome) == 1) {
     outcome
   } else {
     rlang::as_name(rlang::ensym(outcome))
   }
 
-  # Same idea for predictors: allow character vector or bare names
   if (is.character(predictors)) {
     predictors_chr <- predictors
   } else {
@@ -36,7 +34,6 @@ base_recipe <- function(data, outcome, predictors) {
     data = df_sub
   ) |>
     recipes::step_zv(recipes::all_predictors()) |>
-    recipes::step_impute_median(recipes::all_numeric_predictors()) |>
     recipes::step_dummy(recipes::all_nominal_predictors()) |>
     recipes::step_normalize(recipes::all_numeric_predictors())
 }

@@ -5,23 +5,24 @@
 \title{DML-PLR (Partially Linear Regression) with tidymodels}
 \usage{
 dml_plr(
-  df,
+  data,
   y,
   d,
   x,
-  folds_outer = make_folds(df, v = 5),
-  resamples_tune = rsample::vfold_cv(df, v = 5),
+  folds_outer = make_folds(data, v = 5),
+  resamples_tune = rsample::vfold_cv(data, v = 5),
   m_model = "rf",
   g_model = "rf",
   recipe_shared = NULL,
   recipe_m = NULL,
   recipe_g = NULL,
+  impute_predictors = FALSE,
   grid_size = list(m = 15, g = 15),
   vcov_type = "HC2"
 )
 }
 \arguments{
-\item{df}{Data frame}
+\item{data}{Data frame}
 
 \item{y}{Outcome column}
 
