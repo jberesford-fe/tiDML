@@ -25,7 +25,8 @@ Imports:
     tidyr,
     tune,
     workflows,
-    yardstick
+    yardstick,
+    caret,
 Suggests: 
     DoubleML,
     ranger,
