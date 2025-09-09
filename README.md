@@ -5,14 +5,13 @@
 
 The goal of tiDML is twofold:
 
-1. Ease of use: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to specify their data and a model type (e.g. random forest, GLM). With defaults set to sensible values, it’s a quick first pass to ask: “do my OLS results change materially under DML?”
+1. Simple first pass: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to specify their data and a model type (e.g. random forest, GLM). With defaults set to sensible values, it’s a quick first pass to ask: “do my OLS results change materially under DML?”
 
 
-2. Integration with tidymodels: offer a flexible framework for users who want more control. First- and second-stage models can be defined as parsnip models, preprocessing can be handled through workflows, and custom nuisance models can be slotted in easily.
+2. Full control of both stages, in a tidymodels setting: offer a flexible framework for users who want to define and examine both stages of the DML process. First- and second-stage models can be defined as parsnip models, preprocessing can be handled through workflows, and custom nuisance models can be slotted in easily.
 
 
-
-In short, tiDML lets you do DML the way a tidymodels user would expect.
+In short, tiDML lets you do DML the way a tidymodels user would expect. 
 
 ## Installation
 
