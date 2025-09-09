@@ -11,7 +11,7 @@ The goal of tiDML is twofold:
 2. Full control of both stages, in a tidymodels setting: offers a flexible framework for users who want to define and examine both stages of the DML process. First- and second-stage models can be defined as parsnip models, preprocessing can be handled through workflows, and these custom nuisance models can be slotted in easily to the DML function.
 
 
-In short, tiDML simplifies DML, but also lets you do DML the way a tidymodels user would expect. 
+In short, tiDML can simplify things, but it's main benefit is in letting you do DML the way a tidymodels user would expect. 
 
 ## Installation
 
