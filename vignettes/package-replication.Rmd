@@ -1,5 +1,5 @@
 ---
-title: "package-replication"
+title: "Package Replication"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{package-replication}
