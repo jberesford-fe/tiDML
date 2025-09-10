@@ -39,7 +39,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/package-replication.html">Package Replication</a></li>
-    <li><a class="dropdown-item" href="../articles/Quick-start.html">Quick-start</a></li>
+    <li><a class="dropdown-item" href="../articles/Quick-start.html">Quick Start</a></li>
     <li><a class="dropdown-item" href="../articles/User-defined-recipies.html">User Defined Recipies</a></li>
   </ul>
 </li>
@@ -122,7 +122,7 @@
 <span>    <span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## DoubleML :: PLR with ranger</span></span>
-<span>  <span class="va">ml_g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span>,</span>
+<span>  <span class="va">ml_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span>,</span>
 <span>              num.trees <span class="op">=</span> <span class="va">grid_trees</span>, num.threads <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>              respect.unordered.factors <span class="op">=</span> <span class="st">"order"</span><span class="op">)</span></span>
 <span>  <span class="va">ml_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span>,</span>
@@ -133,7 +133,7 @@
 <span>    data <span class="op">=</span> <span class="va">df</span>, y_col <span class="op">=</span> <span class="va">y</span>, d_cols <span class="op">=</span> <span class="va">d</span>, x_cols <span class="op">=</span> <span class="va">x</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">dml</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/DoubleML/man/DoubleMLPLR.html" class="external-link">DoubleMLPLR</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>    <span class="va">dml_data</span>, ml_g <span class="op">=</span> <span class="va">ml_g</span>, ml_m <span class="op">=</span> <span class="va">ml_m</span>,</span>
+<span>    <span class="va">dml_data</span>, ml_l <span class="op">=</span> <span class="va">ml_l</span>, ml_m <span class="op">=</span> <span class="va">ml_m</span>,</span>
 <span>    n_folds <span class="op">=</span> <span class="va">n_folds</span>, score <span class="op">=</span> <span class="st">"partialling out"</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">dml</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></span>
@@ -153,7 +153,7 @@
 <span></span>
 <span><span class="co"># Replications --------------------------------------------------------------</span></span>
 <span></span>
-<span><span class="va">replications</span> <span class="op">&lt;-</span> <span class="fl">50L</span></span>
+<span><span class="va">replications</span> <span class="op">&lt;-</span> <span class="fl">100L</span></span>
 <span></span>
 <span><span class="co"># Keep this small for CRAN; bump locally</span></span>
 <span><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fl">401</span> <span class="op">+</span> <span class="fl">0</span><span class="op">:</span><span class="va">replications</span><span class="op">-</span><span class="fl">1</span>  <span class="co"># 10 reps for vignette speed</span></span>
@@ -161,108 +161,6 @@
 <span>  <span class="va">seeds</span>,</span>
 <span>  <span class="op">~</span> <span class="fu">run_rep</span><span class="op">(</span><span class="va">.x</span>, df <span class="op">=</span> <span class="va">df401k</span>, y <span class="op">=</span> <span class="va">y_col</span>, d <span class="op">=</span> <span class="va">d_col</span>, x <span class="op">=</span> <span class="va">x_cols</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
-<span><span class="co">#&gt; Warning: The argument ml_g was renamed to ml_l. Please adapt the argument name accordingly. ml_g is redirected to ml_l.</span></span>
-<span><span class="co">#&gt; The redirection will be removed in a future version.</span></span>
 <span></span>
 <span><span class="co"># Overlap share per replication</span></span>
 <span><span class="va">overlap_by_seed</span> <span class="op">&lt;-</span> <span class="va">res</span> <span class="op">|&gt;</span></span>
