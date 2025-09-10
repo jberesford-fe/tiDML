@@ -1,6 +1,18 @@
 url: https://jberesford-fe.github.io/tiDML/
 
 template:
-  package: tidytemplate
   bootstrap: 5
   bootswatch: darkly
+
+navbar:
+  structure:
+    left:
+      - home
+      - get-started
+      - reference
+      - articles
+
+  components:
+    get-started:
+      text: "Get started"
+      href: articles/get-started.html
