@@ -1,5 +1,5 @@
 ---
-title: "User Defined Recipes"
+title: "User Defined Recipies"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{User-defined-recipies}
