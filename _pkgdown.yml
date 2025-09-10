@@ -2,4 +2,13 @@ url: ~
 template:
   bootstrap: 5
   bootswatch: darkly
+navbar:
+  components:
+    get-started:
+      text: Get started
+      href: articles/quick-start.html
+
+  structure:
+    left: [home, quick-start, reference, articles]
+    right: [search, github]
 
