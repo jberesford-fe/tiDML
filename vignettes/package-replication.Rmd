@@ -14,7 +14,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+# Replication of DoubleML results with tiDML
+
+I use the 401k data from Chernozhukov et al. (2018) to replicate results from their package under a few different specifications.
+
+The goal is to show that `tiDML::dml_plr()` can produce comparable results with much less code.
+
+
+# Get data and import packages
+```{r setup, warning = FALSE, message = FALSE}
 library(tiDML)
 library(dplyr)
 library(purrr)
@@ -23,34 +31,25 @@ library(ggplot2)
 library(DoubleML)
 library(mlr3)
 library(mlr3learners)
+
+df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
 ```
 
-
-```{r run-comparison}
-## ---- setup, message=FALSE, warning=FALSE --------------------------------
-
-# Data and columns (keep instrument = FALSE for PLR)
-df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
-
-y_col <- "net_tfa"
-d_col <- "e401"
-x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
-
-# A single replicate runner with *explicit* args ----------------------------
-run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
+# `tiDML` function call
+```{r run-tidml, warning = FALSE, message = FALSE}
+run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   set.seed(seed)
 
-  ## tiDML :: dml_plr
   fit_tidml <- dml_plr(
     data = df,
-    y = !!rlang::sym(y_col),
-    d = !!rlang::sym(d_col),
-    x = x_cols,
+    y = !!rlang::sym(y),
+    d = !!rlang::sym(d),
+    x = x,
     m_model = "rf",
     g_model = "rf",
     grid_size = list(m = 15, g = 15)
   )
-  tidml_row <- tibble(
+  tibble(
     method = "tiDML",
     seed = seed,
     theta = unname(fit_tidml$theta),
@@ -60,7 +59,12 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
       lwr = theta - qnorm(0.975) * se,
       upr = theta + qnorm(0.975) * se
     )
+}
 
+```
+
+```{r run-dml, warning = FALSE, message = FALSE}
+run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   ## DoubleML :: PLR with ranger
   ml_l <- lrn("regr.ranger",
               num.trees = grid_trees, num.threads = 1,
@@ -79,7 +83,7 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   dml$fit()
 
   ci <- dml$confint(level = 0.95)
-  dml_row <- tibble(
+  return(tibble(
     method = "DoubleML",
     seed = seed,
     theta = as.numeric(dml$coef),
@@ -87,67 +91,44 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
     lwr   = as.numeric(ci[1]),
     upr   = as.numeric(ci[2])
   )
-
-  bind_rows(tidml_row, dml_row)
+  )
 }
+```
 
-# Replications --------------------------------------------------------------
+# Run both methods across many replications
+
+```{r run-rep, warning = FALSE, message = FALSE}
+
+y_col  <- "net_tfa"   # or "tw" depending on the example
+d_col  <- "e401"
+x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
 
 replications <- 2L
+
+run_both <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
+  tidml_row <- run_tidml(seed, df, y, d, x, grid_trees, n_folds)
+  dml_row   <- run_dml(seed, df, y, d, x, grid_trees, n_folds)
+  bind_rows(tidml_row, dml_row)
+}
 
 # Keep this small for CRAN; bump locally
 seeds <- 401 + 0:replications-1  # 10 reps for vignette speed
 res <- map_dfr(
   seeds,
-  ~ run_rep(.x, df = df401k, y = y_col, d = d_col, x = x_cols)
+  ~ run_both(.x, df = df401k, y = y_col, d = d_col, x = x_cols)
 )
+```
 
-# Overlap share per replication
-overlap_by_seed <- res |>
-  group_by(seed) |>
-  summarise(
-    min_upr = min(upr),
-    max_lwr = max(lwr),
-    overlap = max_lwr <= min_upr,
-    .groups = "drop"
-  )
-mean_overlap <- mean(overlap_by_seed$overlap)
 
 # Method-by-method densities
+
+```{r plot-results, warning = FALSE, message = FALSE}
 ggplot(res, aes(theta, fill = method)) +
   geom_density(alpha = 0.35) +
   labs(
     title = "DML-PLR estimates across seeds",
-    subtitle = sprintf("Share of overlapping 95%% CIs: %.1f%%", 100 * mean_overlap),
     x = expression(hat(theta)), y = "Density", fill = "Method"
   ) +
-  theme_minimal(base_size = 12)
-
-# First N seeds: side-by-side CIs (“dumbbells”)
-N <- min(replications, length(seeds))
-plot_df <- res |>
-  filter(seed %in% head(unique(seed), N))
-
-ggplot(plot_df, aes(y = factor(seed), x = theta, color = method)) +
-  geom_point(position = position_dodge(width = 0.4)) +
-  geom_errorbarh(aes(xmin = lwr, xmax = upr),
-                 height = 0, position = position_dodge(width = 0.4)) +
-  labs(
-    title = sprintf("95%% CIs by replication (first %d seeds)", N),
-    x = expression(hat(theta)~"with 95% CI"), y = "Seed", color = "Method"
-  ) +
-  theme_minimal(base_size = 12)
-
-# Scatter: tiDML vs DoubleML (y = x is perfect agreement)
-scatter_df <- res |>
-  select(seed, method, theta) |>
-  tidyr::pivot_wider(names_from = method, values_from = theta)
-
-ggplot(scatter_df, aes(DoubleML, tiDML)) +
-  geom_abline(linetype = "dashed") +
-  geom_point(alpha = 0.7) +
-  labs(title = "Agreement of point estimates",
-       x = "DoubleML θ", y = "tiDML θ") +
   theme_minimal(base_size = 12)
 
 ```
