@@ -93,7 +93,7 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 
 # Replications --------------------------------------------------------------
 
-replications <- 100L
+replications <- 2L
 
 # Keep this small for CRAN; bump locally
 seeds <- 401 + 0:replications-1  # 10 reps for vignette speed
