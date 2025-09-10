@@ -16,3 +16,9 @@ navbar:
     get-started:
       text: "Get started"
       href: articles/get-started.html
+
+articles:
+  - title: Articles
+    contents:
+      - package-replication
+      - User-defined-recipes
