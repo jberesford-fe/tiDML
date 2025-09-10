@@ -6,19 +6,13 @@ template:
 
 navbar:
   structure:
-    left:
-      - home
-      - get-started
-      - reference
-      - articles
-
-  components:
-    get-started:
-      text: "Get started"
-      href: articles/get-started.html
+    left: [home, intro, reference, articles]
 
 articles:
-  - title: Articles
+  - title: Replication
     contents:
       - package-replication
-      - User-defined-recipies
+  - title: How-to
+    contents:
+      - user-defined-recipes
+

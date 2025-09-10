@@ -1,5 +1,5 @@
 ---
-title: "get-started"
+title: "Introduction to tiDML"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{get-started}
