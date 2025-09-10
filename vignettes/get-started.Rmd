@@ -7,13 +7,42 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knit-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
+# Simple version
 
-```{r setup}
+```{r simple}
 library(tiDML)
+
+fit <- dml_plr(
+  mtcars,
+  y = "mpg",
+  d = "am",
+  x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
+  m_model = "rf",
+  g_model = "rf"
+) 
+
+print(fit)
+
+```
+
+# Complex version
+
+```{r complex}
+fit <- dml_plr(
+  mtcars,
+  y = "mpg",
+  d = "am",
+  x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
+  m_model = "rf",
+  g_model = "rf"
+) 
+
+print(fit)
+
 ```

@@ -1,5 +1,5 @@
 ---
-title: "User Defined Recipies"
+title: "User-defined-recipies"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{User-defined-recipies}
@@ -13,7 +13,19 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+# TiDML with User-defined Recipies
 
 ```{r setup}
 library(tiDML)
+
+fit <- dml_plr(
+  mtcars,
+  y = "mpg",
+  d = "am",
+  x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
+  m_model = "rf",
+  g_model = "rf"
+) 
+
+print(fit)
 ```
