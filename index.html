@@ -42,7 +42,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="articles/package-replication.html">Package Replication</a></li>
-    <li><a class="dropdown-item" href="articles/Quick-start.html">Quick-start</a></li>
+    <li><a class="dropdown-item" href="articles/Quick-start.html">Quick Start</a></li>
     <li><a class="dropdown-item" href="articles/User-defined-recipies.html">User Defined Recipies</a></li>
   </ul>
 </li>
@@ -65,10 +65,10 @@
 </div>
 <p>The goal of tiDML is twofold:</p>
 <ol style="list-style-type: decimal">
-<li><p>Simple first pass: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to specify their data, a formula, and a model type as string (e.g. random forest, xgboost etc). Defaults are set to sensible values, so it’s a quick first pass to ask: “do my OLS results change materially under DML?”</p></li>
-<li><p>Full control of both stages, in a tidymodels style: offers a flexible framework for users who want to define and examine both stages of the DML process. First- and second-stage models can be defined as parsnip models, preprocessing can be handled through workflows, and these custom nuisance models can be slotted in easily to the DML function.</p></li>
+<li><p><strong>Simple first pass</strong>: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to specify their data, a formula, and a model type as string (e.g. “random forest”, “xgboost” etc). Defaults are set to sensible values, so it’s a quick first pass to ask: “do my OLS results change materially under DML?”</p></li>
+<li><p><strong>Run DML the tidymodels way</strong>: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models with <code>parsnip</code>, handle preprocessing through <code>recipes</code>, and combine them with <code>workflows</code>. These custom nuisance models then fit seamlessly into the tiDML pipeline.</p></li>
 </ol>
-<p>In short, while tiDML can simplify things, it’s main contribution is in letting you do DML the way a tidymodels user would expect.</p>
+<p>In short, while tiDML can simplify things, it’s main contribution is in letting you do DML explicitly, the way a <code>tidymodels</code> user would expect.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
