@@ -62,7 +62,7 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
     )
 
   ## DoubleML :: PLR with ranger
-  ml_g <- lrn("regr.ranger",
+  ml_l <- lrn("regr.ranger",
               num.trees = grid_trees, num.threads = 1,
               respect.unordered.factors = "order")
   ml_m <- lrn("regr.ranger",
@@ -73,7 +73,7 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
     data = df, y_col = y, d_cols = d, x_cols = x
   )
   dml <- DoubleMLPLR$new(
-    dml_data, ml_g = ml_g, ml_m = ml_m,
+    dml_data, ml_l = ml_l, ml_m = ml_m,
     n_folds = n_folds, score = "partialling out"
   )
   dml$fit()
@@ -93,7 +93,7 @@ run_rep <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 
 # Replications --------------------------------------------------------------
 
-replications <- 50L
+replications <- 100L
 
 # Keep this small for CRAN; bump locally
 seeds <- 401 + 0:replications-1  # 10 reps for vignette speed
