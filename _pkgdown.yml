@@ -10,9 +10,11 @@ navbar:
 
 articles:
   - title: Replication
+    navbar: Replication
     contents:
       - package-replication
+
   - title: How-to
+    navbar: How-to
     contents:
       - user-defined-recipies
-
