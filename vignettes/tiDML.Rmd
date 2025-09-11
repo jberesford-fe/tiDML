@@ -13,25 +13,41 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-# Simple version
+# First pass with tiDML
+
+In the simplest case, we can use the default settings of `dml_plr()` function to estimate a DML model, specifycing only the dataset, outcome metric (Y), treatment variable (D), and control variables (X).
+
+Here we print the average treatment effect (ATE) of `am` on `mpg` in the `mtcars` dataset, controlling for all other variables as covariates. We use random forests (`rf`) for both nuisance models.
 
 ```{r simple}
 library(tiDML)
 
-fit <- dml_plr(
+random_forest_fitted <- dml_plr(
   mtcars,
   y = "mpg",
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-  m_model = "rf",
+  m_model = "rf", 
   g_model = "rf"
 ) 
 
-print(fit)
+print(random_forest_fitted)
 
 ```
+The string `rf` is a shortcut for using the `ranger` package to fit random forest models. Other options include `lasso`, `ridge`, `enet`, `xgboost`, and `nnet`. See ' for LINK to MAN for the enging/model types available as default.
 
-# Complex version
+Printing out the recipe steps of the DML estimate shows the preprocessing steps that were automatically applied to the data before fitting the nuisance models. In this case, 
++ zero variance filtering,
++ Median imputation for missing values,
++ Dummy encoding for categorical variables, and
++ Centering and scaling of numeric variables.
+
+```{r workflow}
+random_forest_fitted$tuned_m$final_wf$pre$actions$recipe$recipe
+```
+# User defined recipies
+
+The simple 
 
 ```{r complex}
 fit <- dml_plr(
