@@ -59,12 +59,8 @@ dml_plr <- function(
   # specs (force regression for PLR)
   m_spec <- resolve_spec(m_model, mode = "regression")
   g_spec <- resolve_spec(g_model, mode = "regression")
-  m_spec <- ensure_mode(m_spec, data[[d_name]])
-  g_spec <- ensure_mode(g_spec, data[[y_name]])
-
-  if (m_spec$mode != "regression" || g_spec$mode != "regression") {
-    stop("PLR requires regression specs for both m(X): D~X and g(X): Y~X.")
-  }
+  m_spec <- check_mode_given(m_spec, "model_m")
+  g_spec <- check_mode_given(g_spec, "model_g")
 
   # tuning (global; fast)
   rec_m <- m_factory(data, d_name, x)

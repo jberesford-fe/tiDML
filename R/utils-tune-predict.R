@@ -1,13 +1,4 @@
 #' @keywords internal
-ensure_mode <- function(spec, outcome_col) {
-  mode <- spec$mode
-  if (is.null(mode) || is.na(mode)) {
-    mode <- if (is.numeric(outcome_col)) "regression" else "classification"
-  }
-  parsnip::set_mode(spec, mode)
-}
-
-#' @keywords internal
 auto_grid <- function(spec, data_x, size = 15) {
   ps <- try(parsnip::parameters(spec), silent = TRUE)
   if (inherits(ps, "try-error") || nrow(ps) == 0) {

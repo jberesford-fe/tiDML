@@ -38,3 +38,17 @@ add_imputation_steps <- function(factory, impute_predictors) {
     rec
   }
 }
+
+#' @keywords internal
+check_mode_given <- function(spec, name = "model") {
+  if (is.null(spec$mode) || is.na(spec$mode)) {
+    stop(
+      sprintf(
+        "Mode has not set. Please add parsnip::set_mode(..., 'regression' or 'classification') to your .",
+        name
+      ),
+      call. = FALSE
+    )
+  }
+  spec
+}

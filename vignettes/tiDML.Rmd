@@ -50,15 +50,23 @@ random_forest_fitted$tuned_m$final_wf$pre$actions$recipe$recipe
 The simple 
 
 ```{r complex}
+rf_reg <- rand_forest(trees = 500) |>
+  set_mode("regression") |>
+  set_engine("ranger", num.threads = 1)
+
+rf_classif <- rand_forest(trees = 500) |>
+  set_mode("classification") |>
+  set_engine("ranger", num.threads = 1)
+
+# Call dml_plr() with the explicit specs
 fit <- dml_plr(
-  mtcars,
+  data = mtcars,
   y = "mpg",
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-  m_model = "rf",
-  g_model = "rf"
-) 
+  m_model = rf_reg,
+  g_model = rf_reg
+)
 
 print(fit)
-
 ```
