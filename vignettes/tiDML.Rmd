@@ -60,7 +60,7 @@ rf_classif <- parsnip::rand_forest(trees = 500) |>
 
 # Call dml_plr() with the explicit specs
 fit <- dml_plr(
-  data = mtcars |> dplyr::mutate(am = as_factor(am)),
+  data = mtcars |> dplyr::mutate(am = as.factor(am)),
   y = "mpg",
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
