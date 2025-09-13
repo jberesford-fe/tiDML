@@ -64,7 +64,7 @@ fit <- dml_plr(
   y = "mpg",
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-  m_model = rf_reg,
+  m_model = rf_classif,
   g_model = rf_reg
 )
 

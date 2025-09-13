@@ -57,10 +57,8 @@ dml_plr <- function(
   }
 
   # specs (force regression for PLR)
-  m_spec <- resolve_spec(m_model, mode = "regression")
-  g_spec <- resolve_spec(g_model, mode = "regression")
-  m_spec <- check_mode_given(m_spec, "model_m")
-  g_spec <- check_mode_given(g_spec, "model_g")
+  m_spec <- resolve_spec(m_model)
+  g_spec <- resolve_spec(g_model)
 
   # tuning (global; fast)
   rec_m <- m_factory(data, d_name, x)

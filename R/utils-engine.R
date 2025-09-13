@@ -66,21 +66,13 @@ resolve_engine <- function(kind, mode) {
 resolve_spec <- function(model_in, mode = "regression") {
   if (inherits(model_in, "model_spec")) {
     if (is.null(model_in$mode) || is.na(model_in$mode)) {
-      model_in <- parsnip::set_mode(model_in, mode)
+      stop(
+        "Mode has not set. Please add parsnip::set_mode(..., 'regression' or 'classification') to your recipe."
+      )
     }
     if (is.null(model_in$engine) || is.na(model_in$engine)) {
-      key <- switch(
-        class(model_in)[1],
-        rand_forest = "rf",
-        boost_tree = "xgb",
-        linear_reg = "linear",
-        svm_rbf = "svm",
-        "rf"
-      )
-      res <- resolve_engine(key, mode)
-      model_in <- do.call(
-        parsnip::set_engine,
-        c(list(object = model_in, engine = res$engine), res$args)
+      stop(
+        "Mode has not set. Please add parsnip::set_engine(kind=KIND, mode=MODE) to your recipe."
       )
     }
     return(model_in)
