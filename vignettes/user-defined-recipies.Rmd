@@ -1,5 +1,5 @@
 ---
-title: "User Defined Recipies"
+title: "Set your own model"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{User-defined-recipies}

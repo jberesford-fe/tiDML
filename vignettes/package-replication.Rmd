@@ -96,9 +96,9 @@ run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
               respect.unordered.factors = "order")
   ml_m <- lrn(
     "classif.ranger",
-    num.trees = 1200,
+    num.trees = grid_trees,
     num.threads = 1,
-    respect.unordered.factors = "order"
+    predict_type="prob"
   )
 
   dml_data <- DoubleMLData$new(
