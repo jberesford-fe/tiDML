@@ -51,15 +51,27 @@ Following Chernozhukov, I use random forest in both stages but the first is clas
 run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   set.seed(seed)
 
+  # Set regression model for Y variable
+  rf_reg <- parsnip::rand_forest(trees = 500) |>
+  parsnip::set_mode("regression") |>
+  parsnip::set_engine("ranger", num.threads = 1)
+
+  # Set classification model for D variable, which is binary
+  rf_classif <- parsnip::rand_forest(trees = 500) |>
+    parsnip::set_mode("classification") |>
+    parsnip::set_engine("ranger", num.threads = 1, probability = TRUE)
+
+
   fit_tidml <- dml_plr(
     data = df,
     y = !!rlang::sym(y),
     d = !!rlang::sym(d),
     x = x,
-    m_model = "rf",
-    g_model = "rf",
+    m_model = rf_reg,
+    g_model = rf_classif,
     grid_size = list(m = 15, g = 15)
   )
+
   tibble(
     method = "tiDML",
     seed = seed,
@@ -82,9 +94,13 @@ run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   ml_l <- lrn("regr.ranger",
               num.trees = grid_trees, num.threads = 1,
               respect.unordered.factors = "order")
-  ml_m <- lrn("regr.ranger",
-            num.trees = 1200, num.threads = 1,
-            respect.unordered.factors = "order")
+  ml_m <- lrn(
+    "classif.ranger",
+    num.trees = 1200,
+    num.threads = 1,
+    respect.unordered.factors = "order",
+    predict_type = "prob"                # get p(class) in predictions
+  )
 
   dml_data <- DoubleMLData$new(
     data = df, y_col = y, d_cols = d, x_cols = x
