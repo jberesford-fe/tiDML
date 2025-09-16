@@ -92,8 +92,10 @@ run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   ## DoubleML :: PLR with ranger
   ml_l <- lrn("regr.ranger",
-              num.trees = grid_trees, num.threads = 1,
+              num.trees = grid_trees, 
+              num.threads = 1,
               respect.unordered.factors = "order")
+  
   ml_m <- lrn(
     "classif.ranger",
     num.trees = grid_trees,
@@ -102,12 +104,20 @@ run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   )
 
   dml_data <- DoubleMLData$new(
-    data = df, y_col = y, d_cols = d, x_cols = x
+    data = df, 
+    y_col = y, 
+    d_cols = d, 
+    x_cols = x
   )
+
   dml <- DoubleMLPLR$new(
-    dml_data, ml_l = ml_l, ml_m = ml_m,
-    n_folds = n_folds, score = "partialling out"
+    dml_data, 
+    ml_l = ml_l, 
+    ml_m = ml_m,
+    n_folds = n_folds,
+    score = "partialling out"
   )
+  
   dml$fit()
 
   ci <- dml$confint(level = 0.95)
