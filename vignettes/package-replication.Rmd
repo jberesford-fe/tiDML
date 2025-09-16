@@ -1,5 +1,5 @@
 ---
-title: "Package Replication"
+title: "DoubleML Package"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{package-replication}
@@ -98,8 +98,7 @@ run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
     "classif.ranger",
     num.trees = 1200,
     num.threads = 1,
-    respect.unordered.factors = "order",
-    predict_type = "prob"                # get p(class) in predictions
+    respect.unordered.factors = "order"
   )
 
   dml_data <- DoubleMLData$new(
