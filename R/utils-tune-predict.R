@@ -68,14 +68,37 @@ numeric_pred <- function(fitted_wf, new_data, positive_class = NULL) {
   if (mode == "regression") {
     return(predict(fitted_wf, new_data)[[1]])
   }
+
   prob <- predict(fitted_wf, new_data, type = "prob")
-  if (ncol(prob) == 1) {
-    return(prob[[1]])
+
+  if (!ncol(prob)) {
+    stop(
+      "Classifier returned no probability columns. Did you set probability = TRUE for ranger?"
+    )
   }
+
+  # Default to the second probability column if not specified
   if (is.null(positive_class)) {
-    positive_class <- colnames(prob)[2L]
+    col <- colnames(prob)[2L]
+  } else {
+    # Accept either ".pred_<level>" or "<level>"
+    col <- if (positive_class %in% colnames(prob)) {
+      positive_class
+    } else {
+      paste0(".pred_", positive_class)
+    }
   }
-  prob[[positive_class]]
+
+  if (!col %in% colnames(prob)) {
+    stop(
+      "Positive class column '",
+      col,
+      "' not found. Available: ",
+      paste(colnames(prob), collapse = ", ")
+    )
+  }
+
+  prob[[col]]
 }
 
 
@@ -89,28 +112,36 @@ crossfit_residuals <- function(
   folds_idx,
   recipe_factory
 ) {
-  outcome <- if (is.character(outcome) && length(outcome) == 1) {
+  outcome_name <- if (is.character(outcome) && length(outcome) == 1) {
     outcome
   } else {
     rlang::as_name(rlang::ensym(outcome))
   }
+  y_is_factor <- is.factor(data[[outcome_name]])
+
+  # Decide positive class if factor
+  pos_level <- if (y_is_factor) levels(data[[outcome_name]])[2L] else NULL
 
   res <- rep(NA_real_, nrow(data))
-
   for (te_idx in folds_idx) {
     tr_idx <- setdiff(seq_len(nrow(data)), te_idx)
-
     tr <- data[tr_idx, , drop = FALSE]
     te <- data[te_idx, , drop = FALSE]
 
-    rec <- recipe_factory(tr, outcome, predictors)
+    rec <- recipe_factory(tr, outcome_name, predictors)
     wf <- workflows::workflow() |>
       workflows::add_recipe(rec) |>
       workflows::add_model(spec)
 
     fit <- workflows::fit(wf, tr)
-    pred <- numeric_pred(fit, te)
-    res[te_idx] <- te[[outcome]] - pred
+    pred <- numeric_pred(fit, te, positive_class = pos_level)
+
+    obs_num <- if (y_is_factor) {
+      as.integer(te[[outcome_name]] == pos_level)
+    } else {
+      te[[outcome_name]]
+    }
+    res[te_idx] <- obs_num - pred
   }
   if (anyNA(res)) {
     stop("Missing residuals for some rows.")

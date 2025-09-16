@@ -56,9 +56,18 @@ dml_plr <- function(
     g_factory <- g_factory0
   }
 
-  # specs (force regression for PLR)
-  m_spec <- resolve_spec(m_model)
-  g_spec <- resolve_spec(g_model)
+  d_is_factor <- is.factor(data[[d_name]])
+  m_mode <- if (d_is_factor) "classification" else "regression"
+  g_mode <- "regression"
+
+  if (is.factor(data[[y_name]])) {
+    stop("Outcome y must be numeric for dml_plr.")
+  }
+
+  message(sprintf("treatment model (first stage) mode set to: %s", m_mode))
+
+  m_spec <- resolve_spec(m_model, mode = m_mode)
+  g_spec <- resolve_spec(g_model, mode = g_mode)
 
   # tuning (global; fast)
   rec_m <- m_factory(data, d_name, x)

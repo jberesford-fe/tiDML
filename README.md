@@ -10,7 +10,7 @@ The goal of tiDML is twofold:
 2. **Run DML the tidymodels way**: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models with `parsnip`, handle preprocessing through `recipes`, and combine them with `workflows`. These custom nuisance models then fit seamlessly into the tiDML pipeline.
 
 
-In short, while tiDML can simplify things, it's main contribution is in letting you do DML explicitly, the way a `tidymodels` user would expect. 
+In short, while tiDML can simplify things, it's main contribution is in letting you define and examine both stages of the DML process explicitly, and in the way a `tidymodels` user would expect. 
 
 ## Installation
 
@@ -46,3 +46,4 @@ fit <- dml_plr(
 print(fit)
 ```
 
+See the [vignette](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) for more detailed examples.

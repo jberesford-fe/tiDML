@@ -63,17 +63,15 @@ resolve_engine <- function(kind, mode) {
 #' @param model_in a parsnip model spec or one of "rf","xgb","glmnet","linear"
 #' @param mode "regression" or "classification"
 #' @export
-resolve_spec <- function(model_in, mode = "regression") {
+resolve_spec <- function(model_in, mode) {
+  mode <- match.arg(mode, c("regression", "classification"))
+
   if (inherits(model_in, "model_spec")) {
     if (is.null(model_in$mode) || is.na(model_in$mode)) {
-      stop(
-        "Mode has not set. Please add parsnip::set_mode(..., 'regression' or 'classification') to your recipe."
-      )
+      stop("Mode has not been set. Please call parsnip::set_mode(...).")
     }
     if (is.null(model_in$engine) || is.na(model_in$engine)) {
-      stop(
-        "Mode has not set. Please add parsnip::set_engine(kind=KIND, mode=MODE) to your recipe."
-      )
+      stop("Engine has not been set. Please call parsnip::set_engine(...).")
     }
     return(model_in)
   }
@@ -93,7 +91,10 @@ resolve_spec <- function(model_in, mode = "regression") {
       parsnip::set_engine,
       c(list(object = spec, engine = eng$engine), eng$args)
     )
-    if (kind %in% c("rf", "xgb")) {
+    if (kind %in% c("rf", "xgb") && mode == "regression") {
+      spec <- parsnip::set_args(spec, trees = 1200L)
+    }
+    if (kind %in% c("rf", "xgb") && mode == "classification") {
       spec <- parsnip::set_args(spec, trees = 1200L)
     }
     return(spec)
