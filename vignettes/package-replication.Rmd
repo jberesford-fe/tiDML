@@ -63,7 +63,7 @@ run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 
 
   fit_tidml <- dml_plr(
-    data = df,
+    data = df |> dplyr::mutate(!!rlang::sym(d) := as.factor(!!rlang::sym(d))),
     y = !!rlang::sym(y),
     d = !!rlang::sym(d),
     x = x,
@@ -117,7 +117,7 @@ run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
     n_folds = n_folds,
     score = "partialling out"
   )
-  
+
   dml$fit()
 
   ci <- dml$confint(level = 0.95)
