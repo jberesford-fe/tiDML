@@ -72,7 +72,7 @@
 <li><p><strong>Simple first pass</strong>: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to specify their data, a formula, and a model type as string (e.g. “random forest”, “xgboost” etc). Defaults are set to sensible values, so it’s a quick first pass to ask: “do my OLS results change materially under DML?”</p></li>
 <li><p><strong>Run DML the tidymodels way</strong>: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models with <code>parsnip</code>, handle preprocessing through <code>recipes</code>, and combine them with <code>workflows</code>. These custom nuisance models then fit seamlessly into the tiDML pipeline.</p></li>
 </ol>
-<p>In short, while tiDML can simplify things, it’s main contribution is in letting you do DML explicitly, the way a <code>tidymodels</code> user would expect.</p>
+<p>In short, while tiDML can simplify things, it’s main contribution is in letting you define and examine both stages of the DML process explicitly, and in the way a <code>tidymodels</code> user would expect.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -104,6 +104,7 @@
 <span><span class="op">)</span> </span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<p>See the <a href="https://jberesford-fe.github.io/tiDML/articles/tiDML.html">vignette</a> for more detailed examples.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
