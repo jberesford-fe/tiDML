@@ -22,6 +22,9 @@ The goal is to show that `tiDML::dml_plr()` can produce comparable results with 
 
 
 # Get data and import packages
+
+Note I use the same data (401k) and variables across both specifications. 
+
 ```{r setup, warning = FALSE, message = FALSE}
 library(tiDML)
 library(dplyr)
@@ -33,9 +36,17 @@ library(mlr3)
 library(mlr3learners)
 
 df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
+
+y_col  <- "net_tfa"   # or "tw" depending on the example
+d_col  <- "e401"
+x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
+
 ```
 
 # `tiDML` function call
+
+Following Chernozhukov, I use random forest in both stages but the first is classification while the second is regression. 
+
 ```{r run-tidml, warning = FALSE, message = FALSE}
 run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   set.seed(seed)
@@ -62,6 +73,8 @@ run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 }
 
 ```
+
+# DoubleML function call
 
 ```{r run-dml, warning = FALSE, message = FALSE}
 run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
@@ -98,10 +111,6 @@ run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 # Run both methods across many replications
 
 ```{r run-rep, warning = FALSE, message = FALSE}
-
-y_col  <- "net_tfa"   # or "tw" depending on the example
-d_col  <- "e401"
-x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
 
 replications <- 2L
 
