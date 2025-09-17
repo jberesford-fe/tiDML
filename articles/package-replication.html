@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Package Replication • tiDML</title>
+<title>DoubleML Package • tiDML</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Package Replication">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="DoubleML Package">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -41,10 +41,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Replication</h6></li>
-    <li><a class="dropdown-item" href="../articles/package-replication.html">Package Replication</a></li>
+    <li><a class="dropdown-item" href="../articles/package-replication.html">DoubleML Package</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>How-to</h6></li>
-    <li><a class="dropdown-item" href="../articles/user-defined-recipies.html">User Defined Recipies</a></li>
+    <li><a class="dropdown-item" href="../articles/user-defined-recipies.html">Set your own model</a></li>
+    <li><a class="dropdown-item" href="../articles/examine-outputs.html">Examine model outputs</a></li>
   </ul>
 </li>
       </ul>
@@ -64,7 +65,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Package Replication</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>DoubleML Package</h1>
             
       
 
@@ -112,15 +113,28 @@ first is classification while the second is regression.</p>
 <code class="sourceCode R"><span><span class="va">run_tidml</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">seed</span>, <span class="va">df</span>, <span class="va">y</span>, <span class="va">d</span>, <span class="va">x</span>, <span class="va">grid_trees</span> <span class="op">=</span> <span class="fl">1200L</span>, <span class="va">n_folds</span> <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="va">seed</span><span class="op">)</span></span>
 <span></span>
+<span>  <span class="co"># Set regression model for Y variable</span></span>
+<span>  <span class="va">rf_reg</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html" class="external-link">rand_forest</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span>, num.threads <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Set classification model for D variable, which is binary</span></span>
+<span>  <span class="va">rf_classif</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html" class="external-link">rand_forest</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span>, num.threads <span class="op">=</span> <span class="fl">1</span>, probability <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">d</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="va">fit_tidml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dml_plr.html">dml_plr</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">df</span>,</span>
 <span>    y <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,</span>
 <span>    d <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/sym.html" class="external-link">sym</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>,</span>
 <span>    x <span class="op">=</span> <span class="va">x</span>,</span>
-<span>    m_model <span class="op">=</span> <span class="st">"rf"</span>,</span>
-<span>    g_model <span class="op">=</span> <span class="st">"rf"</span>,</span>
+<span>    g_model <span class="op">=</span> <span class="va">rf_reg</span>,</span>
+<span>    m_model <span class="op">=</span> <span class="va">rf_classif</span>,</span>
 <span>    grid_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>m <span class="op">=</span> <span class="fl">15</span>, g <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
+<span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
 <span>    method <span class="op">=</span> <span class="st">"tiDML"</span>,</span>
 <span>    seed <span class="op">=</span> <span class="va">seed</span>,</span>
@@ -140,19 +154,32 @@ first is classification while the second is regression.</p>
 <code class="sourceCode R"><span><span class="va">run_dml</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">seed</span>, <span class="va">df</span>, <span class="va">y</span>, <span class="va">d</span>, <span class="va">x</span>, <span class="va">grid_trees</span> <span class="op">=</span> <span class="fl">1200L</span>, <span class="va">n_folds</span> <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co">## DoubleML :: PLR with ranger</span></span>
 <span>  <span class="va">ml_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span>,</span>
-<span>              num.trees <span class="op">=</span> <span class="va">grid_trees</span>, num.threads <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>              num.trees <span class="op">=</span> <span class="va">grid_trees</span>, </span>
+<span>              num.threads <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>              respect.unordered.factors <span class="op">=</span> <span class="st">"order"</span><span class="op">)</span></span>
-<span>  <span class="va">ml_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.ranger"</span>,</span>
-<span>            num.trees <span class="op">=</span> <span class="fl">1200</span>, num.threads <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>            respect.unordered.factors <span class="op">=</span> <span class="st">"order"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">ml_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span></span>
+<span>    <span class="st">"classif.ranger"</span>,</span>
+<span>    num.trees <span class="op">=</span> <span class="va">grid_trees</span>,</span>
+<span>    num.threads <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    predict_type<span class="op">=</span><span class="st">"prob"</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">dml_data</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/DoubleML/man/DoubleMLData.html" class="external-link">DoubleMLData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">df</span>, y_col <span class="op">=</span> <span class="va">y</span>, d_cols <span class="op">=</span> <span class="va">d</span>, x_cols <span class="op">=</span> <span class="va">x</span></span>
+<span>    data <span class="op">=</span> <span class="va">df</span>, </span>
+<span>    y_col <span class="op">=</span> <span class="va">y</span>, </span>
+<span>    d_cols <span class="op">=</span> <span class="va">d</span>, </span>
+<span>    x_cols <span class="op">=</span> <span class="va">x</span></span>
 <span>  <span class="op">)</span></span>
+<span></span>
 <span>  <span class="va">dml</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/DoubleML/man/DoubleMLPLR.html" class="external-link">DoubleMLPLR</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span>    <span class="va">dml_data</span>, ml_l <span class="op">=</span> <span class="va">ml_l</span>, ml_m <span class="op">=</span> <span class="va">ml_m</span>,</span>
-<span>    n_folds <span class="op">=</span> <span class="va">n_folds</span>, score <span class="op">=</span> <span class="st">"partialling out"</span></span>
+<span>    <span class="va">dml_data</span>, </span>
+<span>    ml_l <span class="op">=</span> <span class="va">ml_l</span>, </span>
+<span>    ml_m <span class="op">=</span> <span class="va">ml_m</span>,</span>
+<span>    n_folds <span class="op">=</span> <span class="va">n_folds</span>,</span>
+<span>    score <span class="op">=</span> <span class="st">"partialling out"</span></span>
 <span>  <span class="op">)</span></span>
+<span></span>
 <span>  <span class="va">dml</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">ci</span> <span class="op">&lt;-</span> <span class="va">dml</span><span class="op">$</span><span class="fu">confint</span><span class="op">(</span>level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>

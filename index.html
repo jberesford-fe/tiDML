@@ -44,10 +44,11 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Replication</h6></li>
-    <li><a class="dropdown-item" href="articles/package-replication.html">Package Replication</a></li>
+    <li><a class="dropdown-item" href="articles/package-replication.html">DoubleML Package</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>How-to</h6></li>
-    <li><a class="dropdown-item" href="articles/user-defined-recipies.html">User Defined Recipies</a></li>
+    <li><a class="dropdown-item" href="articles/user-defined-recipies.html">Set your own model</a></li>
+    <li><a class="dropdown-item" href="articles/examine-outputs.html">Examine model outputs</a></li>
   </ul>
 </li>
       </ul>
@@ -70,9 +71,9 @@
 <p>The goal of tiDML is twofold:</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>Simple first pass</strong>: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to specify their data, a formula, and a model type as string (e.g. “random forest”, “xgboost” etc). Defaults are set to sensible values, so it’s a quick first pass to ask: “do my OLS results change materially under DML?”</p></li>
-<li><p><strong>Run DML the tidymodels way</strong>: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models with <code>parsnip</code>, handle preprocessing through <code>recipes</code>, and combine them with <code>workflows</code>. These custom nuisance models then fit seamlessly into the tiDML pipeline.</p></li>
+<li><p><strong>Run DML the tidymodels way</strong>: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models, chosing from thousands of <a href="https://www.tidymodels.org/find/parsnip/" class="external-link"><code>parsnip</code></a> models. In the backend, preprocessing is handled through <code>recipes</code>, and these are combined with <code>workflows</code>. These models are easy to examine individually, and fit seamlessly into the tiDML pipeline.</p></li>
 </ol>
-<p>In short, while tiDML can simplify things, it’s main contribution is in letting you define and examine both stages of the DML process explicitly, and in the way a <code>tidymodels</code> user would expect.</p>
+<p>In short, while tiDML can simplify things, it’s main contribution is in letting you define and examine both stages of the DML process explicitly, in a way that a <code>tidymodels</code> user would know and love.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
