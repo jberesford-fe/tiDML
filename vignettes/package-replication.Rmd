@@ -43,7 +43,7 @@ x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
 
 ```
 
-# `tiDML` function call
+# `tiDML` approach as a function
 
 Following Chernozhukov, I use random forest in both stages but the first is classification while the second is regression. 
 
@@ -73,7 +73,7 @@ run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
     grid_size = list(m = 15, g = 15)
   )
 
-  tibble(
+  return(tibble(
     method = "tiDML",
     seed = seed,
     theta = unname(fit_tidml$theta),
@@ -82,12 +82,14 @@ run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
     mutate(
       lwr = theta - qnorm(0.975) * se,
       upr = theta + qnorm(0.975) * se
-    )
+    ))
 }
 
 ```
 
-# DoubleML function call
+# DoubleML approach as a function
+
+Next I use the `DoubleML` package to run the model.
 
 ```{r run-dml, warning = FALSE, message = FALSE}
 run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
@@ -136,6 +138,8 @@ run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 
 # Run both methods across many replications
 
+This wrapper function runs both methods and returns a combined data frame.
+
 ```{r run-rep, warning = FALSE, message = FALSE}
 
 replications <- 2L
@@ -146,20 +150,25 @@ run_both <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   bind_rows(tidml_row, dml_row)
 }
 
-# Keep this small for CRAN; bump locally
-seeds <- 401 + 0:replications-1  # 10 reps for vignette speed
+seeds <- 401 + 0:replications-1  
 res <- map_dfr(
   seeds,
   ~ run_both(.x, df = df401k, y = y_col, d = d_col, x = x_cols)
 )
 ```
 
-
 # Method-by-method densities
+
+There is randomness in both methods so the estimates vary across seeds. Below I plot the densities of estimates across the replications to show that they overlap and have very similar means.
 
 ```{r plot-results, warning = FALSE, message = FALSE}
 ggplot(res, aes(theta, fill = method)) +
   geom_density(alpha = 0.35) +
+  geom_vline(
+    data = res %>% group_by(method) %>% summarize(mean_theta = mean(theta)),
+    aes(xintercept = mean_theta, color = method),
+    linetype = "dashed", size = 1
+  ) +
   labs(
     title = "DML-PLR estimates across seeds",
     x = expression(hat(theta)), y = "Density", fill = "Method"

@@ -6,8 +6,8 @@
 #' @param x Character vector of predictors
 #' @param folds_outer Outer folds (shared by both nuisances) for cross-fitting
 #' @param resamples_tune Resamples for global tuning (e.g., vfold_cv on df)
-#' @param m_model,g_model Either a parsnip spec or one of "rf","xgb","glmnet","linear"
-#' @param recipe_shared Optional recipe or factory used for both nuisances
+#' @param m_model Treatment model: either a parsnip spec or one of "rf","xgb","glmnet","linear"
+#' @param g_model Outcome model: either a parsnip spec or one of "rf","xgb","glmnet","linear"
 #' @param recipe_m,recipe_g Optional separate recipe or factory for each nuisance
 #' @param grid_size list(m=, g=) grid sizes for tuning
 #' @param vcov_type Sandwich variance type (e.g., "HC2")
@@ -22,13 +22,13 @@ dml_plr <- function(
   resamples_tune = rsample::vfold_cv(data, v = 5),
   m_model = "rf",
   g_model = "rf",
-  recipe_shared = NULL,
   recipe_m = NULL,
   recipe_g = NULL,
   impute_predictors = FALSE,
   grid_size = list(m = 15, g = 15),
   vcov_type = "HC2"
 ) {
+  # Read strings or symbols as col names
   y_sym <- rlang::ensym(y)
   d_sym <- rlang::ensym(d)
   y_name <- rlang::as_name(y_sym)
@@ -39,13 +39,8 @@ dml_plr <- function(
   check_na_y_d(data, y_name, d_name)
 
   # recipes
-  shared_factory <- resolve_recipe_factory(recipe_shared)
-  m_factory0 <- resolve_recipe_factory(
-    if (!is.null(recipe_m)) recipe_m else shared_factory
-  )
-  g_factory0 <- resolve_recipe_factory(
-    if (!is.null(recipe_g)) recipe_g else shared_factory
-  )
+  m_factory0 <- resolve_recipe_factory(recipe_m)
+  g_factory0 <- resolve_recipe_factory(recipe_g)
 
   if (impute_predictors) {
     m_factory <- add_imputation_steps(m_factory0, TRUE)

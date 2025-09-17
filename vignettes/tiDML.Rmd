@@ -45,14 +45,21 @@ Printing out the recipe steps of the DML estimate shows the preprocessing steps 
 ```{r workflow}
 random_forest_fitted$tuned_m$final_wf$pre$actions$recipe$recipe
 ```
-# User defined recipies
+# Defining your own model
 
-The simple 
+The explicit versin of `dml_plr()` allows you to define your own model specifications using the `parsnip` package. Here I define a random forest regression model for the outcome variable and a random forest classification model for the treatment variable, then pass them to `dml_plr()`. 
 
 ```{r complex}
+# Define the model for outcome
 rf_reg <- parsnip::rand_forest(trees = 500) |>
   parsnip::set_mode("regression") |>
-  parsnip::set_engine("ranger", num.threads = 1)
+  parsnip::set_engine("ranger", num.threads = 1) 
+
+# Define the recipe for outcome
+treatment_recipe <- recipe(~ .) |>     # Generic template
+  step_log(disp, hp, offset = 1) |>
+  step_normalize(all_numeric_predictors()) |>
+  step_corr(all_numeric_predictors(), threshold = 0.9)
 
 rf_classif <- parsnip::rand_forest(trees = 500) |>
   parsnip::set_mode("classification") |>
@@ -65,7 +72,9 @@ fit <- dml_plr(
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
   m_model = rf_classif,
-  g_model = rf_reg
+  g_model = rf_reg,
+  recipe_m = treatment_recipe,
+  recipe_g = treatment_recipe
 )
 
 print(fit)
