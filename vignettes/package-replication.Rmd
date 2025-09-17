@@ -60,15 +60,16 @@ run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
   rf_classif <- parsnip::rand_forest(trees = 500) |>
     parsnip::set_mode("classification") |>
     parsnip::set_engine("ranger", num.threads = 1, probability = TRUE)
-
+  
+  df <- df |> mutate(!!d := as.factor(!!rlang::sym(d)))
 
   fit_tidml <- dml_plr(
-    data = df |> dplyr::mutate(!!rlang::sym(d) := as.factor(!!rlang::sym(d))),
+    data = df,
     y = !!rlang::sym(y),
     d = !!rlang::sym(d),
     x = x,
-    m_model = rf_reg,
-    g_model = rf_classif,
+    g_model = rf_reg,
+    m_model = rf_classif,
     grid_size = list(m = 15, g = 15)
   )
 
