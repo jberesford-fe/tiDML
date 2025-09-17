@@ -56,10 +56,10 @@ rf_reg <- parsnip::rand_forest(trees = 500) |>
   parsnip::set_engine("ranger", num.threads = 1) 
 
 # Define the recipe for outcome
-treatment_recipe <- recipe(~ .) |>     # Generic template
-  step_log(disp, hp, offset = 1) |>
-  step_normalize(all_numeric_predictors()) |>
-  step_corr(all_numeric_predictors(), threshold = 0.9)
+treatment_recipe <- recipes::recipe(~ .) |>     # Generic template
+  recipes::step_log(disp, hp, offset = 1) |>
+  recipes::step_normalize(recipes::all_numeric_predictors()) |>
+  recipes::step_corr(recipes::all_numeric_predictors(), threshold = 0.9)
 
 rf_classif <- parsnip::rand_forest(trees = 500) |>
   parsnip::set_mode("classification") |>
