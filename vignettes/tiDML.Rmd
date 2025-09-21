@@ -34,7 +34,7 @@ fit_rf <- dml_rf(
   x = c("carat", "depth", "table", "x", "y", "z"),
 )
 
-tidy(fit_rf)
+generics::tidy(fit_rf)
 ```
 The string `rf` is a shortcut for using the `ranger` package to fit random forest models. Other options include `lasso`, `ridge`, `enet`, `xgboost`, and `nnet`. See ' for LINK to MAN for the enging/model types available as default.
 
