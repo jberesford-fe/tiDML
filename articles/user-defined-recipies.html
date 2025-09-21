@@ -80,21 +80,98 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tiDML</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dml_plr.html">dml_plr</a></span><span class="op">(</span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dml_rf.html">dml_rf</a></span><span class="op">(</span></span>
 <span>  <span class="va">mtcars</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"mpg"</span>,</span>
 <span>  d <span class="op">=</span> <span class="st">"am"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"disp"</span>, <span class="st">"hp"</span>, <span class="st">"drat"</span>, <span class="st">"wt"</span>, <span class="st">"qsec"</span>, <span class="st">"vs"</span>, <span class="st">"gear"</span>, <span class="st">"carb"</span><span class="op">)</span>,</span>
-<span>  m_model <span class="op">=</span> <span class="st">"rf"</span>,</span>
-<span>  g_model <span class="op">=</span> <span class="st">"rf"</span></span>
 <span><span class="op">)</span> </span>
-<span><span class="co">#&gt; treatment model (first stage) mode set to: regression</span></span>
+<span><span class="co">#&gt; Warning in make_folds_stratified(data, d = d_name, v = v): `d` is not</span></span>
+<span><span class="co">#&gt; binary-like; returning unstratified folds.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="co">#&gt; DML-PLR estimate (res_y ~ res_d)</span></span>
-<span><span class="co">#&gt;   theta: 0.867581</span></span>
-<span><span class="co">#&gt;   se:    0.952977</span></span>
-<span><span class="co">#&gt;   95% CI: [-1.000221, 2.735382]</span></span></code></pre></div>
+<span><span class="co">#&gt; $estimate</span></span>
+<span><span class="co">#&gt; [1] 2.007066</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $se</span></span>
+<span><span class="co">#&gt; [1] 1.030725</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ci_95</span></span>
+<span><span class="co">#&gt; [1] -0.01311834  4.02725116</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $y_res</span></span>
+<span><span class="co">#&gt;  [1]  1.0852933  1.0944433 -1.8354000  1.6322824  2.3378175 -0.7387300</span></span>
+<span><span class="co">#&gt;  [7] -0.6508224  1.0624433  0.1387500 -1.0480433 -2.4790267 -0.7385210</span></span>
+<span><span class="co">#&gt; [13]  1.4395842 -1.8410476 -3.4361490 -2.4165457  1.8151545  4.1730867</span></span>
+<span><span class="co">#&gt; [19]  2.4523314  5.6358681 -2.5268062 -0.3520847 -2.5583274 -2.4065800</span></span>
+<span><span class="co">#&gt; [25]  2.4943806 -3.2517800  0.8593267  6.4415367 -1.6208857 -0.0445400</span></span>
+<span><span class="co">#&gt; [31] -0.1139940 -1.9803533</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $d_res</span></span>
+<span><span class="co">#&gt;  [1]  0.459666667  0.476666667  0.195166667 -0.148166667 -0.024133333</span></span>
+<span><span class="co">#&gt;  [6] -0.071833333 -0.059033333 -0.461066667 -0.536500000 -0.559333333</span></span>
+<span><span class="co">#&gt; [11] -0.559333333 -0.009566667 -0.001300000 -0.007566667 -0.003066667</span></span>
+<span><span class="co">#&gt; [16] -0.006100000 -0.003400000  0.125666667  0.127100000  0.196566667</span></span>
+<span><span class="co">#&gt; [21] -0.703666667 -0.024400000 -0.001000000 -0.180433333 -0.006400000</span></span>
+<span><span class="co">#&gt; [26]  0.020433333  0.057866667  0.211966667  0.521433333  0.232366667</span></span>
+<span><span class="co">#&gt; [31]  0.525433333  0.275900000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $g_hat</span></span>
+<span><span class="co">#&gt;  [1] 19.91471 19.90556 24.63540 19.76772 16.36218 18.83873 14.95082 23.33756</span></span>
+<span><span class="co">#&gt;  [9] 22.66125 20.24804 20.27903 17.13852 15.86042 17.04105 13.83615 12.81655</span></span>
+<span><span class="co">#&gt; [17] 12.88485 28.22691 27.94767 28.26413 24.02681 15.85208 17.75833 15.70658</span></span>
+<span><span class="co">#&gt; [25] 16.70562 30.55178 25.14067 23.95846 17.42089 19.74454 15.11399 23.38035</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $m_hat</span></span>
+<span><span class="co">#&gt;  [1] 0.540333333 0.523333333 0.804833333 0.148166667 0.024133333 0.071833333</span></span>
+<span><span class="co">#&gt;  [7] 0.059033333 0.461066667 0.536500000 0.559333333 0.559333333 0.009566667</span></span>
+<span><span class="co">#&gt; [13] 0.001300000 0.007566667 0.003066667 0.006100000 0.003400000 0.874333333</span></span>
+<span><span class="co">#&gt; [19] 0.872900000 0.803433333 0.703666667 0.024400000 0.001000000 0.180433333</span></span>
+<span><span class="co">#&gt; [25] 0.006400000 0.979566667 0.942133333 0.788033333 0.478566667 0.767633333</span></span>
+<span><span class="co">#&gt; [31] 0.474566667 0.724100000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $folds</span></span>
+<span><span class="co">#&gt; #  5-fold cross-validation </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
+<span><span class="co">#&gt;   splits         id   </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;split [25/7]&gt;</span> Fold1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> <span style="color: #949494;">&lt;split [25/7]&gt;</span> Fold2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> <span style="color: #949494;">&lt;split [26/6]&gt;</span> Fold3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> <span style="color: #949494;">&lt;split [26/6]&gt;</span> Fold4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> <span style="color: #949494;">&lt;split [26/6]&gt;</span> Fold5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $lm_fit</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; stats::lm(formula = y_res ~ 0 + d_res, data = dat)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; d_res  </span></span>
+<span><span class="co">#&gt; 2.007  </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $vcov</span></span>
+<span><span class="co">#&gt;          d_res</span></span>
+<span><span class="co">#&gt; d_res 1.062395</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $vcov_type</span></span>
+<span><span class="co">#&gt; [1] "HC2"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $.y_orig</span></span>
+<span><span class="co">#&gt;  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4</span></span>
+<span><span class="co">#&gt; [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7</span></span>
+<span><span class="co">#&gt; [31] 15.0 21.4</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $.d_orig</span></span>
+<span><span class="co">#&gt;  [1] 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; attr(,"class")</span></span>
+<span><span class="co">#&gt; [1] "dml_plr"</span></span>
+<span><span class="co">#&gt; attr(,"y_name")</span></span>
+<span><span class="co">#&gt; [1] "mpg"</span></span>
+<span><span class="co">#&gt; attr(,"d_name")</span></span>
+<span><span class="co">#&gt; [1] "am"</span></span></code></pre></div>
 </div>
   </main>
 </div>

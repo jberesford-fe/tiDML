@@ -8,15 +8,13 @@
 <url><loc>https://jberesford-fe.github.io/tiDML/articles/user-defined-recipies.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/authors.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/index.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/base_recipe.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/crossfit_residuals.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/dml_plr.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/dml_core_wf.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/dml_nnet.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/dml_rf.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/reference/index.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/load_example_data.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/numeric_pred.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/resolve_engine.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/resolve_recipe_factory.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/resolve_spec.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/reference/tune_any.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/make_folds.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/make_folds_stratified.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/oof_crossfit.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/run_dml.html</loc></url>
 </urlset>
 
