@@ -10,27 +10,10 @@ run_dml(
   treatment_recipe,
   output_model,
   treatment_model,
-  folds_outer = make_folds(data, v = 5),
+  folds_outer = NULL,
+  v = 5,
   vcov_type = "HC2"
 )
-}
-\arguments{
-\item{data}{Data frame used for fitting and cross-fitting.}
-
-\item{output_recipe}{A \code{recipes::recipe} with a single numeric outcome (Y) and predictors (X).}
-
-\item{treatment_recipe}{A \code{recipes::recipe} with a single binary outcome (D) and predictors (X).}
-
-\item{output_model}{A parsnip model spec for the outcome regression g(X) (mode = "regression").}
-
-\item{treatment_model}{A parsnip model spec for the treatment model m(X) (mode = "classification" for factor D, or "regression" for numeric {0,1} D).}
-
-\item{folds_outer}{rsample rset used for cross-fitting (e.g., \code{make_folds(data, v=5)}).}
-
-\item{vcov_type}{Sandwich variance type (e.g., "HC2").}
-}
-\value{
-list with estimate, SE, CI, residuals, predictions, and audit objects.
 }
 \description{
 Run DML-PLR with user-supplied recipes and parsnip models

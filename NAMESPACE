@@ -2,9 +2,12 @@
 
 S3method(augment,dml_plr)
 S3method(tidy,dml_plr)
+export(dml_core_wf)
+export(dml_nnet)
 export(dml_rf)
 export(make_folds)
 export(make_folds_stratified)
 export(run_dml)
 importFrom(generics,augment)
 importFrom(generics,tidy)
+importFrom(workflows,pull_workflow_preprocessor)

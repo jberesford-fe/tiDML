@@ -2,35 +2,19 @@
 % Please edit documentation in R/dml-rf.R
 \name{dml_rf}
 \alias{dml_rf}
-\title{DML-PLR (Partially Linear Regression) with random forest default}
+\title{DML-PLR with Random Forest}
 \usage{
 dml_rf(
   data,
   y,
   d,
   x,
-  v = 5,
   folds_outer = NULL,
+  v = 5,
   vcov_type = "HC2",
   trees_grid = NULL
 )
 }
-\arguments{
-\item{data}{Data frame}
-
-\item{y}{Outcome column}
-
-\item{d}{Treatment column (binary-like: factor with 2 levels, or {0,1})}
-
-\item{x}{Character vector of predictors}
-
-\item{folds_outer}{Outer folds (shared by both nuisances) for cross-fitting}
-
-\item{vcov_type}{Sandwich variance type (e.g., "HC2")}
-}
-\value{
-list with estimate, SE, CI, and audit objects
-}
 \description{
-DML-PLR (Partially Linear Regression) with random forest default
+DML-PLR with Random Forest
 }

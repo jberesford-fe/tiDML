@@ -64,12 +64,12 @@ run_tidml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
   return(tibble(
     method = "tiDML",
     seed = seed,
-    theta = unname(fit_tidml$theta),
+    theta = unname(fit_tidml$estimate),
     se    = unname(fit_tidml$se)
   ) |>
     mutate(
-      lwr = theta - qnorm(0.975) * se,
-      upr = theta + qnorm(0.975) * se
+      lwr = theta - stats::qnorm(0.975) * se,
+      upr = theta + stats::qnorm(0.975) * se
     ))
 }
 
