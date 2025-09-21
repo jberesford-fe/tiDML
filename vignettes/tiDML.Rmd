@@ -15,20 +15,21 @@ knitr::opts_chunk$set(
 ```
 # First pass with tiDML
 
-In the simplest case, we can use the default settings of `dml_plr()` function to estimate a DML model, specifycing only the dataset, outcome metric (Y), treatment variable (D), and control variables (X).
+In the simplest case, you can use the package under complete default settings. Pick a model, specify data, outcome variable, treatment variable, and covariates, and hit go. Currently, the default models available are:
++ `dml_rf()` for random forest, and
++ `dml_nnet()` for a neural network.
 
-Here we print the average treatment effect (ATE) of `am` on `mpg` in the `mtcars` dataset, controlling for all other variables as covariates. We use random forests (`rf`) for both nuisance models.
+Here I print the average treatment effect (ATE) of `am` on `mpg` in the `mtcars` dataset, controlling for all other variables as covariates. We use random forests (`rf`) for both nuisance models.
 
 ```{r simple}
 library(tiDML)
 
-random_forest_fitted <- dml_rf(
-  mtcars,
-  y = "mpg",
-  d = "am",
-  x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-) 
-
+fit_rf <- dml_rf(
+  data = df,
+  y = "price",
+  d = "D",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+)
 print(random_forest_fitted)
 
 ```

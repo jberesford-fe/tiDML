@@ -4,7 +4,14 @@
 \alias{dml_core_wf}
 \title{Core DML-PLR using workflows}
 \usage{
-dml_core_wf(data, m_wf, g_wf, folds_outer = NULL, v = 5, vcov_type = "HC2")
+dml_core_wf(
+  data,
+  m_wf,
+  g_wf,
+  folds_outer = NULL,
+  n_folds = 5,
+  vcov_type = "HC2"
+)
 }
 \description{
 Core DML-PLR using workflows

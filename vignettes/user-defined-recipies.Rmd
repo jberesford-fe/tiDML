@@ -18,12 +18,6 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(tiDML)
 
-fit <- dml_rf(
-  mtcars,
-  y = "mpg",
-  d = "am",
-  x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-) 
+print("HI")
 
-print(fit)
 ```

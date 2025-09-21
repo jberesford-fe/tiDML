@@ -2,6 +2,7 @@
 
 S3method(augment,dml_plr)
 S3method(tidy,dml_plr)
+export(diamonds_sample)
 export(dml_core_wf)
 export(dml_nnet)
 export(dml_rf)

@@ -10,7 +10,7 @@ dml_nnet(
   d,
   x,
   folds_outer = NULL,
-  v = 5,
+  n_folds = 5,
   vcov_type = "HC2",
   hidden_units_m = NULL,
   hidden_units_g = NULL,
@@ -25,8 +25,6 @@ dml_nnet(
 
 \item{folds_outer}{Optional rsample rset. If NULL, folds made internally (stratified on D).}
 
-\item{v}{Number of outer folds when \code{folds_outer} is NULL.}
-
 \item{vcov_type}{Sandwich variance type (e.g., "HC2" or "HC3").}
 
 \item{hidden_units_m, hidden_units_g}{Hidden units for m- and g-models (NULL = heuristic).}
@@ -38,6 +36,8 @@ dml_nnet(
 \item{max_weights}{Max allowable weights for nnet engine (\code{MaxNWts}) to avoid overflow.}
 
 \item{trace}{Logical; print nnet training trace.}
+
+\item{v}{Number of outer folds when \code{folds_outer} is NULL.}
 }
 \description{
 Uses a small MLP for both nuisances. Adds dummy encoding for nominal X

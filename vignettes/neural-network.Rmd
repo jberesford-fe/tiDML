@@ -24,11 +24,7 @@ library(recipes)
 library(parsnip)
 
 
-df <- ggplot2::diamonds |>
-  dplyr::mutate(
-    D = factor(ifelse(cut == "Ideal", 1L, 0L), levels = c(0, 1))
-  ) |>
-  dplyr::slice_sample(n = 10000)
+df <- diamonds_sample()
 
 ```
 
@@ -37,7 +33,7 @@ df <- ggplot2::diamonds |>
 fit_nnet <- dml_nnet(
   data = df,
   y = "price",
-  d = "D",
+  d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
 )
 
@@ -55,7 +51,7 @@ I also choose the number of layers (**not yet true, currently it's single layer*
 fit_nnet <- dml_nnet(
   data = df,
   y = "price",
-  d = "D",
+  d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
   n_folds = 5,
   vcov_type = "HC2",
@@ -66,4 +62,8 @@ fit_nnet <- dml_nnet(
   max_weights = 5000,
   trace = FALSE  
 )
+
+fit_nnet |> tidy()
+
+```
 

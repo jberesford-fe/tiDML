@@ -10,7 +10,7 @@ dml_rf(
   d,
   x,
   folds_outer = NULL,
-  v = 5,
+  n_folds = 5,
   vcov_type = "HC2",
   trees_grid = NULL
 )
