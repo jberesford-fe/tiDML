@@ -19,3 +19,8 @@ articles:
     contents:
       - user-defined-recipies
       - examine-outputs
+  - title: Default Model Types
+    navbar: Default Models
+    contents:
+      - neural-network
+      - random-forest

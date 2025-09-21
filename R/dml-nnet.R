@@ -19,7 +19,7 @@ dml_nnet <- function(
   d,
   x,
   folds_outer = NULL,
-  v = 5,
+  n_folds = 5,
   vcov_type = "HC2",
   hidden_units_m = NULL,
   hidden_units_g = NULL,
@@ -80,7 +80,7 @@ dml_nnet <- function(
     m_wf = m_wf,
     g_wf = g_wf,
     folds_outer = folds_outer,
-    v = v,
+    n_folds = n_folds,
     vcov_type = vcov_type
   )
 }

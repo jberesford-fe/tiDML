@@ -1,0 +1,69 @@
+---
+title: "Neural Network"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Neural Network}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Run a neural network with default settings
+
+## Import data and libraries
+```{r setup}
+library(tiDML)
+library(dplyr)
+library(recipes)
+library(parsnip)
+
+
+df <- ggplot2::diamonds |>
+  dplyr::mutate(
+    D = factor(ifelse(cut == "Ideal", 1L, 0L), levels = c(0, 1))
+  ) |>
+  dplyr::slice_sample(n = 10000)
+
+```
+
+# Neural network with default settings
+```{r nnet-default}
+fit_nnet <- dml_nnet(
+  data = df,
+  y = "price",
+  d = "D",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+)
+
+tidy(fit_nnet)
+```
+
+# Run a neural network with custom settings
+
+It's possible to customise the default `dml_nnet()` to some degree. Here I set a custom penalty rate, number of epochs, and maximum number of weights. 
+
+I also choose the number of layers (**not yet true, currently it's single layer**) and hidden units (nodes per layer) . Setting hidden units to `NULL` will let the function choose the number of hidden units automatically.
+
+
+```{r nnet-custom}
+fit_nnet <- dml_nnet(
+  data = df,
+  y = "price",
+  d = "D",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+  n_folds = 5,
+  vcov_type = "HC2",
+  hidden_units_m = 6,
+  hidden_units_g = 7,
+  penalty = 0.001,
+  epochs = 200,
+  max_weights = 5000,
+  trace = FALSE  
+)
+

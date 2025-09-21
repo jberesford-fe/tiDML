@@ -6,7 +6,7 @@ dml_core_wf <- function(
   m_wf,
   g_wf,
   folds_outer = NULL,
-  v = 5,
+  n_folds = 5,
   vcov_type = "HC2"
 ) {
   # ✅ works on UNFIT workflows
@@ -29,7 +29,7 @@ dml_core_wf <- function(
   }
 
   if (is.null(folds_outer)) {
-    folds_outer <- make_folds_stratified(data, d = d_name, v = v)
+    folds_outer <- make_folds_stratified(data, d = d_name, n_folds = n_folds)
   }
 
   m_fit_fun <- function(df) parsnip::fit(m_wf, data = df)

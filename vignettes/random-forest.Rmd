@@ -1,0 +1,56 @@
+---
+title: "Random Forest"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Random Forest}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Load packages and data
+```{r setup}
+library(tiDML)
+library(tiDML)
+library(dplyr)
+library(recipes)
+library(parsnip)
+
+
+df <- ggplot2::diamonds |>
+  dplyr::mutate(
+    D = factor(ifelse(cut == "Ideal", 1L, 0L), levels = c(0, 1))
+  ) |>
+  dplyr::slice_sample(n = 10000)
+
+```
+
+# Random forest with default settings
+fit_rf <- dml_rf(
+  data = df,
+  y = "price",
+  d = "D",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+)
+
+# Random Forest with custom settings
+
+You can also customise the default `dml_rf()` to some degree. Here I set a custom grid of number of trees to try during hyperparameter tuning (NB this tests 100 and 200, rather than everything in between). You can also set the number of folds for cross-fitting and the type of robust standard errors to use (choice of "HC0", "HC1", "HC2", "HC3", or "HC4").
+
+```{r rf-custom}
+dml_rf(
+  data = df,
+  y = "price",
+  d = "D",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+  n_folds = 5,
+  vcov_type = "HC2",
+  trees_grid = c(100, 200))
+```
