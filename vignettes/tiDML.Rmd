@@ -19,7 +19,8 @@ In the simplest case, you can use the package under complete default settings. P
 + `dml_rf()` for random forest, and
 + `dml_nnet()` for a neural network.
 
-Here I print the average treatment effect (ATE) of `am` on `mpg` in the `mtcars` dataset, controlling for all other variables as covariates. We use random forests (`rf`) for both nuisance models.
+Here I use the `diamonds` data from `ggplot2` to estimate the effect of being rated "ideal" on a diamonds price, after having controlled for caret, depth, etc.
+
 
 ```{r simple}
 library(tiDML)
@@ -27,11 +28,11 @@ library(tiDML)
 fit_rf <- dml_rf(
   data = df,
   y = "price",
-  d = "D",
+  d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
 )
-print(random_forest_fitted)
 
+tidy(fit_rf)
 ```
 The string `rf` is a shortcut for using the `ranger` package to fit random forest models. Other options include `lasso`, `ridge`, `enet`, `xgboost`, and `nnet`. See ' for LINK to MAN for the enging/model types available as default.
 
@@ -40,25 +41,3 @@ Printing out the recipe steps of the DML estimate shows the preprocessing steps 
 + Median imputation for missing values,
 + Dummy encoding for categorical variables, and
 + Centering and scaling of numeric variables.
-
-```{r workflow}
-random_forest_fitted$tuned_m$final_wf$pre$actions$recipe$recipe
-```
-# Defining your own model
-
-The explicit versin of `dml_plr()` allows you to define your own model specifications using the `parsnip` package. Here I define a random forest regression model for the outcome variable and a random forest classification model for the treatment variable, then pass them to `dml_plr()`. 
-
-```{r complex}
-# Define the model for outcome
-
-
-# Call dml_plr() with the explicit specs
-fit <- dml_rf(
-  data = mtcars |> dplyr::mutate(am = as.factor(am)),
-  y = "mpg",
-  d = "am",
-  x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-)
-
-print(fit)
-```
