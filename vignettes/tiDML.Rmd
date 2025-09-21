@@ -2,7 +2,7 @@
 title: "Introduction to tiDML"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{get-started}
+  %\VignetteIndexEntry{Introduction to tiDML}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,13 +22,11 @@ Here we print the average treatment effect (ATE) of `am` on `mpg` in the `mtcars
 ```{r simple}
 library(tiDML)
 
-random_forest_fitted <- dml_plr(
+random_forest_fitted <- dml_rf(
   mtcars,
   y = "mpg",
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-  m_model = "rf", 
-  g_model = "rf"
 ) 
 
 print(random_forest_fitted)
@@ -51,30 +49,14 @@ The explicit versin of `dml_plr()` allows you to define your own model specifica
 
 ```{r complex}
 # Define the model for outcome
-rf_reg <- parsnip::rand_forest(trees = 500) |>
-  parsnip::set_mode("regression") |>
-  parsnip::set_engine("ranger", num.threads = 1) 
 
-# Define the recipe for outcome
-treatment_recipe <- recipe(~ .) |>     # Generic template
-  step_log(disp, hp, offset = 1) |>
-  step_normalize(all_numeric_predictors()) |>
-  step_corr(all_numeric_predictors(), threshold = 0.9)
-
-rf_classif <- parsnip::rand_forest(trees = 500) |>
-  parsnip::set_mode("classification") |>
-  parsnip::set_engine("ranger", num.threads = 1)
 
 # Call dml_plr() with the explicit specs
-fit <- dml_plr(
+fit <- dml_rf(
   data = mtcars |> dplyr::mutate(am = as.factor(am)),
   y = "mpg",
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-  m_model = rf_classif,
-  g_model = rf_reg,
-  recipe_m = treatment_recipe,
-  recipe_g = treatment_recipe
 )
 
 print(fit)

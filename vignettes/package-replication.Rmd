@@ -48,29 +48,17 @@ x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
 Following Chernozhukov, I use random forest in both stages but the first is classification while the second is regression. 
 
 ```{r run-tidml, warning = FALSE, message = FALSE}
-run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
+run_tidml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
   set.seed(seed)
 
-  # Set regression model for Y variable
-  rf_reg <- parsnip::rand_forest(trees = 500) |>
-  parsnip::set_mode("regression") |>
-  parsnip::set_engine("ranger", num.threads = 1)
-
-  # Set classification model for D variable, which is binary
-  rf_classif <- parsnip::rand_forest(trees = 500) |>
-    parsnip::set_mode("classification") |>
-    parsnip::set_engine("ranger", num.threads = 1, probability = TRUE)
   
   df <- df |> mutate(!!d := as.factor(!!rlang::sym(d)))
 
-  fit_tidml <- dml_plr(
+  fit_tidml <- dml_rf(
     data = df,
     y = !!rlang::sym(y),
     d = !!rlang::sym(d),
     x = x,
-    g_model = rf_reg,
-    m_model = rf_classif,
-    grid_size = list(m = 15, g = 15)
   )
 
   return(tibble(
@@ -92,16 +80,16 @@ run_tidml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
 Next I use the `DoubleML` package to run the model.
 
 ```{r run-dml, warning = FALSE, message = FALSE}
-run_dml <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
+run_dml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
   ## DoubleML :: PLR with ranger
   ml_l <- lrn("regr.ranger",
-              num.trees = grid_trees, 
+              num.trees = trees_grid, 
               num.threads = 1,
               respect.unordered.factors = "order")
   
   ml_m <- lrn(
     "classif.ranger",
-    num.trees = grid_trees,
+    num.trees = trees_grid,
     num.threads = 1,
     predict_type="prob"
   )
@@ -144,9 +132,9 @@ This wrapper function runs both methods and returns a combined data frame.
 
 replications <- 2L
 
-run_both <- function(seed, df, y, d, x, grid_trees = 1200L, n_folds = 5L) {
-  tidml_row <- run_tidml(seed, df, y, d, x, grid_trees, n_folds)
-  dml_row   <- run_dml(seed, df, y, d, x, grid_trees, n_folds)
+run_both <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
+  tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds)
+  dml_row   <- run_dml(seed, df, y, d, x, trees_grid, n_folds)
   bind_rows(tidml_row, dml_row)
 }
 

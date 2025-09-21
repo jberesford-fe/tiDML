@@ -2,7 +2,7 @@
 title: "Set your own model"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{User-defined-recipies}
+  %\VignetteIndexEntry{Set your own model}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,13 +18,11 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(tiDML)
 
-fit <- dml_plr(
+fit <- dml_rf(
   mtcars,
   y = "mpg",
   d = "am",
   x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-  m_model = "rf",
-  g_model = "rf"
 ) 
 
 print(fit)
