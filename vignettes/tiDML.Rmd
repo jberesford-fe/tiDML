@@ -25,6 +25,8 @@ Here I use the `diamonds` data from `ggplot2` to estimate the effect of being ra
 ```{r simple}
 library(tiDML)
 
+df <- diamonds_sample()
+
 fit_rf <- dml_rf(
   data = df,
   y = "price",
