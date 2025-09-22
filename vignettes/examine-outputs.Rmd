@@ -14,7 +14,52 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(tiDML)
+# Describing the outcome
+
+## The estimate
+
+## The uncertainty
+
+
+# Describing the model setup
+
+## Learners
+What are the models?
+What are their hyperparameters?
+What pre-processing was done?
+
+## Folds
+Are they stratified? How many?
+
+# Evaluation metrics
+
+This should all be done on the out of fold predictions. Running `augment()` on your fitted model will give you:
++ The actual values for Y and D
++ The predicted (hat) values for Y and D 
++ The residuals for Y and D (i.e. actual - predicted)
+
+From these consider plotting the following:
++ A scatter plot of actual vs predicted for Y and D
++ A histogram of the residuals for Y and D
++ A QQ plot of the residuals for Y and D
+
+Then consider calculating the following metrics:
++ Mean Squared Error (MSE) for Y and D
++ R-squared for Y and D
++ Correlation between actual and predicted for Y and D
++ Correlation between residuals for Y and D
+
+You can use the `yardstick` package to calculate these metrics. For example:
+```{r}
+library(yardstick)
+# Mean Squared Error
+mse_y <- mse(data, truth = Y, estimate = .pred_Y)
+mse_d <- mse(data, truth = D, estimate = .pred_D)
+# R-squared
+rsq_y <- rsq(data, truth = Y, estimate = .pred_Y)
+rsq_d <- rsq(data, truth = D, estimate = .pred_D)
+# Correlation
+cor_y <- cor(data$Y, data$.pred_Y)
+cor_d <- cor(data$D, data$.pred_D)
 ```
-# Coming soon!
+

@@ -24,6 +24,7 @@ Here I use the `diamonds` data from `ggplot2` to estimate the effect of being ra
 
 ```{r simple}
 library(tiDML)
+library(generics)
 
 df <- diamonds_sample()
 
@@ -34,13 +35,26 @@ fit_rf <- dml_rf(
   x = c("carat", "depth", "table", "x", "y", "z"),
 )
 
-generics::tidy(fit_rf)
+tidy(fit_rf)
 ```
-The string `rf` is a shortcut for using the `ranger` package to fit random forest models. Other options include `lasso`, `ridge`, `enet`, `xgboost`, and `nnet`. See ' for LINK to MAN for the enging/model types available as default.
+The function `dml_rf` is a shortcut for using the `ranger` package to fit random forest models. The full list of options is:
++ `dml_rf()` for a random forest model using `ranger()`, and
++ `dml_nnet()` for a neural network model using `mlp()`.
 
-Printing out the recipe steps of the DML estimate shows the preprocessing steps that were automatically applied to the data before fitting the nuisance models. In this case, 
+Printing out the recipe steps of the DML estimate shows the preprocessing steps that was automatically applied to the data before fitting the nuisance models. In this case of `dml_nn()`, we see: 
 + zero variance filtering,
 + Median imputation for missing values,
 + Dummy encoding for categorical variables, and
 + Centering and scaling of numeric variables.
 
+```{r show-recipe}
+print("hello")
+```
+
+# Examining the output
+
+Much more detail is giving in the Articles section of the documentation (see `vignette("examine-outputs")`).
+
+To get a quick overview of the results, you can use the `tidy()` or `augment() functions which will return, respectively:
++ a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
++ a tibble with the original data, predicted values, and residuals for the outcome and treatment variables.

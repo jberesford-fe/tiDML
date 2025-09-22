@@ -4,12 +4,12 @@
 \alias{make_folds}
 \title{Make v-fold outer folds}
 \usage{
-make_folds(data, v = 5)
+make_folds(data, n_folds = 5)
 }
 \arguments{
 \item{data}{Data frame}
 
-\item{v}{Number of folds}
+\item{n_folds}{Number of folds}
 }
 \value{
 rsample rset

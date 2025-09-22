@@ -15,7 +15,7 @@ In short, while tiDML can simplify things, it's main contribution is in letting 
 
 You can install the development version of tiDML from [GitHub](https://github.com/) via `pak`, `pacman` or `remotes`:
 
-``` r
+``` r 
 # Using pak
 pak::pak("jberesford-fe/tiDML")
 
@@ -33,16 +33,18 @@ This is the most basic example which shows you how to run a DML PLR model with r
 ``` r
 library(tiDML)
 
-fit <- dml_plr(
-  data = mtcars,
-  y = "mpg",
-  d = "am",
-  x = c("cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "gear", "carb"),
-  m_model = "rf",
-  g_model = "rf"
-) 
+random_forest <- dml_rf(
+  data = df,
+  y = "y_var",
+  d = "d_var",
+  x = c("x1", "x2", "x3"),
+)
 
 print(fit)
 ```
+
+For users requiring more control (i.e. moving past the testing phase and into implementation), you can (i) define your own first- and second-stage models using `parsnip`, (ii) handle pre-processing steps, for both stages, using `recipes`, and (iii) pass both the `parsnip` model specs and `recipes` recipe to the `run_dml()` function to get a DML estimate. 
+
+``` r
 
 See the [vignette](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) for more detailed examples.
