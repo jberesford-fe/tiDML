@@ -78,13 +78,63 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tiDML</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="coming-soon">Coming soon!<a class="anchor" aria-label="anchor" href="#coming-soon"></a>
+<h2 id="describing-the-outcome">Describing the outcome<a class="anchor" aria-label="anchor" href="#describing-the-outcome"></a>
 </h2>
+<div class="section level3">
+<h3 id="the-estimate">The estimate<a class="anchor" aria-label="anchor" href="#the-estimate"></a>
+</h3>
 </div>
-  </main>
+<div class="section level3">
+<h3 id="the-uncertainty">The uncertainty<a class="anchor" aria-label="anchor" href="#the-uncertainty"></a>
+</h3>
+</div>
+</div>
+<div class="section level2">
+<h2 id="describing-the-model-setup">Describing the model setup<a class="anchor" aria-label="anchor" href="#describing-the-model-setup"></a>
+</h2>
+<div class="section level3">
+<h3 id="learners">Learners<a class="anchor" aria-label="anchor" href="#learners"></a>
+</h3>
+<p>What are the models? What are their hyperparameters? What
+pre-processing was done?</p>
+</div>
+<div class="section level3">
+<h3 id="folds">Folds<a class="anchor" aria-label="anchor" href="#folds"></a>
+</h3>
+<p>Are they stratified? How many?</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="evaluation-metrics">Evaluation metrics<a class="anchor" aria-label="anchor" href="#evaluation-metrics"></a>
+</h2>
+<p>This should all be done on the out of fold predictions. Running
+<code>augment()</code> on your fitted model will give you: + The actual
+values for Y and D + The predicted (hat) values for Y and D + The
+residuals for Y and D (i.e. actual - predicted)</p>
+<p>From these consider plotting the following: + A scatter plot of
+actual vs predicted for Y and D + A histogram of the residuals for Y and
+D + A QQ plot of the residuals for Y and D</p>
+<p>Then consider calculating the following metrics: + Mean Squared Error
+(MSE) for Y and D + R-squared for Y and D + Correlation between actual
+and predicted for Y and D + Correlation between residuals for Y and
+D</p>
+<p>You can use the <code>yardstick</code> package to calculate these
+metrics. For example:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/yardstick" class="external-link">yardstick</a></span><span class="op">)</span></span>
+<span><span class="co"># Mean Squared Error</span></span>
+<span><span class="va">mse_y</span> <span class="op">&lt;-</span> <span class="fu">mse</span><span class="op">(</span><span class="va">data</span>, truth <span class="op">=</span> <span class="va">Y</span>, estimate <span class="op">=</span> <span class="va">.pred_Y</span><span class="op">)</span></span>
+<span><span class="va">mse_d</span> <span class="op">&lt;-</span> <span class="fu">mse</span><span class="op">(</span><span class="va">data</span>, truth <span class="op">=</span> <span class="va">D</span>, estimate <span class="op">=</span> <span class="va">.pred_D</span><span class="op">)</span></span>
+<span><span class="co"># R-squared</span></span>
+<span><span class="va">rsq_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/rsq.html" class="external-link">rsq</a></span><span class="op">(</span><span class="va">data</span>, truth <span class="op">=</span> <span class="va">Y</span>, estimate <span class="op">=</span> <span class="va">.pred_Y</span><span class="op">)</span></span>
+<span><span class="va">rsq_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://yardstick.tidymodels.org/reference/rsq.html" class="external-link">rsq</a></span><span class="op">(</span><span class="va">data</span>, truth <span class="op">=</span> <span class="va">D</span>, estimate <span class="op">=</span> <span class="va">.pred_D</span><span class="op">)</span></span>
+<span><span class="co"># Correlation</span></span>
+<span><span class="va">cor_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Y</span>, <span class="va">data</span><span class="op">$</span><span class="va">.pred_Y</span><span class="op">)</span></span>
+<span><span class="va">cor_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">D</span>, <span class="va">data</span><span class="op">$</span><span class="va">.pred_D</span><span class="op">)</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
