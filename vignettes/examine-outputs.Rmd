@@ -63,3 +63,8 @@ cor_y <- cor(data$Y, data$.pred_Y)
 cor_d <- cor(data$D, data$.pred_D)
 ```
 
+# What if the first stage is classification?
+
+## ROC-AUC (Precision-Recall)
+
+## Confusion matrix
