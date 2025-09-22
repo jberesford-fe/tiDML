@@ -50,7 +50,7 @@ Then consider calculating the following metrics:
 + Correlation between residuals for Y and D
 
 You can use the `yardstick` package to calculate these metrics. For example:
-```{r}
+```{r, eval=FALSE}
 library(yardstick)
 # Mean Squared Error
 mse_y <- mse(data, truth = Y, estimate = .pred_Y)
