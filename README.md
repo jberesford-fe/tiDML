@@ -19,11 +19,12 @@ You can install the development version of tiDML from [GitHub](https://github.co
 # Using pak
 pak::pak("jberesford-fe/tiDML")
 
-# using pacman
-pacman::p_load_gh("jberesford-fe/tiDML")
-
 # using remotes
 remotes::install_github("jberesford-fe/tiDML")
+
+# not currently working:
+pacman::p_load_gh("jberesford-fe/tiDML")
+
 ```
 
 ## Example

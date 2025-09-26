@@ -5,7 +5,7 @@
 #'
 #' @param data,y,d,x As in dml_rf()
 #' @param folds_outer Optional rsample rset. If NULL, folds made internally (stratified on D).
-#' @param v Number of outer folds when `folds_outer` is NULL.
+#' @param n_folds Number of outer folds when `folds_outer` is NULL.
 #' @param vcov_type Sandwich variance type (e.g., "HC2" or "HC3").
 #' @param hidden_units_m,hidden_units_g Hidden units for m- and g-models (NULL = heuristic).
 #' @param penalty L2 penalty (a.k.a. weight decay).
@@ -35,7 +35,8 @@ dml_nnet <- function(
 
   # --- treatment type & simple heuristics ---
   p <- length(x)
-  d_is_factor <- is.factor(data[[d_name]])
+  treatment_type <- get_treatment_type(data[[d_name]])
+
   if (is.null(hidden_units_m)) {
     hidden_units_m <- max(2L, round(sqrt(p)))
   }
@@ -49,7 +50,9 @@ dml_nnet <- function(
     penalty = penalty,
     epochs = epochs
   ) |>
-    parsnip::set_mode(if (d_is_factor) "classification" else "regression") |>
+    parsnip::set_mode(
+      if (treatment_type == "binary_factor") "classification" else "regression"
+    ) |>
     parsnip::set_engine("nnet", trace = trace, MaxNWts = max_weights)
 
   g_spec <- parsnip::mlp(

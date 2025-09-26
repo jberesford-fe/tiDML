@@ -11,25 +11,20 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
-    generics,
-    dials,
     dplyr,
-    lmtest,
+    generics,
     parsnip,
-    purrr,
     recipes,
     rlang,
     rsample,
     sandwich,
     stats,
     tibble,
-    tidyr,
-    tune,
-    workflows,
-    yardstick,
-    caret,
+    tidyselect,
+    workflows
 Suggests: 
     DoubleML,
+    ggplot2,
     ranger,
     randomForest,
     knitr,

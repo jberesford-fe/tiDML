@@ -15,13 +15,24 @@ dml_rf <- function(
   x <- vapply(x, rlang::as_name, character(1))
 
   p <- length(x)
-  d_is_factor <- is.factor(data[[d_name]])
-  mtry_m <- if (d_is_factor) max(1, floor(sqrt(p))) else max(1, floor(p / 3))
-  mtry_g <- max(1, floor(p / 3))
+  treatment_type <- get_treatment_type(data[[d_name]])
+
+  mtry_m <- if (treatment_type == "binary_factor") {
+    max(1, floor(sqrt(p))) # Classification default
+  } else {
+    max(1, floor(p / 3)) # Regression default
+  }
+  mtry_g <- max(1, floor(p / 3)) # Outcome var is always regression
 
   m_spec <- parsnip::rand_forest(trees = 500, mtry = mtry_m) |>
-    parsnip::set_mode(if (d_is_factor) "classification" else "regression") |>
-    parsnip::set_engine("ranger", num.threads = 1, probability = d_is_factor)
+    parsnip::set_mode(
+      if (treatment_type == "binary_factor") "classification" else "regression"
+    ) |>
+    parsnip::set_engine(
+      "ranger",
+      num.threads = 1,
+      probability = (treatment_type == "binary_factor") # output probaility = TRUE if classification
+    )
 
   g_spec <- parsnip::rand_forest(trees = 500, mtry = mtry_g) |>
     parsnip::set_mode("regression") |>

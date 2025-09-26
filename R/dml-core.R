@@ -9,7 +9,6 @@ dml_core_wf <- function(
   n_folds = 5,
   vcov_type = "HC2"
 ) {
-  # ✅ works on UNFIT workflows
   m_rec <- workflows::extract_preprocessor(m_wf)
   g_rec <- workflows::extract_preprocessor(g_wf)
 
@@ -24,9 +23,16 @@ dml_core_wf <- function(
   if (!is.numeric(data[[y_name]])) {
     stop("Outcome `", y_name, "` must be numeric.", call. = FALSE)
   }
-  if (!is_binary_like(data[[d_name]])) {
-    stop("Treatment `", d_name, "` must be binary-like.", call. = FALSE)
+  if (!is_valid_treatment(data[[d_name]])) {
+    stop(
+      "Treatment `",
+      d_name,
+      "` must be either binary factor or numeric with variation.",
+      call. = FALSE
+    )
   }
+
+  treatment_type <- get_treatment_type(data[[d_name]])
 
   if (is.null(folds_outer)) {
     folds_outer <- make_folds_stratified(data, d = d_name, n_folds = n_folds)
@@ -59,7 +65,8 @@ dml_core_wf <- function(
       vcov = inf$vcov,
       vcov_type = vcov_type,
       .y_orig = data[[y_name]],
-      .d_orig = data[[d_name]]
+      .d_orig = data[[d_name]],
+      treatment_type = treatment_type
     ),
     class = "dml_plr",
     y_name = y_name,

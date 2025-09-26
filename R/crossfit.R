@@ -1,14 +1,18 @@
 #' Out-of-fold cross-fitting for DML
-#'
 #' @keywords internal
 oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
   n <- nrow(data)
   g_hat <- numeric(n)
   m_hat <- numeric(n)
 
-  # treated level for classification probs
-  tlev <- treated_level(data[[d_name]])
-  d_is_factor <- is.factor(data[[d_name]])
+  treatment_type <- get_treatment_type(data[[d_name]])
+
+  # Only need treated level for binary factors
+  tlev <- if (treatment_type == "binary_factor") {
+    treated_level(data[[d_name]])
+  } else {
+    NULL
+  }
 
   for (i in seq_len(nrow(folds))) {
     analysis_idx <- folds$splits[[i]]$in_id
@@ -17,19 +21,19 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
     train <- data[analysis_idx, , drop = FALSE]
     test <- data[assessment_idx, , drop = FALSE]
 
-    # fit nuisances on train
+    # Fit nuisances on train
     m_fit <- m_fit_fun(train)
     g_fit <- g_fit_fun(train)
 
-    # predict g (outcome regression) on test
+    # Predict g (outcome regression) on test
     g_pred <- stats::predict(g_fit, new_data = test)
     g_hat[assessment_idx] <- dplyr::pull(
       g_pred,
       tidyselect::starts_with(".pred")
     )
 
-    # predict m (treatment model) on test
-    if (d_is_factor) {
+    # Predict m (treatment model) on test
+    if (treatment_type == "binary_factor") {
       m_pred <- stats::predict(m_fit, new_data = test, type = "prob")
       prob_col <- paste0(".pred_", tlev)
       if (!prob_col %in% names(m_pred)) {
@@ -42,6 +46,7 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
       }
       m_hat[assessment_idx] <- m_pred[[prob_col]]
     } else {
+      # continuous treatment
       m_pred <- stats::predict(m_fit, new_data = test)
       m_hat[assessment_idx] <- dplyr::pull(
         m_pred,
@@ -50,11 +55,13 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
     }
   }
 
+  # Calculate residuals
   y_res <- data[[y_name]] - g_hat
-  d_res <- if (d_is_factor) {
-    # factor → numeric {0,1}
+  d_res <- if (treatment_type == "binary_factor") {
+    # Binary factor: convert to 0/1 then subtract propensity
     as.numeric(data[[d_name]] == tlev) - m_hat
   } else {
+    # Continuous: subtract predicted treatment
     as.numeric(data[[d_name]]) - m_hat
   }
 

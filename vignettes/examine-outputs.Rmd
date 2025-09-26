@@ -2,7 +2,7 @@
 title: "Examine model outputs"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{examine-outputs}
+  %\VignetteIndexEntry{Examine model outputs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
