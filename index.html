@@ -107,8 +107,12 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<p>For users requiring more control (i.e. moving past the testing phase and into implementation), you can (i) define your own first- and second-stage models using <code>parsnip</code>, (ii) handle pre-processing steps, for both stages, using <code>recipes</code>, and (iii) pass both the <code>parsnip</code> model specs and <code>recipes</code> recipe to the <code><a href="reference/run_dml.html">run_dml()</a></code> function to get a DML estimate.</p>
-<p>``` r</p>
+<p>For users requiring more control (i.e. moving past the testing phase and into implementation), you can</p>
+<ol style="list-style-type: decimal">
+<li>Define your own first- and second-stage models using <code>parsnip</code>,</li>
+<li>Handle any pre-processing steps, for both stages, using <code>recipes</code>, and</li>
+<li>Pass both the <code>parsnip</code> model specs and <code>recipes</code> recipe to the <code><a href="reference/run_dml.html">run_dml()</a></code> function to get a DML estimate.</li>
+</ol>
 <p>See the <a href="https://jberesford-fe.github.io/tiDML/articles/tiDML.html">vignette</a> for more detailed examples.</p>
 </div>
 </div>

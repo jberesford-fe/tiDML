@@ -84,22 +84,20 @@
 <p>In the simplest case, you can use the package under complete default
 settings. Pick a model, specify data, outcome variable, treatment
 variable, and covariates, and hit go. Currently, the default models
-available are: + <code><a href="../reference/dml_rf.html">dml_rf()</a></code> for random forest, and +
-<code><a href="../reference/dml_nnet.html">dml_nnet()</a></code> for a neural network.</p>
+available are:</p>
+<ul>
+<li>
+<code><a href="../reference/dml_rf.html">dml_rf()</a></code> for random forest, and</li>
+<li>
+<code><a href="../reference/dml_nnet.html">dml_nnet()</a></code> for a neural network.</li>
+</ul>
 <p>Here I use the <code>diamonds</code> data from <code>ggplot2</code>
 to estimate the effect of being rated “ideal” on a diamonds price, after
 having controlled for caret, depth, etc.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tiDML</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://generics.r-lib.org" class="external-link">generics</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'generics'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,</span></span>
-<span><span class="co">#&gt;     setequal, union</span></span>
 <span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fit_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dml_rf.html">dml_rf</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">df</span>,</span>
@@ -108,11 +106,8 @@ having controlled for caret, depth, etc.</p>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit_rf</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
-<span><span class="co">#&gt;   term               estimate std.error conf.low conf.high vcov_type</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> is_rated_idealTRUE     234.      46.0     143.      324. HC2</span></span></code></pre></div>
+<span><span class="va">fit_rf</span><span class="op">$</span><span class="va">estimate</span></span>
+<span><span class="co">#&gt; [1] 233.5406</span></span></code></pre></div>
 <p>The function <code>dml_rf</code> is a shortcut for using the
 <code>ranger</code> package to fit random forest models. The full list
 of options is: + <code><a href="../reference/dml_rf.html">dml_rf()</a></code> for a random forest model using
@@ -131,14 +126,46 @@ of numeric variables.</p>
 <div class="section level2">
 <h2 id="examining-the-output">Examining the output<a class="anchor" aria-label="anchor" href="#examining-the-output"></a>
 </h2>
-<p>Much more detail is giving in the Articles section of the
-documentation (see <code><a href="../articles/examine-outputs.html">vignette("examine-outputs")</a></code>).</p>
+<p>Much more detail is giving in the Articles section. See
+<code><a href="../articles/examine-outputs.html">vignette("examine-outputs")</a></code>.</p>
 <p>To get a quick overview of the results, you can use the
-<code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> or <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> functions which will
-return, respectively: + a tibble with the point estimate, standard
-error, t-value, p-value, and confidence interval. + a tibble with the
-original data, predicted values, and residuals for the outcome and
-treatment variables.</p>
+<code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> or <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> functions from
+<code>generics</code> which will return, respectively:</p>
+<ul>
+<li>a tibble with the point estimate, standard error, t-value, p-value,
+and confidence interval.</li>
+<li>a tibble with the original data, predicted values, and residuals for
+the outcome and treatment variables.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://generics.r-lib.org" class="external-link">generics</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'generics'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,</span></span>
+<span><span class="co">#&gt;     setequal, union</span></span>
+<span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit_rf</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
+<span><span class="co">#&gt;   term               estimate std.error conf.low conf.high vcov_type</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> is_rated_idealTRUE     234.      46.0     143.      324. HC2</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">fit_rf</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10,000 × 7</span></span></span>
+<span><span class="co">#&gt;     .row     y d      g_hat    m_hat   y_res     d_res</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1   638 FALSE   829. 0.028<span style="text-decoration: underline;">8</span>    -<span style="color: #BB0000;">191.</span>  -<span style="color: #BB0000;">0.028</span><span style="color: #BB0000; text-decoration: underline;">8</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2  <span style="text-decoration: underline;">1</span>402 FALSE  <span style="text-decoration: underline;">1</span>497. 0.166      -<span style="color: #BB0000;">95.2</span> -<span style="color: #BB0000;">0.166</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3  <span style="text-decoration: underline;">3</span>530 FALSE  <span style="text-decoration: underline;">4</span>385. 0.015<span style="text-decoration: underline;">9</span>    -<span style="color: #BB0000;">855.</span>  -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">9</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4  <span style="text-decoration: underline;">5</span>037 TRUE   <span style="text-decoration: underline;">6</span>732. 0.887    -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">695.</span>   0.113   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 <span style="text-decoration: underline;">13</span>757 FALSE  <span style="text-decoration: underline;">9</span>337. 0.015<span style="text-decoration: underline;">6</span>    <span style="text-decoration: underline;">4</span>420.  -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">6</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6   457 TRUE    714. 0.989     -<span style="color: #BB0000;">257.</span>   0.011<span style="text-decoration: underline;">1</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7  <span style="text-decoration: underline;">2</span>321 FALSE  <span style="text-decoration: underline;">3</span>888. 0.723    -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">567.</span>  -<span style="color: #BB0000;">0.723</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8  <span style="text-decoration: underline;">5</span>657 FALSE  <span style="text-decoration: underline;">5</span>749. 0.046<span style="text-decoration: underline;">0</span>     -<span style="color: #BB0000;">92.2</span> -<span style="color: #BB0000;">0.046</span><span style="color: #BB0000; text-decoration: underline;">0</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9  <span style="text-decoration: underline;">4</span>372 FALSE  <span style="text-decoration: underline;">5</span>430. 0.000<span style="text-decoration: underline;">956</span> -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">058.</span>  -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">956</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 <span style="text-decoration: underline;">13</span>976 FALSE <span style="text-decoration: underline;">12</span>096. 0.003<span style="text-decoration: underline;">71</span>   <span style="text-decoration: underline;">1</span>880.  -<span style="color: #BB0000;">0.003</span><span style="color: #BB0000; text-decoration: underline;">71</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9,990 more rows</span></span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

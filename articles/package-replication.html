@@ -194,7 +194,7 @@ first is classification while the second is regression.</p>
 frame.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">replications</span> <span class="op">&lt;-</span> <span class="fl">2L</span></span>
+<span><span class="va">replications</span> <span class="op">&lt;-</span> <span class="fl">5L</span></span>
 <span></span>
 <span><span class="va">run_both</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">seed</span>, <span class="va">df</span>, <span class="va">y</span>, <span class="va">d</span>, <span class="va">x</span>, <span class="va">trees_grid</span> <span class="op">=</span> <span class="fl">1200L</span>, <span class="va">n_folds</span> <span class="op">=</span> <span class="fl">5L</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">tidml_row</span> <span class="op">&lt;-</span> <span class="fu">run_tidml</span><span class="op">(</span><span class="va">seed</span>, <span class="va">df</span>, <span class="va">y</span>, <span class="va">d</span>, <span class="va">x</span>, <span class="va">trees_grid</span>, <span class="va">n_folds</span><span class="op">)</span></span>
