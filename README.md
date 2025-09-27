@@ -44,8 +44,10 @@ random_forest <- dml_rf(
 print(fit)
 ```
 
-For users requiring more control (i.e. moving past the testing phase and into implementation), you can (i) define your own first- and second-stage models using `parsnip`, (ii) handle pre-processing steps, for both stages, using `recipes`, and (iii) pass both the `parsnip` model specs and `recipes` recipe to the `run_dml()` function to get a DML estimate. 
+For users requiring more control (i.e. moving past the testing phase and into implementation), you can 
 
-``` r
+1. Define your own first- and second-stage models using `parsnip`,
+1. Handle any pre-processing steps, for both stages, using `recipes`, and 
+1. Pass both the `parsnip` model specs and `recipes` recipe to the `run_dml()` function to get a DML estimate. 
 
 See the [vignette](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) for more detailed examples.

@@ -16,17 +16,17 @@ knitr::opts_chunk$set(
 # First pass with tiDML
 
 In the simplest case, you can use the package under complete default settings. Pick a model, specify data, outcome variable, treatment variable, and covariates, and hit go. Currently, the default models available are:
-+ `dml_rf()` for random forest, and
-+ `dml_nnet()` for a neural network.
+
+- `dml_rf()` for random forest, and
+- `dml_nnet()` for a neural network.
 
 Here I use the `diamonds` data from `ggplot2` to estimate the effect of being rated "ideal" on a diamonds price, after having controlled for caret, depth, etc.
 
 
 ```{r simple}
 library(tiDML)
-library(generics)
 
-df <- diamonds_sample()
+df <- diamonds_sample(n=10000)
 
 fit_rf <- dml_rf(
   data = df,
@@ -53,8 +53,14 @@ print("hello")
 
 # Examining the output
 
-Much more detail is giving in the Articles section of the documentation (see `vignette("examine-outputs")`).
+Much more detail is giving in the Articles section. See `vignette("examine-outputs")`.
 
 To get a quick overview of the results, you can use the `tidy()` or `augment()` functions which will return, respectively:
-+ a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
-+ a tibble with the original data, predicted values, and residuals for the outcome and treatment variables.
+
+- a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
+- a tibble with the original data, predicted values, and residuals for the outcome and treatment variables.
+
+```{r examine-output}
+tidy(fit_rf)
+augment(fit_rf)
+```
