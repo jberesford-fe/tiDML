@@ -7,7 +7,7 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
 
   treatment_type <- get_treatment_type(data[[d_name]])
 
-  # Only need treated level for binary factors
+  # Get treated level for binary factors
   tlev <- if (treatment_type == "binary_factor") {
     treated_level(data[[d_name]])
   } else {
@@ -58,7 +58,7 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
   # Calculate residuals
   y_res <- data[[y_name]] - g_hat
   d_res <- if (treatment_type == "binary_factor") {
-    # Binary factor: convert to 0/1 then subtract propensity
+    # Factor: convert to 0/1 then subtract propensity
     as.numeric(data[[d_name]] == tlev) - m_hat
   } else {
     # Continuous: subtract predicted treatment

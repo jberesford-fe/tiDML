@@ -31,7 +31,7 @@ dml_rf <- function(
     parsnip::set_engine(
       "ranger",
       num.threads = 1,
-      probability = (treatment_type == "binary_factor") # output probaility = TRUE if classification
+      probability = (treatment_type == "binary_factor")
     )
 
   g_spec <- parsnip::rand_forest(trees = 500, mtry = mtry_g) |>

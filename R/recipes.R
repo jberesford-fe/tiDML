@@ -11,12 +11,11 @@ recipe_outcome_name <- function(rec, label = "recipe") {
 
 #' @keywords internal
 make_m_recipe <- function(data, d_name, x) {
-  # d_name is a character scalar; x is character vector
-  # Use reformulate to avoid any non-standard eval pitfalls
-  recipes::recipe(
+  base_recipe <- recipes::recipe(
     stats::reformulate(termlabels = x, response = d_name),
     data = data
   )
+  base_recipe
 }
 
 #' @keywords internal

@@ -15,7 +15,7 @@ diamonds_sample <- function(n = 10000, seed = 1) {
   set.seed(seed)
   result <- ggplot2::diamonds |>
     dplyr::mutate(
-      is_rated_ideal = factor(ifelse(cut == "Ideal", 1L, 0L), levels = c(0, 1))
+      is_rated_ideal = factor(cut == "Ideal", levels = c(FALSE, TRUE))
     ) |>
     dplyr::slice_sample(n = n)
 
