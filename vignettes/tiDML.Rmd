@@ -55,6 +55,6 @@ print("hello")
 
 Much more detail is giving in the Articles section of the documentation (see `vignette("examine-outputs")`).
 
-To get a quick overview of the results, you can use the `tidy()` or `augment() functions which will return, respectively:
+To get a quick overview of the results, you can use the `tidy()` or `augment()` functions which will return, respectively:
 + a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
 + a tibble with the original data, predicted values, and residuals for the outcome and treatment variables.

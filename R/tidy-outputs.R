@@ -1,8 +1,30 @@
 #' @export
 #' @importFrom generics tidy
 tidy.dml_plr <- function(x, ...) {
+  d_name <- attr(x, "d_name")
+
+  # Create term name with treated level for factors
+  term_name <- if (!is.null(d_name)) {
+    # Check if we have treatment type information
+    treatment_type <- x$treatment_type
+
+    if (!is.null(treatment_type) && treatment_type == "binary_factor") {
+      # Get the treated level from the original data
+      if (!is.null(x$.d_orig) && is.factor(x$.d_orig)) {
+        treated_level <- levels(x$.d_orig)[2] # Second level is treated
+        paste0(d_name, treated_level)
+      } else {
+        d_name
+      }
+    } else {
+      d_name # For continuous treatments, just use the name
+    }
+  } else {
+    "treatment"
+  }
+
   tibble::tibble(
-    term = "d_res",
+    term = term_name,
     estimate = x$estimate,
     std.error = x$se,
     conf.low = x$ci_95[1],
