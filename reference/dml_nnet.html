@@ -83,6 +83,10 @@ and normalizes numeric predictors (recommended for NNs).</p>
 <dd><p>Optional rsample rset. If NULL, folds made internally (stratified on D).</p></dd>
 
 
+<dt id="arg-n-folds">n_folds<a class="anchor" aria-label="anchor" href="#arg-n-folds"></a></dt>
+<dd><p>Number of outer folds when <code>folds_outer</code> is NULL.</p></dd>
+
+
 <dt id="arg-vcov-type">vcov_type<a class="anchor" aria-label="anchor" href="#arg-vcov-type"></a></dt>
 <dd><p>Sandwich variance type (e.g., "HC2" or "HC3").</p></dd>
 
@@ -105,10 +109,6 @@ and normalizes numeric predictors (recommended for NNs).</p>
 
 <dt id="arg-trace">trace<a class="anchor" aria-label="anchor" href="#arg-trace"></a></dt>
 <dd><p>Logical; print nnet training trace.</p></dd>
-
-
-<dt id="arg-v">v<a class="anchor" aria-label="anchor" href="#arg-v"></a></dt>
-<dd><p>Number of outer folds when <code>folds_outer</code> is NULL.</p></dd>
 
 </dl></div>
 

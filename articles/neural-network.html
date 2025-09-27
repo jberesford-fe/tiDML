@@ -117,14 +117,12 @@
 <span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in make_folds_stratified(data, d = d_name, n_folds = n_folds): `d` is</span></span>
-<span><span class="co">#&gt; not binary-like; returning unstratified folds.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit_nnet</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">#&gt;   term  estimate std.error conf.low conf.high vcov_type</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> d_res     231.      48.0     137.      326. HC2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> d_res     377.      49.0     281.      474. HC2</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="run-a-neural-network-with-custom-settings">Run a neural network with custom settings<a class="anchor" aria-label="anchor" href="#run-a-neural-network-with-custom-settings"></a>
@@ -151,14 +149,12 @@ number of hidden units automatically.</p>
 <span>  max_weights <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  trace <span class="op">=</span> <span class="cn">FALSE</span>  </span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in make_folds_stratified(data, d = d_name, n_folds = n_folds): `d` is</span></span>
-<span><span class="co">#&gt; not binary-like; returning unstratified folds.</span></span>
 <span></span>
 <span><span class="va">fit_nnet</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">#&gt;   term  estimate std.error conf.low conf.high vcov_type</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> d_res     247.      43.4     162.      332. HC2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> d_res     281.      42.3     198.      364. HC2</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

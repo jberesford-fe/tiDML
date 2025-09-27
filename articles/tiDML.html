@@ -107,14 +107,12 @@ having controlled for caret, depth, etc.</p>
 <span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in make_folds_stratified(data, d = d_name, n_folds = n_folds): `d` is</span></span>
-<span><span class="co">#&gt; not binary-like; returning unstratified folds.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit_rf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">#&gt;   term  estimate std.error conf.low conf.high vcov_type</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> d_res     263.      45.7     173.      352. HC2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> d_res     234.      46.0     143.      324. HC2</span></span></code></pre></div>
 <p>The function <code>dml_rf</code> is a shortcut for using the
 <code>ranger</code> package to fit random forest models. The full list
 of options is: + <code><a href="../reference/dml_rf.html">dml_rf()</a></code> for a random forest model using
