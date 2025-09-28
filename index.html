@@ -77,13 +77,13 @@
 <li><p><strong>Simple first pass</strong>: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to pick a model, then specify their data and a formula. Defaults are set to sensible values, so it’s a quick first pass to ask: <strong>“do my OLS results change materially under DML?”</strong></p></li>
 <li><p><strong>Run DML the tidymodels way</strong>: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models, chosing from thousands of <a href="https://www.tidymodels.org/find/parsnip/" class="external-link"><code>parsnip</code></a> models, then specify your own preprocessing steps through <code>recipes</code>. In the backend, these are combined into <code>workflows</code>, which are used for the first- and second-stage models in a DML partially linear regression.</p></li>
 </ol>
-<p>In short, while tiDML can simplify things, it’s main contribution is in letting you define and examine both stages of the DML process explicitly, in the way that a <code>tidymodels</code> user would expect.</p>
+<p>In short, while tiDML simplifies some default models, it’s main contribution is in letting you define and examine both stages of the DML process explicitly, in the way that a <code>tidymodels</code> user would expect.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of tiDML from <a href="https://github.com/" class="external-link">GitHub</a> via <code>pak</code>, <code>pacman</code> or <code>remotes</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Using pak</span></span>
+<code class="sourceCode R"><span><span class="co"># Using pak (recommended)</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"jberesford-fe/tiDML"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># using remotes</span></span>
@@ -93,7 +93,7 @@
 <span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load_gh</span><span class="op">(</span><span class="st">"jberesford-fe/tiDML"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="simple-example">Simple Example<a class="anchor" aria-label="anchor" href="#simple-example"></a>
 </h2>
 <p>This is the most basic example which shows you how to run a DML PLR model with random forests for both nuisance models, taking all parameters as default.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -107,15 +107,36 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">random_forest</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level1">
+<h1 id="explicit-defintion">Explicit defintion<a class="anchor" aria-label="anchor" href="#explicit-defintion"></a>
+</h1>
 <p>For users requiring more control (i.e. moving past the testing phase and into implementation), you can</p>
 <ol style="list-style-type: decimal">
-<li>Define your own first- and second-stage models using <code>parsnip</code>,</li>
-<li>Handle any pre-processing steps, for both stages, using <code>recipes</code>, and</li>
-<li>Pass both the <code>parsnip</code> model specs and <code>recipes</code> recipe to the <code><a href="reference/run_dml.html">run_dml()</a></code> function to get a DML estimate.</li>
+<li>Define your own first- and second-stage models using <a href="https://parsnip.tidymodels.org/" class="external-link"><code>parsnip</code></a>. For exmample, using random forests for both stages:</li>
 </ol>
-<p>See the <a href="https://jberesford-fe.github.io/tiDML/articles/tiDML.html">Getting started vignette</a> for more detailed examples.</p>
+<p>```{r parsnip_models, eval=FALSE} outcome_model &lt;- parsnip::rand_forest(trees = 500) |&gt; parsnip::set_engine(“ranger”) |&gt; parsnip::set_mode(“regression”)</p>
+<p>treatment_model &lt;- parsnip::rand_forest(trees = 500) |&gt; parsnip::set_engine(“ranger”) |&gt; parsnip::set_mode(“classification”)</p>
+<pre><code>
+2. Handle any pre-processing steps, for both stages, using [`recipes`](https://recipes.tidymodels.org/). For example, standardising all numeric predictors, turning nominals to dummies, or log-transforming the outcome variable:
+
+```{r recipes, eval=FALSE}
+treatment_recipe &lt;- recipes::recipe(d_var ~ x1 + x2 + x3, data = df) |&gt;
+  recipes::step_normalize(recipes::all_numeric_predictors()) |&gt;
+  recipes::step_dummy(recipes::all_nominal_predictors()) |&gt;
+  recipes::step_log(recipes::all_outcomes(), base = 10)
+
+outcome_recipe &lt;- recipes::recipe(y_var ~ x1 + x2 + x3, data = df) |&gt;
+  recipes::step_center(all_numeric_predictors()) |&gt;
+  recipes::step_scale(all_numeric_predictors()) </code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Pass both the <code>parsnip</code> model specs and <code>recipes</code> recipe to the <code><a href="reference/run_dml.html">run_dml()</a></code> function to get a DML estimate. Noting that the same data must be passed to <code><a href="reference/run_dml.html">run_dml()</a></code> as was used to define the recipes.</li>
+</ol>
+<p><code>{r run_dml, eval=FALSE} run_dml(   data = df,   outcome_model = outcome_model,   treatment_model = treatment_model,   outcome_recipe = outcome_recipe,   treatment_recipe = treatment_recipe,   n_folds = 5 )</code></p>
+<p>See the <a href="https://jberesford-fe.github.io/tiDML/articles/tiDML.html">getting started</a> vignette for more detailed examples.</p>
 </div>
-</div>
+
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
