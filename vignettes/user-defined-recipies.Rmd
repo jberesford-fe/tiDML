@@ -24,7 +24,7 @@ library(tiDML)
 
 # Test dml_rf
 df = diamonds_sample() |>
-  mutate(price = log(price)) 
+  dplyr::mutate(price = log(price)) 
 
 # parsnip model spec 
 g_spec = parsnip::rand_forest(trees = 100) |>
