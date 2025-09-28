@@ -1,21 +1,22 @@
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 # tiDML
 
 The goal of tiDML is twofold:
 
-1. **Simple first pass**: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to pick a model, then specify their data and a formula. Defaults are set to sensible values, so it’s a quick first pass to ask: **“do my OLS results change materially under DML?”**
+1.  **Simple first pass**: provide a straightforward way to run Double Machine Learning (DML) in R. Users only need to pick a model, then specify their data and a formula. Defaults are set to sensible values, so it’s a quick first pass to ask: **“do my OLS results change materially under DML?”**
 
-2. **Run DML the tidymodels way**: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models, chosing from thousands of <a href="https://www.tidymodels.org/find/parsnip/">`parsnip`</a> models, then specify your own preprocessing steps through `recipes`. In the backend, these are combined into `workflows`, which are used for the first- and second-stage models in a DML partially linear regression.
+2.  **Run DML the tidymodels way**: a flexible framework that lets you define and inspect both stages of the DML process explicitly. Specify first- and second-stage models, chosing from thousands of <a href="https://www.tidymodels.org/find/parsnip/">`parsnip`</a> models, then specify your own preprocessing steps through `recipes`. In the backend, these are combined into `workflows`, which are used for the first- and second-stage models in a DML partially linear regression.
 
-In short, while tiDML simplifies some default models, it's main contribution is in letting you define and examine both stages of the DML process explicitly, in the way that a `tidymodels` user would expect. 
+In short, while tiDML simplifies some default models, it's main contribution is in letting you define and examine both stages of the DML process explicitly, in the way that a `tidymodels` user would expect.
 
 ## Installation
 
 You can install the development version of tiDML from [GitHub](https://github.com/) via `pak`, `pacman` or `remotes`:
 
-``` r 
+``` r
 # Using pak (recommended)
 pak::pak("jberesford-fe/tiDML")
 
@@ -24,10 +25,9 @@ remotes::install_github("jberesford-fe/tiDML")
 
 # not currently working:
 pacman::p_load_gh("jberesford-fe/tiDML")
-
 ```
 
-## Simple Example
+## Default model example
 
 This is the most basic example which shows you how to run a DML PLR model with random forests for both nuisance models, taking all parameters as default.
 
@@ -43,13 +43,14 @@ random_forest <- dml_rf(
 
 print(random_forest)
 ```
-# Explicit defintion
 
-For users requiring more control (i.e. moving past the testing phase and into implementation), you can 
+## User defined model example
 
-1. Define your own first- and second-stage models using [`parsnip`](https://parsnip.tidymodels.org/). For exmample, using random forests for both stages:
+For users requiring more control (i.e. moving past the testing phase and into implementation), you can
 
-```{r parsnip_models, eval=FALSE}
+1.  Define your own first- and second-stage models using [`parsnip`](https://parsnip.tidymodels.org/). For exmample, using random forests for both stages:
+
+```r 
 outcome_model <- parsnip::rand_forest(trees = 500) |>
   parsnip::set_engine("ranger") |>
   parsnip::set_mode("regression")
@@ -57,11 +58,12 @@ outcome_model <- parsnip::rand_forest(trees = 500) |>
 treatment_model <- parsnip::rand_forest(trees = 500) |>
   parsnip::set_engine("ranger") |>
   parsnip::set_mode("classification")
+
 ```
 
-2. Handle any pre-processing steps, for both stages, using [`recipes`](https://recipes.tidymodels.org/). For example, standardising all numeric predictors, turning nominals to dummies, or log-transforming the outcome variable:
+2.  Handle any pre-processing steps, for both stages, using [`recipes`](https://recipes.tidymodels.org/). For example, standardising all numeric predictors, turning nominals to dummies, log-transforming the outcome variable etc
 
-```{r recipes, eval=FALSE}
+``` r
 treatment_recipe <- recipes::recipe(d_var ~ x1 + x2 + x3, data = df) |>
   recipes::step_normalize(recipes::all_numeric_predictors()) |>
   recipes::step_dummy(recipes::all_nominal_predictors()) |>
@@ -73,9 +75,9 @@ outcome_recipe <- recipes::recipe(y_var ~ x1 + x2 + x3, data = df) |>
 ```
 
 
-3. Pass both the `parsnip` model specs and `recipes` recipe to the `run_dml()` function to get a DML estimate. Noting that the same data must be passed to `run_dml()` as was used to define the recipes.  
+3.  Pass both the `parsnip` model specs and `recipes` recipe to the `run_dml()` function to get a DML estimate. Noting that the same data must be passed to `run_dml()` as was used to define the recipes.
 
-```{r run_dml, eval=FALSE}
+``` r
 run_dml(
   data = df,
   outcome_model = outcome_model,
@@ -85,5 +87,6 @@ run_dml(
   n_folds = 5
 )
 ```
+
 
 See the [getting started](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) vignette for more detailed examples.

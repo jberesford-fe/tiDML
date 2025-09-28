@@ -15,13 +15,59 @@ knitr::opts_chunk$set(
 ```
 # How to set your own model
 
-## Start by defining your "learners"
+## Start by defining your model specs...
 
 We define these using the `parsnip` package. There are literally thousands of available models, see the [parsnip documentation](https://parsnip.tidymodels.org/) for a comprehensive list and examples.
 
-```{r setup}
+```{r parsnip-specs, warnings=FALSE, message=FALSE}
 library(tiDML)
+
+# Test dml_rf
+df = diamonds_sample() |>
+  mutate(price = log(price)) 
+
+# parsnip model spec 
+g_spec = parsnip::rand_forest(trees = 100) |>
+  parsnip::set_engine("ranger") |>
+  parsnip::set_mode("regression")
+
+m_spec = parsnip::rand_forest(trees = 100) |>
+  parsnip::set_engine("ranger") |>
+  parsnip::set_mode("classification")
 
 ```
 
+## Next define your own recipes...
+
+```{r parsnip-specs, warnings=FALSE, message=FALSE}
+
+g_rec <- recipes::recipe(price ~ carat + depth + table + x + y + z, data = df) |>
+  recipes::step_log('carat') |> # Take log for a given column name
+  recipes::step_impute_knn(all_numeric()) |> # Impute missing values for all numeric columns
+  recipes::step_dummy(recipes::all_nominal(), -recipes::all_outcomes()) # Note the exclusion of outcome variables with -
+
+m_rec <- recipes::recipe(is_rated_ideal ~ carat + depth + table + x + y + z, data = df) |>
+  recipes::step_ns(carat, deg_free = 3) |>
+  recipes::step_dummy(recipes::all_nominal(), -recipes::all_outcomes())
+```
+
+## Finally, run the DML procedure
+
+Use the model specs and recipes defined above as inputs to `run_dml()`. 
+
+```{r run-dml, warnings=FALSE, message=FALSE}
+fit <- run_dml(
+  data = df, 
+  outcome_recipe = g_rec,
+  treatment_recipe = m_rec,
+  outcome_model = g_spec,
+  treatment_model = m_spec,
+  n_folds = 5
+)
+
+coef <- fit$estimate
+
+sprintf("Controlling for size etc., being rated ideal increase price by: %.3f", coef)
+```
+To see how to examine the outputs, see `vignette("examine-outputs")`.
 

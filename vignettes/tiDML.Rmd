@@ -38,25 +38,32 @@ fit_rf <- dml_rf(
 fit_rf$estimate
 ```
 
-# Checking inputs and outputs
+# Checking model outputs
 
 A benefit of using `tiDML` (and the `tidymodels` ecosystem more generally) is that you can rely on packages like `generics` and `workflows` to examine the inputs and outputs of your model.
 
-## `tidy()`, `glance()` and `augment()`
-To get a quick overview of the results, you can use the `tidy()` or `augment()` functions from `generics` which will return, respectively:
+### `tidy()`
 
-- a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
-- a tibble with the inputs and settings used for the DML estimation, and
-- a tibble with the original data, predicted values, and residuals for the outcome and treatment variables.
+Tidy returns a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
 
-```{r examine-output}
+```{r examine-tidy}
 # Coefficients and standard errors
 generics::tidy(fit_rf)
+```
 
-# Summary of model inputs and settings
+### `glance()` 
+
+Glance returns a tibble with the inputs and settings used for the DML estimation.
+
+```{r examine-glance}
 generics::glance(fit_rf)
+```
 
-# Original data, predicted values, and residuals
+### `augment()`
+
+Augment returns a tibble with the original data, predicted values, and residuals for the outcome and treatment variables. These are out-of-fold predictions and residuals, handy for diagnostics.
+
+```{r examine-augment}
 generics::augment(fit_rf) |> head()
 ```
 
@@ -77,4 +84,4 @@ Much more detail is given in the Articles section. See `vignette("examine-output
 
 # Setting your own models
 
-You can also set your own models using `parsnip` and `recipes`. This gives you more control over the model specifications and preprocessing steps. See `vignette("user-defined-recpies")` for instructions.
+You can also set your own models using `parsnip` and `recipes`. This gives you more control over the model specifications and preprocessing steps. See `vignette("user-defined-recipies")` for instructions.
