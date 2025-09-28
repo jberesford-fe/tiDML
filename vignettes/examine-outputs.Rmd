@@ -22,6 +22,8 @@ These functions from `generics` will return the coefficients, models settings, a
 
 ```{r run-rf}
 library(tiDML)
+library(generics)
+
 df <- diamonds_sample(n=10000)
 
 fit_rf <- dml_rf(
