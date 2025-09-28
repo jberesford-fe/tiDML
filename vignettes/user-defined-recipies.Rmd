@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 We define these using the `parsnip` package. There are literally thousands of available models, see the [parsnip documentation](https://parsnip.tidymodels.org/) for a comprehensive list and examples.
 
-```{r parsnip-specs, warnings=FALSE, message=FALSE}
+```{r pars-spec, warnings=FALSE, message=FALSE}
 library(tiDML)
 
 # Test dml_rf
@@ -39,7 +39,7 @@ m_spec = parsnip::rand_forest(trees = 100) |>
 
 ## Next define your own recipes...
 
-```{r parsnip-specs, warnings=FALSE, message=FALSE}
+```{r rec-specs, warnings=FALSE, message=FALSE}
 
 g_rec <- recipes::recipe(price ~ carat + depth + table + x + y + z, data = df) |>
   recipes::step_log('carat') |> # Take log for a given column name
