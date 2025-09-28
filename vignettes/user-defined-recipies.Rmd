@@ -43,7 +43,7 @@ m_spec = parsnip::rand_forest(trees = 100) |>
 
 g_rec <- recipes::recipe(price ~ carat + depth + table + x + y + z, data = df) |>
   recipes::step_log('carat') |> # Take log for a given column name
-  recipes::step_impute_knn(all_numeric_predictors()) |> # Impute missing values for all numeric columns
+  recipes::step_impute_knn(recipes::all_numeric_predictors()) |> # Impute missing values for all numeric columns
   recipes::step_dummy(recipes::all_nominal(), -recipes::all_outcomes()) # Note the exclusion of outcome variables with -
 
 m_rec <- recipes::recipe(is_rated_ideal ~ carat + depth + table + x + y + z, data = df) |>
