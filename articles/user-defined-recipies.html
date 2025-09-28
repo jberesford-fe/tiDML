@@ -82,13 +82,62 @@
 <h2 id="how-to-set-your-own-model">How to set your own model<a class="anchor" aria-label="anchor" href="#how-to-set-your-own-model"></a>
 </h2>
 <div class="section level3">
-<h3 id="start-by-defining-your-learners">Start by defining your “learners”<a class="anchor" aria-label="anchor" href="#start-by-defining-your-learners"></a>
+<h3 id="start-by-defining-your-model-specs">Start by defining your model specs…<a class="anchor" aria-label="anchor" href="#start-by-defining-your-model-specs"></a>
 </h3>
 <p>We define these using the <code>parsnip</code> package. There are
 literally thousands of available models, see the <a href="https://parsnip.tidymodels.org/" class="external-link">parsnip documentation</a> for a
 comprehensive list and examples.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tiDML</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tiDML</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Test dml_rf</span></span>
+<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># parsnip model spec </span></span>
+<span><span class="va">g_spec</span> <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html" class="external-link">rand_forest</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">m_spec</span> <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html" class="external-link">rand_forest</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="next-define-your-own-recipes">Next define your own recipes…<a class="anchor" aria-label="anchor" href="#next-define-your-own-recipes"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">g_rec</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">price</span> <span class="op">~</span> <span class="va">carat</span> <span class="op">+</span> <span class="va">depth</span> <span class="op">+</span> <span class="va">table</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">z</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/step_log.html" class="external-link">step_log</a></span><span class="op">(</span><span class="st">'carat'</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># Take log for a given column name</span></span>
+<span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/step_impute_knn.html" class="external-link">step_impute_knn</a></span><span class="op">(</span><span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="co"># Impute missing values for all numeric columns</span></span>
+<span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html" class="external-link">step_dummy</a></span><span class="op">(</span><span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_nominal</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_outcomes</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Note the exclusion of outcome variables with -</span></span>
+<span></span>
+<span><span class="va">m_rec</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">is_rated_ideal</span> <span class="op">~</span> <span class="va">carat</span> <span class="op">+</span> <span class="va">depth</span> <span class="op">+</span> <span class="va">table</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">z</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/step_ns.html" class="external-link">step_ns</a></span><span class="op">(</span><span class="va">carat</span>, deg_free <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/step_dummy.html" class="external-link">step_dummy</a></span><span class="op">(</span><span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_nominal</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">-</span><span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_outcomes</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="finally-run-the-dml-procedure">Finally, run the DML procedure<a class="anchor" aria-label="anchor" href="#finally-run-the-dml-procedure"></a>
+</h3>
+<p>Use the model specs and recipes defined above as inputs to
+<code><a href="../reference/run_dml.html">run_dml()</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_dml.html">run_dml</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">df</span>, </span>
+<span>  outcome_recipe <span class="op">=</span> <span class="va">g_rec</span>,</span>
+<span>  treatment_recipe <span class="op">=</span> <span class="va">m_rec</span>,</span>
+<span>  outcome_model <span class="op">=</span> <span class="va">g_spec</span>,</span>
+<span>  treatment_model <span class="op">=</span> <span class="va">m_spec</span>,</span>
+<span>  n_folds <span class="op">=</span> <span class="fl">5</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">coef</span> <span class="op">&lt;-</span> <span class="va">fit</span><span class="op">$</span><span class="va">estimate</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Controlling for size etc., being rated ideal increase price by: %.3f"</span>, <span class="va">coef</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Controlling for size etc., being rated ideal increase price by: 0.058"</span></span></code></pre></div>
+<p>To see how to examine the outputs, see
+<code><a href="../articles/examine-outputs.html">vignette("examine-outputs")</a></code>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
