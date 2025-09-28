@@ -35,7 +35,7 @@ fit_rf <- dml_rf(
   x = c("carat", "depth", "table", "x", "y", "z"),
 )
 
-tidy(fit_rf)
+fit_rf$estimate
 ```
 
 # Checking inputs and outputs
@@ -43,8 +43,7 @@ tidy(fit_rf)
 A benefit of using `tiDML` (and the `tidymodels` ecosystem more generally) is that you can rely on packages like `generics` and `workflows` to examine the inputs and outputs of your model.
 
 ## `tidy()`, `glance()` and `augment()`
-
-To get a quick overview of the results, you can use the `tidy()`, `glance()` or `augment()` functions from `generics` which will return, respectively:
+To get a quick overview of the results, you can use the `tidy()` or `augment()` functions from `generics` which will return, respectively:
 
 - a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
 - a tibble with the inputs and settings used for the DML estimation, and
