@@ -41,7 +41,7 @@ random_forest <- dml_rf(
   x = c("x1", "x2", "x3"),
 )
 
-print(fit)
+print(random_forest)
 ```
 
 For users requiring more control (i.e. moving past the testing phase and into implementation), you can 
@@ -50,4 +50,4 @@ For users requiring more control (i.e. moving past the testing phase and into im
 1. Handle any pre-processing steps, for both stages, using `recipes`, and 
 1. Pass both the `parsnip` model specs and `recipes` recipe to the `run_dml()` function to get a DML estimate. 
 
-See the [vignette](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) for more detailed examples.
+See the [Getting started vignette](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) for more detailed examples.

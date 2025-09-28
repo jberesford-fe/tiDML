@@ -9,18 +9,17 @@ navbar:
     left: [home, intro, reference, articles]
 
 articles:
-  - title: Replication
-    navbar: Replication
-    contents:
-      - package-replication
-
-  - title: How-to
-    navbar: How-to
-    contents:
-      - user-defined-recipies
-      - examine-outputs
   - title: Default Model Types
     navbar: Default Models
     contents:
       - neural-network
       - random-forest
+  - title: How-to
+    navbar: How-to
+    contents:
+      - user-defined-recipies
+      - examine-outputs
+  - title: Replication
+    navbar: Replication
+    contents:
+      - package-replication

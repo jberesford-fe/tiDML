@@ -51,13 +51,13 @@ To get a quick overview of the results, you can use the `tidy()` or `augment()` 
 
 ```{r examine-output}
 # Coefficients and standard errors
-tidy(fit_rf)
+generics::tidy(fit_rf)
 
 # Summary of model inputs and settings
-glance(fit_rf)
+generics::glance(fit_rf)
 
 # Original data, predicted values, and residuals
-augment(fit_rf)
+generics::augment(fit_rf) |> head()
 ```
 
 ## Examine the workflow (recipe and model specs)
@@ -66,10 +66,15 @@ The workflows package is used to manage the preprocessing and model fitting step
 
 ```{r examine-workflow}
 # Examine the treatment model workflow
+print("Treatment model workflow:")
 fit_rf$m_workflow
 
-# Examine the outcome model workflow
+print("Outcome model workflow:")
 fit_rf$g_workflow
 ```
 
 Much more detail is given in the Articles section. See `vignette("examine-outputs")`.
+
+# Setting your own models
+
+You can also set your own models using `parsnip` and `recipes`. This gives you more control over the model specifications and preprocessing steps. See `vignette("user-defined-recpies")` for instructions.
