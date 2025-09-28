@@ -66,10 +66,10 @@ The workflows package is used to manage the preprocessing and model fitting step
 
 ```{r examine-workflow}
 # Examine the treatment model workflow
-fit_rf$workflow_m
+fit_rf$m_workflow
 
 # Examine the outcome model workflow
-fit_rf$workflow_g
+fit_rf$g_workflow
 ```
 
 Much more detail is given in the Articles section. See `vignette("examine-outputs")`.

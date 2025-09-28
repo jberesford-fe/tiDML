@@ -52,28 +52,27 @@ The workflow is defined using the `workflows` package. This combines pre-process
 ## Get the recipe/preprocessor
 
 ```{r recipe}
-recipe_g <- workflows::extract_preprocessor(fit_rf$workflow_g)
+recipe_g <- workflows::extract_preprocessor(fit_rf$g_workflow)
 
 # See the recipe
 print(recipe_g)
 # See a summary of all steps
-summary(recipe)
+summary(recipe_g)
 
 # See what variables are involved
-recipe$var_info
+recipe_g$var_info
 
 # If you want to see what the recipe does to data:
-prepped <- recipes::prep(recipe, training_data)
-processed <- recipes::bake(prepped, new_data)
-processed |> head()
+prepped <- recipes::prep(recipe_g, df)
+prepped |> head()
 ```
 
 ## Get the model specifications
 ```{r model-specs}
-model_spec_g <- workflows::extract_spec_parsnip(fit_rf$workflow_g)
-model_spec_m <- workflows::extract_spec_parsnip(fit_rf$workflow_m)
+model_spec_g <- workflows::extract_spec_parsnip(fit_rf$g_workflow)
+model_spec_m <- workflows::extract_spec_parsnip(fit_rf$m_workflow)
 
-print(model_spec)
+print(model_spec_g)
 
 # Key properties
 model_spec_g$engine    # "ranger" is used in the default random forest
