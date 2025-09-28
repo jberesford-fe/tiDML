@@ -130,7 +130,7 @@ This wrapper function runs both methods and returns a combined data frame.
 
 ```{r run-rep, warning = FALSE, message = FALSE}
 
-replications <- 25L
+replications <- 2L
 
 run_both <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
   tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds)
@@ -159,7 +159,7 @@ ggplot(res, aes(theta, fill = method)) +
   ) +
   labs(
     title = "DML-PLR estimates across seeds",
-    x = expression(hat(theta)), y = "Density", fill = "Method"
+    x = expression(hat(theta)), y = "Density", fill = "Method", colour= "Method"
   ) +
   theme_minimal(base_size = 12)
 
