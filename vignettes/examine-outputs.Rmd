@@ -22,6 +22,8 @@ These functions from `generics` will return the coefficients, models settings, a
 
 ```{r run-rf}
 library(tiDML)
+library(generics)
+
 df <- diamonds_sample(n=10000)
 
 fit_rf <- dml_rf(
@@ -52,6 +54,8 @@ The workflow is defined using the `workflows` package. This combines pre-process
 ## Get the recipe/preprocessor
 
 ```{r recipe}
+library(workflows)
+
 recipe_g <- workflows::extract_preprocessor(fit_rf$workflow_g)
 
 # See the recipe
