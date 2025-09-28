@@ -20,7 +20,7 @@ In the simplest case, you can use the package under complete default settings. P
 - `dml_rf()` for random forest, and
 - `dml_nnet()` for a neural network.
 
-Here I use the `diamonds` data from `ggplot2` to estimate the effect of being rated "ideal" on a diamonds price, after having controlled for caret, depth, etc.
+Here I use the `diamonds` data from `ggplot2` to estimate the effect of being rated "ideal" on a diamonds' price, after having controlled for caret, depth, and size.
 
 
 ```{r simple}

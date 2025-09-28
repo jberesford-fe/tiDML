@@ -2,30 +2,30 @@
 #' @export
 run_dml <- function(
   data,
-  output_recipe,
+  outcome_recipe,
   treatment_recipe,
-  output_model,
+  outcome_model,
   treatment_model,
   folds_outer = NULL,
   n_folds = 5,
   vcov_type = "HC2"
 ) {
-  if (!inherits(output_recipe, "recipe")) {
-    stop("`output_recipe` must be a recipe.", call. = FALSE)
+  if (!inherits(outcome_recipe, "recipe")) {
+    stop("`outcome_recipe` must be a recipe.", call. = FALSE)
   }
   if (!inherits(treatment_recipe, "recipe")) {
     stop("`treatment_recipe` must be a recipe.", call. = FALSE)
   }
-  if (!inherits(output_model, "model_spec")) {
-    stop("`output_model` must be a parsnip spec.", call. = FALSE)
+  if (!inherits(outcome_model, "model_spec")) {
+    stop("`outcome_model` must be a parsnip spec.", call. = FALSE)
   }
   if (!inherits(treatment_model, "model_spec")) {
     stop("`treatment_model` must be a parsnip spec.", call. = FALSE)
   }
 
   g_wf <- workflows::workflow() |>
-    workflows::add_model(output_model) |>
-    workflows::add_recipe(output_recipe)
+    workflows::add_model(outcome_model) |>
+    workflows::add_recipe(outcome_recipe)
 
   m_wf <- workflows::workflow() |>
     workflows::add_model(treatment_model) |>
