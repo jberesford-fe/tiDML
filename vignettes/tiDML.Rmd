@@ -37,30 +37,40 @@ fit_rf <- dml_rf(
 
 tidy(fit_rf)
 ```
-The function `dml_rf` is a shortcut for using the `ranger` package to fit random forest models. The full list of options is:
-+ `dml_rf()` for a random forest model using `ranger()`, and
-+ `dml_nnet()` for a neural network model using `mlp()`.
 
-Printing out the recipe steps of the DML estimate shows the preprocessing steps that was automatically applied to the data before fitting the nuisance models. In this case of `dml_nn()`, we see: 
-+ zero variance filtering,
-+ Median imputation for missing values,
-+ Dummy encoding for categorical variables, and
-+ Centering and scaling of numeric variables.
+# Checking inputs and outputs
 
-```{r show-recipe}
-print("hello")
-```
+A benefit of using `tiDML` (and the `tidymodels` ecosystem more generally) is that you can rely on packages like `generics` and `workflows` to examine the inputs and outputs of your model.
 
-# Examining the output
+## `tidy()`, `glance()` and `augment()`
 
-Much more detail is giving in the Articles section. See `vignette("examine-outputs")`.
-
-To get a quick overview of the results, you can use the `tidy()` or `augment()` functions which will return, respectively:
+To get a quick overview of the results, you can use the `tidy()`, `glance()` or `augment()` functions from `generics` which will return, respectively:
 
 - a tibble with the point estimate, standard error, t-value, p-value, and confidence interval.
+- a tibble with the inputs and settings used for the DML estimation, and
 - a tibble with the original data, predicted values, and residuals for the outcome and treatment variables.
 
 ```{r examine-output}
+# Coefficients and standard errors
 tidy(fit_rf)
+
+# Summary of model inputs and settings
+glance(fit_rf)
+
+# Original data, predicted values, and residuals
 augment(fit_rf)
 ```
+
+## Examine the workflow (recipe and model specs)
+
+The workflows package is used to manage the preprocessing and model fitting steps. You can extract the (unfitted) workflow object and examine it. *Note that while the fitted workflow can be extracted, isn't useful here since DML uses cross-fitting.* 
+
+```{r examine-workflow}
+# Examine the treatment model workflow
+fit_rf$workflow_m
+
+# Examine the outcome model workflow
+fit_rf$workflow_g
+```
+
+Much more detail is given in the Articles section. See `vignette("examine-outputs")`.

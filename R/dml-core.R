@@ -66,7 +66,10 @@ dml_core_wf <- function(
       vcov_type = vcov_type,
       .y_orig = data[[y_name]],
       .d_orig = data[[d_name]],
-      treatment_type = treatment_type
+      treatment_type = treatment_type,
+      m_workflow = m_wf,
+      g_workflow = g_wf,
+      call = match.call()
     ),
     class = "dml_plr",
     y_name = y_name,

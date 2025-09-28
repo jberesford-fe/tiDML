@@ -17,14 +17,14 @@ knitr::opts_chunk$set(
 # Run a neural network with default settings
 
 ## Import data and libraries
-```{r setup}
+```{r setup, warning=FALSE, message=FALSE}
 library(tiDML)
 library(dplyr)
 library(recipes)
 library(parsnip)
 
-
-df <- diamonds_sample()
+# Import first 10k rows of diamonds data
+df <- diamonds_sample(n=10000)
 
 ```
 

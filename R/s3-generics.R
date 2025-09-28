@@ -34,6 +34,21 @@ tidy.dml_plr <- function(x, ...) {
 }
 
 #' @export
+#' @importFrom generics glance
+glance.dml_plr <- function(x, ...) {
+  tibble::tibble(
+    n_obs = length(x$y_res),
+    n_folds = length(x$folds$splits),
+    vcov_type = x$vcov_type,
+    treatment_type = x$treatment_type,
+    estimate = x$estimate,
+    std_error = x$se,
+    conf_low = x$ci_95[1],
+    conf_high = x$ci_95[2]
+  )
+}
+
+#' @export
 #' @importFrom generics augment
 augment.dml_plr <- function(x, ...) {
   if (is.null(x$.y_orig) || is.null(x$.d_orig)) {

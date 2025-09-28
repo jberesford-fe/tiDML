@@ -14,22 +14,77 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Describing the outcome
+# Describing the model output
 
-## The estimate
+## `tidy()`, `glance()` and `augment()`
 
-## The uncertainty
+These functions from `generics` will return the coefficients, models settings, and out of fold predictions (hat) and residuals (res) respectively for both the outcome model (g) and treatment model (m).
 
+```{r run-rf}
+library(tiDML)
+df <- diamonds_sample(n=10000)
 
-# Describing the model setup
+fit_rf <- dml_rf(
+  data = df,
+  y = "price",
+  d = "is_rated_ideal",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+)
+```
 
-## Learners
-What are the models?
-What are their hyperparameters?
-What pre-processing was done?
+1. tidy() returns the coefficients and standard errors
+```{r tidy}
+tidy(fit_rf)
+```
+2. glance() returns the model settings
+```{r glance}
+glance(fit_rf)
+```
+3. augment() returns the original data, predicted values, and residuals
+```{r augment}
+augment(fit_rf)
+```
 
-## Folds
-Are they stratified? How many?
+# Inspecting the workflow
+
+The workflow is defined using the `workflows` package. This combines pre-processing (`recipes`) and model fitting (`parsnip`).
+
+## Get the recipe/preprocessor
+
+```{r recipe}
+recipe_g <- workflows::extract_preprocessor(fit_rf$workflow_g)
+
+# See the recipe
+print(recipe_g)
+# See a summary of all steps
+summary(recipe)
+
+# See what variables are involved
+recipe$var_info
+
+# If you want to see what the recipe does to data:
+prepped <- recipes::prep(recipe, training_data)
+processed <- recipes::bake(prepped, new_data)
+processed |> head()
+```
+
+## Get the model specifications
+```{r model-specs}
+model_spec_g <- workflows::extract_spec_parsnip(fit_rf$workflow_g)
+model_spec_m <- workflows::extract_spec_parsnip(fit_rf$workflow_m)
+
+print(model_spec)
+
+# Key properties
+model_spec_g$engine    # "ranger" is used in the default random forest
+model_spec_g$mode      # "regression" for the outcome model
+model_spec_m$mode      # "classification" for the treatment model, since it's binary  
+```
+
+### What are the hyperparameters?
+```{r hyperparams}
+model_spec_g$args
+```
 
 # Evaluation metrics
 
@@ -62,9 +117,3 @@ rsq_d <- rsq(data, truth = D, estimate = .pred_D)
 cor_y <- cor(data$Y, data$.pred_Y)
 cor_d <- cor(data$D, data$.pred_D)
 ```
-
-# What if the first stage is classification?
-
-## ROC-AUC (Precision-Recall)
-
-## Confusion matrix
