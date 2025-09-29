@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{oob_error}
 \alias{oob_error}
-\title{Get treatment type: "binary_factor" or "continuous"}
+\title{Get out of bad error}
 \usage{
 oob_error(fitted_wf)
 }
@@ -13,6 +13,6 @@ oob_error(fitted_wf)
 Treatment type string
 }
 \description{
-Get treatment type: "binary_factor" or "continuous"
+Get out of bad error
 }
 \keyword{internal}

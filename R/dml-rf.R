@@ -1,4 +1,13 @@
 #' DML-PLR with Random Forest
+#' @param data Data frame
+#' @param y Outcome column
+#' @param d Treatment column
+#' @param x Covariate columns
+#' @param folds_outer Optional rsample rset. If NULL, folds made internally (stratified on D).
+#' @param n_folds Number of outer folds when `folds_outer` is NULL.
+#' @param n_rep Number of repetitions when `folds_outer` is NULL.
+#' @param vcov_type Sandwich variance type (e.g., "HC2" or "HC3").
+#' @param trees_grid Optional grid of number of trees to try (for both m- and g-models).
 #' @export
 dml_rf <- function(
   data,
@@ -7,6 +16,7 @@ dml_rf <- function(
   x,
   folds_outer = NULL,
   n_folds = 5,
+  n_rep = 1,
   vcov_type = "HC2",
   trees_grid = NULL
 ) {
@@ -75,6 +85,7 @@ dml_rf <- function(
     g_wf = g_wf,
     folds_outer = folds_outer,
     n_folds = n_folds,
+    n_rep = n_rep,
     vcov_type = vcov_type
   )
 }

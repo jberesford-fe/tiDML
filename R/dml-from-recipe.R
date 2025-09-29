@@ -8,6 +8,7 @@ run_dml <- function(
   treatment_model,
   folds_outer = NULL,
   n_folds = 5,
+  n_rep = 1,
   vcov_type = "HC2"
 ) {
   if (!inherits(outcome_recipe, "recipe")) {
@@ -37,6 +38,7 @@ run_dml <- function(
     g_wf = g_wf,
     folds_outer = folds_outer,
     n_folds = n_folds,
+    n_rep = n_rep,
     vcov_type = vcov_type
   )
 }

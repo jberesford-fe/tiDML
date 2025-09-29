@@ -11,6 +11,7 @@ dml_nnet(
   x,
   folds_outer = NULL,
   n_folds = 5,
+  n_rep = 1,
   vcov_type = "HC2",
   hidden_units_m = NULL,
   hidden_units_g = NULL,
@@ -26,6 +27,8 @@ dml_nnet(
 \item{folds_outer}{Optional rsample rset. If NULL, folds made internally (stratified on D).}
 
 \item{n_folds}{Number of outer folds when \code{folds_outer} is NULL.}
+
+\item{n_rep}{Number of repetitions when \code{folds_outer} is NULL.}
 
 \item{vcov_type}{Sandwich variance type (e.g., "HC2" or "HC3").}
 

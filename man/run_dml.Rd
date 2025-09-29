@@ -6,12 +6,13 @@
 \usage{
 run_dml(
   data,
-  output_recipe,
+  outcome_recipe,
   treatment_recipe,
-  output_model,
+  outcome_model,
   treatment_model,
   folds_outer = NULL,
   n_folds = 5,
+  n_rep = 1,
   vcov_type = "HC2"
 )
 }

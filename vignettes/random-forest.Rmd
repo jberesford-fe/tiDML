@@ -49,6 +49,7 @@ fit_rf <- dml_rf(
   d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
   n_folds = 5,
+  n_rep = 3,
   vcov_type = "HC2",
   trees_grid = c(100, 200))
 

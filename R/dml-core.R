@@ -7,6 +7,7 @@ dml_core_wf <- function(
   g_wf,
   folds_outer = NULL,
   n_folds = 5,
+  n_rep = 1,
   vcov_type = "HC2"
 ) {
   m_rec <- workflows::extract_preprocessor(m_wf)
@@ -35,7 +36,12 @@ dml_core_wf <- function(
   treatment_type <- get_treatment_type(data[[d_name]])
 
   if (is.null(folds_outer)) {
-    folds_outer <- make_folds_stratified(data, d = d_name, n_folds = n_folds)
+    folds_outer <- make_folds_stratified(
+      data,
+      d = d_name,
+      n_folds = n_folds,
+      n_rep = n_rep
+    )
   }
 
   m_fit_fun <- function(df) parsnip::fit(m_wf, data = df)
@@ -61,6 +67,7 @@ dml_core_wf <- function(
       g_hat = cf$g_hat,
       m_hat = cf$m_hat,
       folds = folds_outer,
+      reps = n_rep,
       lm_fit = inf$lm_fit,
       vcov = inf$vcov,
       vcov_type = vcov_type,

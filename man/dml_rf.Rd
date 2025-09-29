@@ -11,9 +11,29 @@ dml_rf(
   x,
   folds_outer = NULL,
   n_folds = 5,
+  n_rep = 1,
   vcov_type = "HC2",
   trees_grid = NULL
 )
+}
+\arguments{
+\item{data}{Data frame}
+
+\item{y}{Outcome column}
+
+\item{d}{Treatment column}
+
+\item{x}{Covariate columns}
+
+\item{folds_outer}{Optional rsample rset. If NULL, folds made internally (stratified on D).}
+
+\item{n_folds}{Number of outer folds when \code{folds_outer} is NULL.}
+
+\item{n_rep}{Number of repetitions when \code{folds_outer} is NULL.}
+
+\item{vcov_type}{Sandwich variance type (e.g., "HC2" or "HC3").}
+
+\item{trees_grid}{Optional grid of number of trees to try (for both m- and g-models).}
 }
 \description{
 DML-PLR with Random Forest

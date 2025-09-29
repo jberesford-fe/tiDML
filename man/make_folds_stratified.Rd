@@ -4,7 +4,7 @@
 \alias{make_folds_stratified}
 \title{Make stratified v-fold outer folds (recommended for binary D)}
 \usage{
-make_folds_stratified(data, d, n_folds = 5)
+make_folds_stratified(data, d, n_folds = 5, n_rep = 1)
 }
 \arguments{
 \item{data}{Data frame}
@@ -12,6 +12,8 @@ make_folds_stratified(data, d, n_folds = 5)
 \item{d}{Treatment column name (string)}
 
 \item{n_folds}{Number of folds}
+
+\item{n_rep}{Number of repeats}
 }
 \value{
 rsample rset

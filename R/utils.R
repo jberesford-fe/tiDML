@@ -11,9 +11,10 @@ make_folds <- function(data, n_folds = 5) {
 #' @param data Data frame
 #' @param d Treatment column name (string)
 #' @param n_folds Number of folds
+#' @param n_rep Number of repeats
 #' @return rsample rset
 #' @export
-make_folds_stratified <- function(data, d, n_folds = 5) {
+make_folds_stratified <- function(data, d, n_folds = 5, n_rep = 1) {
   d_name <- if (is.character(d)) {
     d
   } else {
@@ -23,13 +24,19 @@ make_folds_stratified <- function(data, d, n_folds = 5) {
   treatment_type <- get_treatment_type(data[[d_name]])
 
   if (treatment_type == "binary_factor") {
-    rsample::vfold_cv(data, v = n_folds, strata = !!rlang::sym(d_name))
+    rsample::vfold_cv(
+      data,
+      v = n_folds,
+      repeats = n_rep,
+      strata = !!rlang::sym(d_name)
+    )
   } else {
     message("Continuous treatment detected: using unstratified folds.")
-    rsample::vfold_cv(data, v = n_folds)
+    rsample::vfold_cv(data, v = n_folds, repeats = n_rep)
   }
 }
-#' Get treatment type: "binary_factor" or "continuous"
+
+#' Get out of bad error
 #' @param d_vec Treatment vector
 #' @return Treatment type string
 #' @keywords internal
