@@ -58,13 +58,55 @@
 <span>  <span class="va">x</span>,</span>
 <span>  folds_outer <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_folds <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  n_rep <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  vcov_type <span class="op">=</span> <span class="st">"HC2"</span>,</span>
 <span>  trees_grid <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
-  </main></div>
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>Data frame</p></dd>
+
+
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
+<dd><p>Outcome column</p></dd>
+
+
+<dt id="arg-d">d<a class="anchor" aria-label="anchor" href="#arg-d"></a></dt>
+<dd><p>Treatment column</p></dd>
+
+
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>Covariate columns</p></dd>
+
+
+<dt id="arg-folds-outer">folds_outer<a class="anchor" aria-label="anchor" href="#arg-folds-outer"></a></dt>
+<dd><p>Optional rsample rset. If NULL, folds made internally (stratified on D).</p></dd>
+
+
+<dt id="arg-n-folds">n_folds<a class="anchor" aria-label="anchor" href="#arg-n-folds"></a></dt>
+<dd><p>Number of outer folds when <code>folds_outer</code> is NULL.</p></dd>
+
+
+<dt id="arg-n-rep">n_rep<a class="anchor" aria-label="anchor" href="#arg-n-rep"></a></dt>
+<dd><p>Number of repetitions when <code>folds_outer</code> is NULL.</p></dd>
+
+
+<dt id="arg-vcov-type">vcov_type<a class="anchor" aria-label="anchor" href="#arg-vcov-type"></a></dt>
+<dd><p>Sandwich variance type (e.g., "HC2" or "HC3").</p></dd>
+
+
+<dt id="arg-trees-grid">trees_grid<a class="anchor" aria-label="anchor" href="#arg-trees-grid"></a></dt>
+<dd><p>Optional grid of number of trees to try (for both m- and g-models).</p></dd>
+
+</dl></div>
+
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
