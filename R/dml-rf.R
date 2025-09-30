@@ -18,7 +18,8 @@ dml_rf <- function(
   n_folds = 5,
   n_rep = 1,
   vcov_type = "HC2",
-  trees_grid = NULL
+  trees_grid = NULL,
+  store_models = FALSE
 ) {
   y_name <- rlang::as_name(rlang::ensym(y))
   d_name <- rlang::as_name(rlang::ensym(d))
@@ -41,12 +42,17 @@ dml_rf <- function(
     parsnip::set_engine(
       "ranger",
       num.threads = 1,
-      probability = (treatment_type == "binary_factor")
+      probability = (treatment_type == "binary_factor"),
+      importance = if (store_models) "impurity" else "none"
     )
 
   g_spec <- parsnip::rand_forest(trees = 500, mtry = mtry_g) |>
     parsnip::set_mode("regression") |>
-    parsnip::set_engine("ranger", num.threads = 1)
+    parsnip::set_engine(
+      "ranger",
+      num.threads = 1,
+      importance = if (store_models) "impurity" else "none"
+    )
 
   m_rec <- make_m_recipe(data, d_name = d_name, x = x)
   g_rec <- make_g_recipe(data, y_name = y_name, x = x)
@@ -86,6 +92,7 @@ dml_rf <- function(
     folds_outer = folds_outer,
     n_folds = n_folds,
     n_rep = n_rep,
-    vcov_type = vcov_type
+    vcov_type = vcov_type,
+    store_models = store_models
   )
 }

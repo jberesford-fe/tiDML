@@ -11,7 +11,8 @@ dml_core_wf(
   folds_outer = NULL,
   n_folds = 5,
   n_rep = 1,
-  vcov_type = "HC2"
+  vcov_type = "HC2",
+  store_models = FALSE
 )
 }
 \description{

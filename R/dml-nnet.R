@@ -28,7 +28,8 @@ dml_nnet <- function(
   penalty = 0.001,
   epochs = 200,
   max_weights = 5000,
-  trace = FALSE
+  trace = FALSE,
+  store_models = FALSE
 ) {
   # --- resolve names ---
   y_name <- rlang::as_name(rlang::ensym(y))

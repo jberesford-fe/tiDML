@@ -4,7 +4,15 @@
 \alias{oof_crossfit}
 \title{Out-of-fold cross-fitting for DML}
 \usage{
-oof_crossfit(data, folds, m_fit_fun, g_fit_fun, y_name, d_name)
+oof_crossfit(
+  data,
+  folds,
+  m_fit_fun,
+  g_fit_fun,
+  y_name,
+  d_name,
+  store_models = FALSE
+)
 }
 \description{
 Out-of-fold cross-fitting for DML

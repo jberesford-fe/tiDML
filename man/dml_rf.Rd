@@ -13,7 +13,8 @@ dml_rf(
   n_folds = 5,
   n_rep = 1,
   vcov_type = "HC2",
-  trees_grid = NULL
+  trees_grid = NULL,
+  store_models = FALSE
 )
 }
 \arguments{

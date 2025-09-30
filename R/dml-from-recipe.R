@@ -9,7 +9,8 @@ run_dml <- function(
   folds_outer = NULL,
   n_folds = 5,
   n_rep = 1,
-  vcov_type = "HC2"
+  vcov_type = "HC2",
+  store_models = FALSE
 ) {
   if (!inherits(outcome_recipe, "recipe")) {
     stop("`outcome_recipe` must be a recipe.", call. = FALSE)
@@ -39,6 +40,7 @@ run_dml <- function(
     folds_outer = folds_outer,
     n_folds = n_folds,
     n_rep = n_rep,
-    vcov_type = vcov_type
+    vcov_type = vcov_type,
+    store_models = store_models
   )
 }

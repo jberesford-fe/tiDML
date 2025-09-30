@@ -8,7 +8,8 @@ dml_core_wf <- function(
   folds_outer = NULL,
   n_folds = 5,
   n_rep = 1,
-  vcov_type = "HC2"
+  vcov_type = "HC2",
+  store_models = FALSE
 ) {
   m_rec <- workflows::extract_preprocessor(m_wf)
   g_rec <- workflows::extract_preprocessor(g_wf)
@@ -53,7 +54,8 @@ dml_core_wf <- function(
     m_fit_fun = m_fit_fun,
     g_fit_fun = g_fit_fun,
     y_name = y_name,
-    d_name = d_name
+    d_name = d_name,
+    store_models = store_models
   )
   inf <- plr_estimate(cf$y_res, cf$d_res, vcov_type = vcov_type)
 
@@ -68,6 +70,8 @@ dml_core_wf <- function(
       m_hat = cf$m_hat,
       folds = folds_outer,
       reps = n_rep,
+      m_fits = cf$m_fits,
+      g_fits = cf$g_fits,
       lm_fit = inf$lm_fit,
       vcov = inf$vcov,
       vcov_type = vcov_type,

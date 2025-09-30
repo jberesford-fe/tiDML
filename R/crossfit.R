@@ -1,17 +1,28 @@
 #' Out-of-fold cross-fitting for DML
 #' @keywords internal
-oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
+oof_crossfit <- function(
+  data,
+  folds,
+  m_fit_fun,
+  g_fit_fun,
+  y_name,
+  d_name,
+  store_models = FALSE
+) {
   n <- nrow(data)
   n_splits <- nrow(folds)
+  print(n_splits)
 
   # Accumulate predictions across repeats
   g_hat <- numeric(n)
   m_hat <- numeric(n)
-  count_vec <- integer(n) # Track predictions per observation
+  count_vec <- integer(n)
+
+  # Storage for fitted models if requested
+  m_fits <- if (store_models) vector("list", n_splits) else NULL
+  g_fits <- if (store_models) vector("list", n_splits) else NULL
 
   treatment_type <- get_treatment_type(data[[d_name]])
-
-  # Get treated level for binary factors
   tlev <- if (treatment_type == "binary_factor") {
     treated_level(data[[d_name]])
   } else {
@@ -28,6 +39,12 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
     # Fit nuisances on train
     m_fit <- m_fit_fun(train)
     g_fit <- g_fit_fun(train)
+
+    # Store fitted models if requested
+    if (store_models) {
+      m_fits[[i]] <- m_fit
+      g_fits[[i]] <- g_fit
+    }
 
     # Predict g (outcome regression) on test
     g_pred <- stats::predict(g_fit, new_data = test)
@@ -51,7 +68,6 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
       }
       m_hat[assessment_idx] <- m_hat[assessment_idx] + m_pred[[prob_col]]
     } else {
-      # continuous treatment
       m_pred <- stats::predict(m_fit, new_data = test)
       m_hat[assessment_idx] <- m_hat[assessment_idx] +
         dplyr::pull(
@@ -60,7 +76,6 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
         )
     }
 
-    # Track how many times each observation was predicted
     count_vec[assessment_idx] <- count_vec[assessment_idx] + 1
   }
 
@@ -71,17 +86,17 @@ oof_crossfit <- function(data, folds, m_fit_fun, g_fit_fun, y_name, d_name) {
   # Calculate residuals
   y_res <- data[[y_name]] - g_hat
   d_res <- if (treatment_type == "binary_factor") {
-    # Factor: convert to 0/1 then subtract propensity
     as.numeric(data[[d_name]] == tlev) - m_hat
   } else {
-    # Continuous: subtract predicted treatment
     as.numeric(data[[d_name]]) - m_hat
   }
-  # Return the list (this was missing!)
+
   list(
     y_res = y_res,
     d_res = d_res,
     g_hat = g_hat,
-    m_hat = m_hat
+    m_hat = m_hat,
+    m_fits = m_fits,
+    g_fits = g_fits
   )
 }

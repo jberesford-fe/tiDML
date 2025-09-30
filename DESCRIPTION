@@ -1,12 +1,16 @@
 Package: tiDML
 Title: Double Machine Learning with Tidymodels
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
-    person("Justin", "Beresford", , "justin.beresford@frontier-economics.com", role = c("aut", "cre"))
-Description: Tidymodels-native Double Machine Learning with cross-fitting,
-    model-agnostic nuisance learners, and reproducible defaults. Hybrid
-    API: pass parsnip specs or simple model strings.
+        c(person(given = "Justin", family = "Beresford",
+             email = "justin.beresford@frontier-economics.com",
+             role = c("aut", "cre")))
+Description: TImplements Double Machine Learning (DML) with cross-fitting in the
+    tidymodels ecosystem. Provides model-agnostic nuisance learners via parsnip
+    and recipes, and a concise API for partially linear regression and related
+    estimators. Methods follow recent literature on debiased machine learning.
 License: MIT + file LICENSE
+URL: https://github.com/justinberesford/tiDML
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
