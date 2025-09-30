@@ -1,11 +1,11 @@
 #' @export
 get_feature_importance <- function(
   dml_result,
-  type = c("treatment", "outcome")
+  model = c("treatment", "outcome")
 ) {
-  type <- match.arg(type)
+  model <- match.arg(model)
 
-  fits <- if (type == "treatment") dml_result$m_fits else dml_result$g_fits
+  fits <- if (model == "treatment") dml_result$m_fits else dml_result$g_fits
 
   if (is.null(fits)) {
     stop(
@@ -14,18 +14,20 @@ get_feature_importance <- function(
     )
   }
 
-  # Extract importance from each fold
-  importance_list <- lapply(fits, function(fit) {
+  importance_list <- lapply(seq_along(fits), function(i) {
+    fit <- fits[[i]]
     engine <- workflows::extract_fit_engine(fit)
+
     if (!is.null(engine$variable.importance)) {
-      engine$variable.importance
+      tibble::tibble(
+        fold_rep = dml_result$folds$id[[i]],
+        variable = names(engine$variable.importance),
+        importance = unname(engine$variable.importance)
+      )
     } else {
       NULL
     }
   })
 
-  importance <- dplyr::bind_rows(a, .id = "fold") |>
-    dplyr::mutate(model = type)
-
-  return(importance)
+  return(dplyr::bind_rows(importance_list))
 }
