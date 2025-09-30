@@ -54,7 +54,7 @@ fit_nnet <- dml_nnet(
   d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
   n_folds = 5,
-  n_rep = 3
+  n_rep = 3,
   vcov_type = "HC2",
   hidden_units_m = 6,
   hidden_units_g = 7,
