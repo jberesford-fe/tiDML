@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tiDML</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/justinberesford/tiDML/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -72,7 +73,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Examine model outputs</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/justinberesford/tiDML/blob/master/vignettes/examine-outputs.Rmd" class="external-link"><code>vignettes/examine-outputs.Rmd</code></a></small>
       <div class="d-none name"><code>examine-outputs.Rmd</code></div>
     </div>
 
@@ -91,7 +92,7 @@ coefficients, models settings, and out of fold predictions (hat) and
 residuals (res). It does this for both the outcome model (g) and
 treatment model (m).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tiDML</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/justinberesford/tiDML" class="external-link">tiDML</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://generics.r-lib.org" class="external-link">generics</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span>
@@ -101,7 +102,8 @@ treatment model (m).</p>
 <span>  y <span class="op">=</span> <span class="st">"price"</span>,</span>
 <span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 5</span></span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>tidy() returns the coefficients and standard errors</li>
 </ol>
@@ -219,6 +221,7 @@ This combines pre-processing (<code>recipes</code>) and model fitting
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Engine-Specific Arguments:</span></span>
 <span><span class="co">#&gt;   num.threads = 1</span></span>
+<span><span class="co">#&gt;   importance = if (store_models) "impurity" else "none"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computational engine: ranger</span></span>
 <span></span>
@@ -237,7 +240,7 @@ This combines pre-processing (<code>recipes</code>) and model fitting
 <span><span class="co">#&gt; $mtry</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">&lt;quosure&gt;</span></span></span>
 <span><span class="co">#&gt; expr: <span style="color: #0000BB;">^mtry_g</span></span></span>
-<span><span class="co">#&gt; env:  <span style="color: #0000BB;">0x564b80325e18</span></span></span>
+<span><span class="co">#&gt; env:  <span style="color: #0000BB;">0x559d3042d9e0</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $trees</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">&lt;quosure&gt;</span></span></span>

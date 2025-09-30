@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tiDML</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,6 +57,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/justinberesford/tiDML/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -72,7 +73,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Introduction to tiDML</h1>
             
       
-
+      <small class="dont-index">Source: <a href="https://github.com/justinberesford/tiDML/blob/master/vignettes/tiDML.Rmd" class="external-link"><code>vignettes/tiDML.Rmd</code></a></small>
       <div class="d-none name"><code>tiDML.Rmd</code></div>
     </div>
 
@@ -95,7 +96,7 @@ available are:</p>
 to estimate the effect of being rated “ideal” on a diamonds’ price,
 after having controlled for caret, depth, and size.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tiDML</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/justinberesford/tiDML" class="external-link">tiDML</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">10000</span><span class="op">)</span></span>
 <span></span>
@@ -105,6 +106,7 @@ after having controlled for caret, depth, and size.</p>
 <span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 5</span></span>
 <span></span>
 <span><span class="va">fit_rf</span><span class="op">$</span><span class="va">estimate</span></span>
 <span><span class="co">#&gt; [1] 233.5406</span></span></code></pre></div>
@@ -191,6 +193,7 @@ isn’t useful here since DML uses cross-fitting.</em></p>
 <span><span class="co">#&gt; Engine-Specific Arguments:</span></span>
 <span><span class="co">#&gt;   num.threads = 1</span></span>
 <span><span class="co">#&gt;   probability = (treatment_type == "binary_factor")</span></span>
+<span><span class="co">#&gt;   importance = if (store_models) "impurity" else "none"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computational engine: ranger</span></span>
 <span></span>
@@ -213,6 +216,7 @@ isn’t useful here since DML uses cross-fitting.</em></p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Engine-Specific Arguments:</span></span>
 <span><span class="co">#&gt;   num.threads = 1</span></span>
+<span><span class="co">#&gt;   importance = if (store_models) "impurity" else "none"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Computational engine: ranger</span></span></code></pre></div>
 <p>Much more detail is given in the Articles section. See
