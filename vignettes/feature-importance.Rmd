@@ -61,6 +61,6 @@ library(ggplot2)
 
 feature_importance |>
   ggplot(aes(importance, reorder(variable, importance))) +
-  geom_violin() +
+  geom_violin(fill="#425a7f", colour="#425a7f") +
   labs(x="Distribution of importance across folds", y="Feature")
 ```
