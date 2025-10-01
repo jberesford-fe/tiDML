@@ -19,6 +19,7 @@ articles:
     contents:
       - user-defined-recipies
       - examine-outputs
+      - feature-importance
   - title: Replication
     navbar: Replication
     contents:

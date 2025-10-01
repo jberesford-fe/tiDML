@@ -23,8 +23,7 @@ We define these using the `parsnip` package. There are literally thousands of av
 library(tiDML)
 
 # Test dml_rf
-df = diamonds_sample() |>
-  dplyr::mutate(price = log(price)) 
+df = diamonds_sample(n=100)
 
 # parsnip model spec 
 g_spec = parsnip::rand_forest(trees = 100) |>
@@ -66,9 +65,8 @@ fit <- run_dml(
   n_rep = 3,
 )
 
-coef <- fit$estimate
-
-sprintf("Controlling for size etc., being rated ideal increase price by: %.3f", coef)
+library(generics)
+tidy(fit)
 ```
 To see how to examine the outputs, see `vignette("examine-outputs")`.
 

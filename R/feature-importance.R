@@ -14,13 +14,14 @@ get_feature_importance <- function(
     )
   }
 
-  importance_list <- lapply(seq_along(fits), function(i) {
+  importance <- lapply(seq_along(fits), function(i) {
     fit <- fits[[i]]
     engine <- workflows::extract_fit_engine(fit)
 
     if (!is.null(engine$variable.importance)) {
       tibble::tibble(
-        fold_rep = dml_result$folds$id[[i]],
+        rep = dml_result$folds$id[[i]],
+        fold = dml_result$folds$id2[[i]],
         variable = names(engine$variable.importance),
         importance = unname(engine$variable.importance)
       )
@@ -29,5 +30,5 @@ get_feature_importance <- function(
     }
   })
 
-  return(dplyr::bind_rows(importance_list))
+  return(dplyr::bind_rows(importance))
 }

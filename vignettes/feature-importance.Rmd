@@ -1,0 +1,66 @@
+---
+title: "Extract feature importance"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extract feature importance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+# Storing fitted models
+
+In either the default `dml_XX()` functions, or when running a custom `run_dml()`, you have the option to store all fitted models (across both folds and reps) by setting `store_models = TRUE`. This allows you to extract feature importance measures from the underlying models. 
+
+Warning: this can use a lot of memory, especially if you are using a large number of folds and reps.
+
+### `store_models = TRUE`
+
+```{r setup, warnings=FALSE, message=FALSE}
+library(tiDML)
+
+df <- diamonds_sample()
+
+fit_rf <- dml_rf(
+  data = df,
+  y = "price",
+  d = "is_rated_ideal",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+  n_folds = 5,
+  n_rep = 3,
+  store_models = TRUE
+)
+
+```
+
+# Extracting feature importance
+
+Feature importance can be only be extracted for tree based models (decision trees, random forests, or gradient boosted trees). For Lasso regression, the coefficients themselves can be used to assess variable importance.
+
+```{r feature-importance-linear}
+print("not yet implemented")
+```
+
+The function `get_feature_importance()` extracts feature importance measures from all the fitted models and returns a tidy data frame.
+
+```{r feature-importance-impurity}
+feature_importance <- get_feature_importance(fit_rf, type = "outcome")
+
+print(feature_importance)
+```
+
+You can average importance across folds and reps, or plot the feature importance as a distribution.
+
+```{r feature-importance-plot}
+library(ggplot2)
+
+feature_importance |>
+  ggplot(aes(importance, reorder(variable, importance))) +
+  geom_violin() +
+  labs(x="Distribution of importance across folds", y="Feature")
+```
