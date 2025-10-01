@@ -47,6 +47,7 @@
     <li><h6 class="dropdown-header" data-toc-skip>How-to</h6></li>
     <li><a class="dropdown-item" href="../articles/user-defined-recipies.html">Set your own model</a></li>
     <li><a class="dropdown-item" href="../articles/examine-outputs.html">Examine model outputs</a></li>
+    <li><a class="dropdown-item" href="../articles/feature-importance.html">Extract feature importance</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Replication</h6></li>
     <li><a class="dropdown-item" href="../articles/package-replication.html">DoubleML Package</a></li>
@@ -80,10 +81,10 @@
     
     
 <div class="section level2">
-<h2 id="how-to-set-your-own-model">How to set your own model<a class="anchor" aria-label="anchor" href="#how-to-set-your-own-model"></a>
+<h2 id="three-steps-to-your-own-model">Three steps to your own model<a class="anchor" aria-label="anchor" href="#three-steps-to-your-own-model"></a>
 </h2>
 <div class="section level3">
-<h3 id="start-by-defining-your-model-specs">Start by defining your model specs…<a class="anchor" aria-label="anchor" href="#start-by-defining-your-model-specs"></a>
+<h3 id="define-your-model-specs">1. Define your model specs<a class="anchor" aria-label="anchor" href="#define-your-model-specs"></a>
 </h3>
 <p>We define these using the <code>parsnip</code> package. There are
 literally thousands of available models, see the <a href="https://parsnip.tidymodels.org/" class="external-link">parsnip documentation</a> for a
@@ -92,8 +93,7 @@ comprehensive list and examples.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/justinberesford/tiDML" class="external-link">tiDML</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Test dml_rf</span></span>
-<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># parsnip model spec </span></span>
 <span><span class="va">g_spec</span> <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html" class="external-link">rand_forest</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -105,7 +105,7 @@ comprehensive list and examples.</p>
 <span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html" class="external-link">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="next-define-your-own-recipes">Next define your own recipes…<a class="anchor" aria-label="anchor" href="#next-define-your-own-recipes"></a>
+<h3 id="define-your-own-recipes">2. Define your own recipes<a class="anchor" aria-label="anchor" href="#define-your-own-recipes"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -122,7 +122,9 @@ comprehensive list and examples.</p>
 <h3 id="finally-run-the-dml-procedure">Finally, run the DML procedure<a class="anchor" aria-label="anchor" href="#finally-run-the-dml-procedure"></a>
 </h3>
 <p>Use the model specs and recipes defined above as inputs to
-<code><a href="../reference/run_dml.html">run_dml()</a></code>.</p>
+<code><a href="../reference/run_dml.html">run_dml()</a></code>. Not the dataframe going into
+<code><a href="../reference/run_dml.html">run_dml()</a></code> must be the same as the one used to define the
+recipes.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_dml.html">run_dml</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">df</span>, </span>
@@ -135,10 +137,12 @@ comprehensive list and examples.</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 15</span></span>
 <span></span>
-<span><span class="va">coef</span> <span class="op">&lt;-</span> <span class="va">fit</span><span class="op">$</span><span class="va">estimate</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Controlling for size etc., being rated ideal increase price by: %.3f"</span>, <span class="va">coef</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Controlling for size etc., being rated ideal increase price by: 0.057"</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://generics.r-lib.org" class="external-link">generics</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
+<span><span class="co">#&gt;   term               estimate std.error conf.low conf.high vcov_type</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> is_rated_idealTRUE    0.944      304.    -<span style="color: #BB0000;">595.</span>      597. HC2</span></span></code></pre></div>
 <p>To see how to examine the outputs, see
 <code><a href="../articles/examine-outputs.html">vignette("examine-outputs")</a></code>.</p>
 </div>
