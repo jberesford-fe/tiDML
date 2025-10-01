@@ -14,7 +14,7 @@ In short, while tiDML simplifies some default models, it's main contribution is 
 
 ## Installation
 
-You can install the development version of tiDML from [GitHub](https://github.com/) via `pak`, `pacman` or `remotes`:
+You can install the development version of tiDML from [GitHub](https://github.com/jberesford-fe/tiDML) via `pak`, `pacman` or `remotes`:
 
 ``` r
 # Using pak (recommended)
