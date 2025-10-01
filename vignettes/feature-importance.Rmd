@@ -49,7 +49,7 @@ print("not yet implemented")
 The function `get_feature_importance()` extracts feature importance measures from all the fitted models and returns a tidy data frame.
 
 ```{r feature-importance-impurity}
-feature_importance <- get_feature_importance(fit_rf, type = "outcome")
+feature_importance <- get_feature_importance(fit_rf, model = "outcome")
 
 print(feature_importance)
 ```

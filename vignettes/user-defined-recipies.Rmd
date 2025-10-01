@@ -13,9 +13,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-# How to set your own model
+# Three steps to your own model
 
-## Start by defining your model specs...
+## 1. Define your model specs
 
 We define these using the `parsnip` package. There are literally thousands of available models, see the [parsnip documentation](https://parsnip.tidymodels.org/) for a comprehensive list and examples.
 
@@ -36,7 +36,7 @@ m_spec = parsnip::rand_forest(trees = 100) |>
 
 ```
 
-## Next define your own recipes...
+## 2. Define your own recipes
 
 ```{r rec-specs, warnings=FALSE, message=FALSE}
 
@@ -52,7 +52,7 @@ m_rec <- recipes::recipe(is_rated_ideal ~ carat + depth + table + x + y + z, dat
 
 ## Finally, run the DML procedure
 
-Use the model specs and recipes defined above as inputs to `run_dml()`. 
+Use the model specs and recipes defined above as inputs to `run_dml()`. Not the dataframe going into `run_dml()` must be the same as the one used to define the recipes.
 
 ```{r run-dml, warnings=FALSE, message=FALSE}
 fit <- run_dml(

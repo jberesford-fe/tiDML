@@ -64,14 +64,9 @@ treatment_model <- parsnip::rand_forest(trees = 500) |>
 2.  Handle any pre-processing steps, for both stages, using [`recipes`](https://recipes.tidymodels.org/). For example, standardising all numeric predictors, turning nominals to dummies, log-transforming the outcome variable etc
 
 ``` r
-treatment_recipe <- recipes::recipe(d_var ~ x1 + x2 + x3, data = df) |>
-  recipes::step_normalize(recipes::all_numeric_predictors()) |>
-  recipes::step_dummy(recipes::all_nominal_predictors()) |>
-  recipes::step_log(recipes::all_outcomes(), base = 10)
+treatment_recipe <- recipes::recipe(d_var ~ x1 + x2 + x3, data = df)
 
-outcome_recipe <- recipes::recipe(y_var ~ x1 + x2 + x3, data = df) |>
-  recipes::step_center(all_numeric_predictors()) |>
-  recipes::step_scale(all_numeric_predictors()) 
+outcome_recipe <- recipes::recipe(y_var ~ x1 + x2 + x3, data = df)
 ```
 
 
@@ -84,9 +79,9 @@ run_dml(
   treatment_model = treatment_model,
   outcome_recipe = outcome_recipe,
   treatment_recipe = treatment_recipe,
-  n_folds = 5
+  n_folds = 5,
+  n_rep = 2,
 )
 ```
-
 
 See the [getting started](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) vignette for more detailed examples.
