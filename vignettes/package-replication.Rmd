@@ -36,7 +36,7 @@ library(mlr3)
 library(mlr3learners)
 
 df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE) |>
-  sample_n(500, replace = FALSE, seed = 123)
+  sample_n(5000, replace = FALSE, seed = 123)
 
 y_col  <- "net_tfa"   # or "tw" depending on the example
 d_col  <- "e401"
@@ -135,9 +135,9 @@ This wrapper function runs both methods and returns a combined data frame.
 
 ```{r run-rep, warning = FALSE, message = FALSE}
 
-replications <- 25L
+replications <- 100L
 
-run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 5L, n_rep = 3L) {
+run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 5L, n_rep = 2L) {
   tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
   dml_row   <- run_dml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
   bind_rows(tidml_row, dml_row)

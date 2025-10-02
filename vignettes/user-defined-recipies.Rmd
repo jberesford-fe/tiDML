@@ -23,7 +23,7 @@ We define these using the `parsnip` package. There are literally thousands of av
 library(tiDML)
 
 # Test dml_rf
-df = diamonds_sample(n=100)
+df = diamonds_sample(n=500)
 
 # parsnip model spec 
 g_spec = parsnip::rand_forest(trees = 100) |>
