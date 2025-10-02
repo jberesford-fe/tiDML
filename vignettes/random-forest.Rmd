@@ -27,7 +27,7 @@ library(parsnip)
 # Random forest with default settings
 
 ```{r rf-default}
-df <- diamonds_sample()
+df <- diamonds_sample(n=500)
 
 fit_rf <- dml_rf(
   data = df,
