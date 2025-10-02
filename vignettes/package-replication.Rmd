@@ -135,7 +135,7 @@ This wrapper function runs both methods and returns a combined data frame.
 
 ```{r run-rep, warning = FALSE, message = FALSE}
 
-replications <- 1L
+replications <- 25L
 
 run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 5L, n_rep = 3L) {
   tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
@@ -159,7 +159,7 @@ print(res %>%
   ))
 
 # T-Test for difference in means
-#print(t.test(theta ~ method, data = res))
+print(t.test(theta ~ method, data = res))
 # this doesn't work
 ```
 
