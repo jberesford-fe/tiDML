@@ -24,7 +24,7 @@ library(recipes)
 library(parsnip)
 
 # Import first 10k rows of diamonds data
-df <- diamonds_sample(n=10000)
+df <- diamonds_sample(n=500)
 
 ```
 
