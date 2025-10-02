@@ -200,7 +200,7 @@ first is classification while the second is regression.</p>
 frame.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">replications</span> <span class="op">&lt;-</span> <span class="fl">1L</span></span>
+<span><span class="va">replications</span> <span class="op">&lt;-</span> <span class="fl">25L</span></span>
 <span></span>
 <span><span class="va">run_both</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">seed</span>, <span class="va">df</span>, <span class="va">y</span>, <span class="va">d</span>, <span class="va">x</span>, <span class="va">trees_grid</span> <span class="op">=</span> <span class="fl">1200</span>, <span class="va">n_folds</span> <span class="op">=</span> <span class="fl">5L</span>, <span class="va">n_rep</span> <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">tidml_row</span> <span class="op">&lt;-</span> <span class="fu">run_tidml</span><span class="op">(</span><span class="va">seed</span>, <span class="va">df</span>, <span class="va">y</span>, <span class="va">d</span>, <span class="va">x</span>, <span class="va">trees_grid</span>, <span class="va">n_folds</span>, <span class="va">n_rep</span><span class="op">)</span></span>
@@ -225,11 +225,22 @@ frame.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
 <span><span class="co">#&gt;   method   mean_theta mean_se mean_lwr mean_upr</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> DoubleML      <span style="text-decoration: underline;">7</span>177.   <span style="text-decoration: underline;">9</span>623.  -<span style="color: #BB0000; text-decoration: underline;">11</span><span style="color: #BB0000;">683.</span>   <span style="text-decoration: underline;">26</span>037.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> tiDML         <span style="text-decoration: underline;">5</span>715.  <span style="text-decoration: underline;">10</span>040.  -<span style="color: #BB0000; text-decoration: underline;">13</span><span style="color: #BB0000;">963.</span>   <span style="text-decoration: underline;">25</span>393.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> DoubleML      <span style="text-decoration: underline;">7</span>567.   <span style="text-decoration: underline;">9</span>531.  -<span style="color: #BB0000; text-decoration: underline;">11</span><span style="color: #BB0000;">114.</span>   <span style="text-decoration: underline;">26</span>249.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> tiDML         <span style="text-decoration: underline;">6</span>519.   <span style="text-decoration: underline;">9</span>664.  -<span style="color: #BB0000; text-decoration: underline;">12</span><span style="color: #BB0000;">422.</span>   <span style="text-decoration: underline;">25</span>460.</span></span>
 <span></span>
 <span><span class="co"># T-Test for difference in means</span></span>
-<span><span class="co">#print(t.test(theta ~ method, data = res))</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test</a></span><span class="op">(</span><span class="va">theta</span> <span class="op">~</span> <span class="va">method</span>, data <span class="op">=</span> <span class="va">res</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; data:  theta by method</span></span>
+<span><span class="co">#&gt; t = 2.7433, df = 47.978, p-value = 0.008527</span></span>
+<span><span class="co">#&gt; alternative hypothesis: true difference in means between group DoubleML and group tiDML is not equal to 0</span></span>
+<span><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span><span class="co">#&gt;   279.9539 1816.5248</span></span>
+<span><span class="co">#&gt; sample estimates:</span></span>
+<span><span class="co">#&gt; mean in group DoubleML    mean in group tiDML </span></span>
+<span><span class="co">#&gt;               7567.457               6519.218</span></span>
 <span><span class="co"># this doesn't work</span></span></code></pre></div>
 </div>
 <div class="section level2">
