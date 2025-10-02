@@ -158,15 +158,15 @@ print(res %>%
   ))
 
 # T-Test for difference in means
-print(t.test(theta ~ method, data = res))
-
+#print(t.test(theta ~ method, data = res))
+# this doesn't work
 ```
 
 # Method-by-method densities
 
 There is randomness in both methods so the estimates vary across seeds. Below I plot the densities of estimates across the replications to show that they overlap and have very similar means.
 
-```{r plot-results, warning = FALSE, message = FALSE}
+```{r plot-results, warning = FALSE, message = FALSE, fig.alt="DML estimates across packages"}
 ggplot(res, aes(theta, fill = method)) +
   geom_density(alpha = 0.35) +
   geom_vline(

@@ -24,7 +24,7 @@ Warning: this can use a lot of memory, especially if you are using a large numbe
 ```{r setup, warnings=FALSE, message=FALSE}
 library(tiDML)
 
-df <- diamonds_sample()
+df <- diamonds_sample(n=500, seed=42)
 
 fit_rf <- dml_rf(
   data = df,
@@ -56,7 +56,7 @@ print(feature_importance)
 
 You can average importance across folds and reps, or plot the feature importance as a distribution.
 
-```{r feature-importance-plot}
+```{r feature-importance-plot, fig.alt="Feature importance plot"}
 library(ggplot2)
 
 feature_importance |>
