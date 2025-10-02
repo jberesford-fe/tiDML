@@ -35,8 +35,7 @@ library(DoubleML)
 library(mlr3)
 library(mlr3learners)
 
-df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE) |>
-  sample_n(5000, replace = FALSE, seed = 123)
+df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
 
 y_col  <- "net_tfa"   # or "tw" depending on the example
 d_col  <- "e401"
