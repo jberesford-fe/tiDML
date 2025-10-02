@@ -61,8 +61,7 @@ fit <- run_dml(
   treatment_recipe = m_rec,
   outcome_model = g_spec,
   treatment_model = m_spec,
-  n_folds = 5,
-  n_rep = 3,
+  n_folds = 5
 )
 
 library(generics)

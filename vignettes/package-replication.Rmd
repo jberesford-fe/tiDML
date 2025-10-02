@@ -48,9 +48,8 @@ x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
 Following Chernozhukov, I use random forest in both stages but the first is classification while the second is regression. 
 
 ```{r run-tidml, warning = FALSE, message = FALSE}
-run_tidml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
+run_tidml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
   set.seed(seed)
-
   
   df <- df |> mutate(!!d := as.factor(!!rlang::sym(d)))
 
@@ -59,6 +58,9 @@ run_tidml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
     y = !!rlang::sym(y),
     d = !!rlang::sym(d),
     x = x,
+    trees_grid = trees_grid,
+    n_folds = n_folds,
+    n_rep = n_rep,
   )
 
   return(tibble(
@@ -80,7 +82,8 @@ run_tidml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
 Next I use the `DoubleML` package to run the model.
 
 ```{r run-dml, warning = FALSE, message = FALSE}
-run_dml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
+run_dml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
+  set.seed(seed)
   ## DoubleML :: PLR with ranger
   ml_l <- lrn("regr.ranger",
               num.trees = trees_grid, 
@@ -106,6 +109,7 @@ run_dml <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
     ml_l = ml_l, 
     ml_m = ml_m,
     n_folds = n_folds,
+    n_rep = n_rep,
     score = "partialling out"
   )
 
@@ -130,19 +134,32 @@ This wrapper function runs both methods and returns a combined data frame.
 
 ```{r run-rep, warning = FALSE, message = FALSE}
 
-replications <- 100L
+replications <- 1L
 
-run_both <- function(seed, df, y, d, x, trees_grid = 1200L, n_folds = 5L) {
-  tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds)
-  dml_row   <- run_dml(seed, df, y, d, x, trees_grid, n_folds)
+run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 5L, n_rep = 3L) {
+  tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
+  dml_row   <- run_dml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
   bind_rows(tidml_row, dml_row)
 }
 
-seeds <- 401 + 0:replications-1  
+seeds <- 401 + 0:(replications-1L)  
 res <- map_dfr(
   seeds,
   ~ run_both(.x, df = df401k, y = y_col, d = d_col, x = x_cols)
 )
+
+print(res %>%
+  group_by(method) %>%
+  summarize(
+    mean_theta = mean(theta),
+    mean_se = mean(se),
+    mean_lwr = mean(lwr),
+    mean_upr = mean(upr)
+  ))
+
+# T-Test for difference in means
+print(t.test(theta ~ method, data = res))
+
 ```
 
 # Method-by-method densities

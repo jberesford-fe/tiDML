@@ -11,7 +11,6 @@ oof_crossfit <- function(
 ) {
   n <- nrow(data)
   n_splits <- nrow(folds)
-  print(n_splits)
 
   # Accumulate predictions across repeats
   g_hat <- numeric(n)

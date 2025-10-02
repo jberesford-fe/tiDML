@@ -12,6 +12,8 @@ dml_rf(
   folds_outer = NULL,
   n_folds = 5,
   n_rep = 1,
+  mtry_m = NULL,
+  mtry_g = NULL,
   vcov_type = "HC2",
   trees_grid = NULL,
   store_models = FALSE

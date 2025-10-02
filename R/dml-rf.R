@@ -17,6 +17,8 @@ dml_rf <- function(
   folds_outer = NULL,
   n_folds = 5,
   n_rep = 1,
+  mtry_m = NULL,
+  mtry_g = NULL,
   vcov_type = "HC2",
   trees_grid = NULL,
   store_models = FALSE
@@ -26,16 +28,19 @@ dml_rf <- function(
   x <- vapply(x, rlang::as_name, character(1))
 
   p <- length(x)
+
+  mtry_m <- if (is.null(mtry_m)) max(1L, floor(p / 3)) else integer(mtry_m)
+  mtry_g <- if (is.null(mtry_g)) max(1L, floor(p / 3)) else integer(mtry_g)
+
   treatment_type <- get_treatment_type(data[[d_name]])
 
-  mtry_m <- if (treatment_type == "binary_factor") {
-    max(1, floor(sqrt(p))) # Classification default
-  } else {
-    max(1, floor(p / 3)) # Regression default
-  }
-  mtry_g <- max(1, floor(p / 3)) # Outcome var is always regression
+  min_n_val <- if (treatment_type == "binary_factor") 1L else 5L
 
-  m_spec <- parsnip::rand_forest(trees = 500, mtry = mtry_m) |>
+  m_spec <- parsnip::rand_forest(
+    trees = 500,
+    mtry = mtry_m,
+    min_n = min_n_val
+  ) |>
     parsnip::set_mode(
       if (treatment_type == "binary_factor") "classification" else "regression"
     ) |>
@@ -50,6 +55,7 @@ dml_rf <- function(
     parsnip::set_mode("regression") |>
     parsnip::set_engine(
       "ranger",
+      respect.unordered.factors = "order",
       num.threads = 1,
       importance = if (store_models) "impurity" else "none"
     )
