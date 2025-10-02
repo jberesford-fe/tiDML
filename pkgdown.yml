@@ -7,9 +7,8 @@ articles:
   neural-network: neural-network.html
   package-replication: package-replication.html
   random-forest: random-forest.html
-  tiDML: tiDML.html
   user-defined-recipies: user-defined-recipies.html
-last_built: 2025-10-02T06:18Z
+last_built: 2025-10-02T09:38Z
 urls:
   reference: https://jberesford-fe.github.io/tiDML/reference
   article: https://jberesford-fe.github.io/tiDML/articles

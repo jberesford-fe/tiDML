@@ -34,7 +34,6 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/tiDML.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -104,7 +103,7 @@ specifications.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com" class="external-link">mlr3learners</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df401k</span> <span class="op">&lt;-</span> <span class="fu">DoubleML</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DoubleML/man/fetch_401k.html" class="external-link">fetch_401k</a></span><span class="op">(</span>return_type <span class="op">=</span> <span class="st">"data.frame"</span>, instrument <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="fl">5000</span>, replace <span class="op">=</span> <span class="cn">FALSE</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="fl">500</span>, replace <span class="op">=</span> <span class="cn">FALSE</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">y_col</span>  <span class="op">&lt;-</span> <span class="st">"net_tfa"</span>   <span class="co"># or "tw" depending on the example</span></span>
 <span><span class="va">d_col</span>  <span class="op">&lt;-</span> <span class="st">"e401"</span></span>
@@ -226,8 +225,8 @@ frame.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
 <span><span class="co">#&gt;   method   mean_theta mean_se mean_lwr mean_upr</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> DoubleML     <span style="text-decoration: underline;">10</span>059.   <span style="text-decoration: underline;">2</span>063.    <span style="text-decoration: underline;">6</span>015.   <span style="text-decoration: underline;">14</span>103.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> tiDML        <span style="text-decoration: underline;">10</span>088.   <span style="text-decoration: underline;">2</span>055.    <span style="text-decoration: underline;">6</span>060.   <span style="text-decoration: underline;">14</span>117.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> DoubleML      <span style="text-decoration: underline;">7</span>177.   <span style="text-decoration: underline;">9</span>623.  -<span style="color: #BB0000; text-decoration: underline;">11</span><span style="color: #BB0000;">683.</span>   <span style="text-decoration: underline;">26</span>037.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> tiDML         <span style="text-decoration: underline;">5</span>715.  <span style="text-decoration: underline;">10</span>040.  -<span style="color: #BB0000; text-decoration: underline;">13</span><span style="color: #BB0000;">963.</span>   <span style="text-decoration: underline;">25</span>393.</span></span>
 <span></span>
 <span><span class="co"># T-Test for difference in means</span></span>
 <span><span class="co">#print(t.test(theta ~ method, data = res))</span></span>
