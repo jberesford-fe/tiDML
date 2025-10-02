@@ -103,8 +103,7 @@ treatment model (m).</p>
 <span>  y <span class="op">=</span> <span class="st">"price"</span>,</span>
 <span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 5</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>tidy() returns the coefficients and standard errors</li>
 </ol>
@@ -113,7 +112,7 @@ treatment model (m).</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">#&gt;   term               estimate std.error conf.low conf.high vcov_type</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> is_rated_idealTRUE     234.      46.0     143.      324. HC2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> is_rated_idealTRUE     224.      45.4     135.      313. HC2</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>glance() returns the model settings</li>
 </ol>
@@ -122,7 +121,7 @@ treatment model (m).</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
 <span><span class="co">#&gt;   n_obs n_folds vcov_type treatment_type estimate std_error conf_low conf_high</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">10</span>000       5 HC2       binary_factor      234.      46.0     143.      324.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="text-decoration: underline;">10</span>000       5 HC2       binary_factor      224.      45.4     135.      313.</span></span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>augment() returns the original data, predicted values, and
 residuals</li>
@@ -130,18 +129,18 @@ residuals</li>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">fit_rf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10,000 × 7</span></span></span>
-<span><span class="co">#&gt;     .row     y d      g_hat    m_hat   y_res     d_res</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1   638 FALSE   829. 0.028<span style="text-decoration: underline;">8</span>    -<span style="color: #BB0000;">191.</span>  -<span style="color: #BB0000;">0.028</span><span style="color: #BB0000; text-decoration: underline;">8</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2  <span style="text-decoration: underline;">1</span>402 FALSE  <span style="text-decoration: underline;">1</span>497. 0.166      -<span style="color: #BB0000;">95.2</span> -<span style="color: #BB0000;">0.166</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3  <span style="text-decoration: underline;">3</span>530 FALSE  <span style="text-decoration: underline;">4</span>385. 0.015<span style="text-decoration: underline;">9</span>    -<span style="color: #BB0000;">855.</span>  -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">9</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4  <span style="text-decoration: underline;">5</span>037 TRUE   <span style="text-decoration: underline;">6</span>732. 0.887    -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">695.</span>   0.113   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 <span style="text-decoration: underline;">13</span>757 FALSE  <span style="text-decoration: underline;">9</span>337. 0.015<span style="text-decoration: underline;">6</span>    <span style="text-decoration: underline;">4</span>420.  -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">6</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6   457 TRUE    714. 0.989     -<span style="color: #BB0000;">257.</span>   0.011<span style="text-decoration: underline;">1</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7  <span style="text-decoration: underline;">2</span>321 FALSE  <span style="text-decoration: underline;">3</span>888. 0.723    -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">567.</span>  -<span style="color: #BB0000;">0.723</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8  <span style="text-decoration: underline;">5</span>657 FALSE  <span style="text-decoration: underline;">5</span>749. 0.046<span style="text-decoration: underline;">0</span>     -<span style="color: #BB0000;">92.2</span> -<span style="color: #BB0000;">0.046</span><span style="color: #BB0000; text-decoration: underline;">0</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9  <span style="text-decoration: underline;">4</span>372 FALSE  <span style="text-decoration: underline;">5</span>430. 0.000<span style="text-decoration: underline;">956</span> -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">058.</span>  -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">956</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 <span style="text-decoration: underline;">13</span>976 FALSE <span style="text-decoration: underline;">12</span>096. 0.003<span style="text-decoration: underline;">71</span>   <span style="text-decoration: underline;">1</span>880.  -<span style="color: #BB0000;">0.003</span><span style="color: #BB0000; text-decoration: underline;">71</span> </span></span>
+<span><span class="co">#&gt;     .row     y d      g_hat  m_hat   y_res    d_res</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1   638 FALSE   829. 0.005<span style="text-decoration: underline;">2</span>  -<span style="color: #BB0000;">191.</span>  -<span style="color: #BB0000;">0.005</span><span style="color: #BB0000; text-decoration: underline;">2</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2  <span style="text-decoration: underline;">1</span>402 FALSE  <span style="text-decoration: underline;">1</span>497. 0.082<span style="text-decoration: underline;">1</span>   -<span style="color: #BB0000;">95.2</span> -<span style="color: #BB0000;">0.082</span><span style="color: #BB0000; text-decoration: underline;">1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3  <span style="text-decoration: underline;">3</span>530 FALSE  <span style="text-decoration: underline;">4</span>385. 0.004   -<span style="color: #BB0000;">855.</span>  -<span style="color: #BB0000;">0.004</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4  <span style="text-decoration: underline;">5</span>037 TRUE   <span style="text-decoration: underline;">6</span>732. 0.875  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">695.</span>   0.125  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 <span style="text-decoration: underline;">13</span>757 FALSE  <span style="text-decoration: underline;">9</span>337. 0.008   <span style="text-decoration: underline;">4</span>420.  -<span style="color: #BB0000;">0.008</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6   457 TRUE    714. 0.996   -<span style="color: #BB0000;">257.</span>   0.004<span style="text-decoration: underline;">08</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7  <span style="text-decoration: underline;">2</span>321 FALSE  <span style="text-decoration: underline;">3</span>888. 0.738  -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">567.</span>  -<span style="color: #BB0000;">0.738</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8  <span style="text-decoration: underline;">5</span>657 FALSE  <span style="text-decoration: underline;">5</span>749. 0.052    -<span style="color: #BB0000;">92.2</span> -<span style="color: #BB0000;">0.052</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9  <span style="text-decoration: underline;">4</span>372 FALSE  <span style="text-decoration: underline;">5</span>430. 0      -<span style="color: #BB0000; text-decoration: underline;">1</span><span style="color: #BB0000;">058.</span>   0      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 <span style="text-decoration: underline;">13</span>976 FALSE <span style="text-decoration: underline;">12</span>096. 0.002   <span style="text-decoration: underline;">1</span>880.  -<span style="color: #BB0000;">0.002</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9,990 more rows</span></span></span></code></pre></div>
 </div>
 </div>
@@ -221,6 +220,7 @@ This combines pre-processing (<code>recipes</code>) and model fitting
 <span><span class="co">#&gt;   trees = 500</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Engine-Specific Arguments:</span></span>
+<span><span class="co">#&gt;   respect.unordered.factors = order</span></span>
 <span><span class="co">#&gt;   num.threads = 1</span></span>
 <span><span class="co">#&gt;   importance = if (store_models) "impurity" else "none"</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -241,7 +241,7 @@ This combines pre-processing (<code>recipes</code>) and model fitting
 <span><span class="co">#&gt; $mtry</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">&lt;quosure&gt;</span></span></span>
 <span><span class="co">#&gt; expr: <span style="color: #0000BB;">^mtry_g</span></span></span>
-<span><span class="co">#&gt; env:  <span style="color: #0000BB;">0x55abcb2edcd0</span></span></span>
+<span><span class="co">#&gt; env:  <span style="color: #0000BB;">0x563ca7326548</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $trees</span></span>
 <span><span class="co">#&gt; <span style="font-weight: bold;">&lt;quosure&gt;</span></span></span>
