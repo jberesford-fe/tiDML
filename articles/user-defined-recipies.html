@@ -92,7 +92,7 @@ comprehensive list and examples.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/justinberesford/tiDML" class="external-link">tiDML</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Test dml_rf</span></span>
-<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="../reference/diamonds_sample.html">diamonds_sample</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">500</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># parsnip model spec </span></span>
 <span><span class="va">g_spec</span> <span class="op">=</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/rand_forest.html" class="external-link">rand_forest</a></span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -139,7 +139,7 @@ recipes.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">#&gt;   term               estimate std.error conf.low conf.high vcov_type</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> is_rated_idealTRUE    -<span style="color: #BB0000;">37.7</span>      330.    -<span style="color: #BB0000;">685.</span>      610. HC2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> is_rated_idealTRUE     203.      154.    -<span style="color: #BB0000;">98.7</span>      505. HC2</span></span></code></pre></div>
 <p>To see how to examine the outputs, see
 <code><a href="../articles/examine-outputs.html">vignette("examine-outputs")</a></code>.</p>
 </div>
