@@ -134,7 +134,7 @@ This wrapper function runs both methods and returns a combined data frame.
 
 ```{r run-rep, warning = FALSE, message = FALSE}
 
-replications <- 75L
+replications <- 50L
 
 run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 5L, n_rep = 2L) {
   tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
