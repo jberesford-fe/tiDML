@@ -34,6 +34,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/tiDML.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -42,14 +43,14 @@
     <li><h6 class="dropdown-header" data-toc-skip>Default Models</h6></li>
     <li><a class="dropdown-item" href="../articles/neural-network.html">Neural Network</a></li>
     <li><a class="dropdown-item" href="../articles/random-forest.html">Random Forest</a></li>
+    <li><a class="dropdown-item" href="../articles/elastic-net.html">Elastic Net (ridge/lasso)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>How-to</h6></li>
-    <li><a class="dropdown-item" href="../articles/user-defined-recipies.html">Set your own model</a></li>
     <li><a class="dropdown-item" href="../articles/examine-outputs.html">Examine model outputs</a></li>
     <li><a class="dropdown-item" href="../articles/feature-importance.html">Extract feature importance</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Replication</h6></li>
-    <li><a class="dropdown-item" href="../articles/package-replication.html">DoubleML Package</a></li>
+    <li><a class="dropdown-item" href="../articles/package-rep.html">DoubleML Replication</a></li>
   </ul>
 </li>
       </ul>
@@ -103,46 +104,87 @@ large number of folds and reps.</p>
 <span>  y <span class="op">=</span> <span class="st">"price"</span>,</span>
 <span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
-<span>  n_folds <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  n_rep <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  store_models <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
-<h2 id="extracting-feature-importance">Extracting feature importance<a class="anchor" aria-label="anchor" href="#extracting-feature-importance"></a>
+<h2 id="extracting-coefficients-linear-models">Extracting coefficients (linear models)<a class="anchor" aria-label="anchor" href="#extracting-coefficients-linear-models"></a>
+</h2>
+<p>For linear models (e.g. Lasso), you can extract regression
+coefficients directly. Under the default settings (5 cross folds, 1 rep)
+there are 10 sets of regression coefficients: five for treatment and
+five for outcome.</p>
+<p>To access the treatment model for, say, the third crossfold, save
+your lasso regression as <code>fit &lt;- dml_XX(...)</code> and then use
+the <code>generics</code> package to extract the coefficients:
+<code>generics::tidy(fit$m_fit[[3]])</code>.</p>
+<p>tiDML’s <code><a href="../reference/get_feature_coefs.html">get_feature_coefs()</a></code> function is a wrapper around
+this which maps across all cross folds to give a single tibble with
+coefficients for all folds and reps.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_lasso</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dml_enet.html">dml_enet</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">df</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"price"</span>,</span>
+<span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
+<span>  store_models <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mixture <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/get_feature_coefs.html">get_feature_coefs</a></span><span class="op">(</span><span class="va">fit_lasso</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 35 × 5</span></span></span>
+<span><span class="co">#&gt;     fold model     term        estimate penalty</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 treatment (Intercept)   72.0      0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1 treatment carat         -<span style="color: #BB0000;">0.112</span>    0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     1 treatment depth         -<span style="color: #BB0000;">0.479</span>    0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     1 treatment table         -<span style="color: #BB0000;">0.750</span>    0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1 treatment x              0        0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     1 treatment y              0        0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     1 treatment z              0        0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     2 treatment (Intercept)   79.2      0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     2 treatment carat         -<span style="color: #BB0000;">0.293</span>    0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     2 treatment depth         -<span style="color: #BB0000;">0.572</span>    0.01</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 25 more rows</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="extracting-feature-importance-tree-based-models">Extracting feature importance (tree based models)<a class="anchor" aria-label="anchor" href="#extracting-feature-importance-tree-based-models"></a>
 </h2>
 <p>Feature importance can be only be extracted for tree based models
-(decision trees, random forests, or gradient boosted trees). For Lasso
-regression, the coefficients themselves can be used to assess variable
-importance.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+(decision trees, random forests, or gradient boosted trees).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"not yet implemented"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "not yet implemented"</span></span></code></pre></div>
-<p>The function <code>get_feature_importance()</code> extracts feature
+<p>The function <code><a href="../reference/get_feature_importance.html">get_feature_importance()</a></code> extracts feature
 importance measures from all the fitted models and returns a tidy data
 frame.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">feature_importance</span> <span class="op">&lt;-</span> <span class="fu">get_feature_importance</span><span class="op">(</span><span class="va">fit_rf</span>, model <span class="op">=</span> <span class="st">"outcome"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">feature_importance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_feature_importance.html">get_feature_importance</a></span><span class="op">(</span><span class="va">fit_rf</span>, model <span class="op">=</span> <span class="st">"outcome"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Unknown or uninitialised column: `id2`.</span></span>
+<span><span class="co">#&gt; Unknown or uninitialised column: `id2`.</span></span>
+<span><span class="co">#&gt; Unknown or uninitialised column: `id2`.</span></span>
+<span><span class="co">#&gt; Unknown or uninitialised column: `id2`.</span></span>
+<span><span class="co">#&gt; Unknown or uninitialised column: `id2`.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">feature_importance</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 90 × 4</span></span></span>
-<span><span class="co">#&gt;    rep     fold  variable  importance</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Repeat1 Fold1 carat    <span style="text-decoration: underline;">1</span>476<span style="text-decoration: underline;">530</span>170.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Repeat1 Fold1 depth     129<span style="text-decoration: underline;">023</span>204.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Repeat1 Fold1 table      97<span style="text-decoration: underline;">344</span>033.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Repeat1 Fold1 x        <span style="text-decoration: underline;">1</span>438<span style="text-decoration: underline;">006</span>224.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Repeat1 Fold1 y        <span style="text-decoration: underline;">1</span>385<span style="text-decoration: underline;">954</span>655.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Repeat1 Fold1 z        <span style="text-decoration: underline;">1</span>291<span style="text-decoration: underline;">377</span>574.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Repeat1 Fold2 carat    <span style="text-decoration: underline;">1</span>333<span style="text-decoration: underline;">627</span>279.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Repeat1 Fold2 depth     130<span style="text-decoration: underline;">770</span>570.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Repeat1 Fold2 table     110<span style="text-decoration: underline;">364</span>172.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Repeat1 Fold2 x        <span style="text-decoration: underline;">1</span>374<span style="text-decoration: underline;">728</span>139.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 80 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 30 × 3</span></span></span>
+<span><span class="co">#&gt;    rep   variable  importance</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Fold1 carat    <span style="text-decoration: underline;">1</span>529<span style="text-decoration: underline;">049</span>266.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Fold1 depth     129<span style="text-decoration: underline;">513</span>335.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Fold1 table      88<span style="text-decoration: underline;">149</span>066.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Fold1 x        <span style="text-decoration: underline;">1</span>424<span style="text-decoration: underline;">920</span>545.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Fold1 y        <span style="text-decoration: underline;">1</span>313<span style="text-decoration: underline;">158</span>954.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Fold1 z        <span style="text-decoration: underline;">1</span>316<span style="text-decoration: underline;">812</span>151.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Fold2 carat    <span style="text-decoration: underline;">1</span>367<span style="text-decoration: underline;">497</span>373.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Fold2 depth     124<span style="text-decoration: underline;">626</span>621.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Fold2 table     102<span style="text-decoration: underline;">783</span>836.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Fold2 x        <span style="text-decoration: underline;">1</span>268<span style="text-decoration: underline;">479</span>322.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more rows</span></span></span></code></pre></div>
 <p>You can average importance across folds and reps, or plot the feature
 importance as a distribution.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">feature_importance</span> <span class="op">|&gt;</span></span>

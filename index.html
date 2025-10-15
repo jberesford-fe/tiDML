@@ -37,6 +37,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/tiDML.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
@@ -45,14 +46,14 @@
     <li><h6 class="dropdown-header" data-toc-skip>Default Models</h6></li>
     <li><a class="dropdown-item" href="articles/neural-network.html">Neural Network</a></li>
     <li><a class="dropdown-item" href="articles/random-forest.html">Random Forest</a></li>
+    <li><a class="dropdown-item" href="articles/elastic-net.html">Elastic Net (ridge/lasso)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>How-to</h6></li>
-    <li><a class="dropdown-item" href="articles/user-defined-recipies.html">Set your own model</a></li>
     <li><a class="dropdown-item" href="articles/examine-outputs.html">Examine model outputs</a></li>
     <li><a class="dropdown-item" href="articles/feature-importance.html">Extract feature importance</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Replication</h6></li>
-    <li><a class="dropdown-item" href="articles/package-replication.html">DoubleML Package</a></li>
+    <li><a class="dropdown-item" href="articles/package-rep.html">DoubleML Replication</a></li>
   </ul>
 </li>
       </ul>
@@ -82,16 +83,13 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of tiDML from <a href="https://github.com/jberesford-fe/tiDML" class="external-link">GitHub</a> via <code>pak</code>, <code>pacman</code> or <code>remotes</code>:</p>
+<p>You can install the development version of tiDML from <a href="https://github.com/jberesford-fe/tiDML" class="external-link">GitHub</a> via <code>pak</code> or <code>remotes</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Using pak (recommended)</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"jberesford-fe/tiDML"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># using remotes</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jberesford-fe/tiDML"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># not currently working:</span></span>
-<span><span class="fu">pacman</span><span class="fu">::</span><span class="fu">p_load_gh</span><span class="op">(</span><span class="st">"jberesford-fe/tiDML"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Using remotes</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jberesford-fe/tiDML"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="default-model-example">Default model example<a class="anchor" aria-label="anchor" href="#default-model-example"></a>

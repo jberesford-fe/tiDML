@@ -2,13 +2,14 @@ pandoc: 3.1.11
 pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
+  elastic-net: elastic-net.html
   examine-outputs: examine-outputs.html
   feature-importance: feature-importance.html
   neural-network: neural-network.html
-  package-replication: package-replication.html
+  package-rep: package-rep.html
   random-forest: random-forest.html
-  user-defined-recipies: user-defined-recipies.html
-last_built: 2025-10-05T15:05Z
+  tiDML: tiDML.html
+last_built: 2025-10-15T11:29Z
 urls:
   reference: https://jberesford-fe.github.io/tiDML/reference
   article: https://jberesford-fe.github.io/tiDML/articles
