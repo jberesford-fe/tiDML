@@ -1,0 +1,46 @@
+---
+title: "Elastic Net (ridge/lasso)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Elastic Net (ridge/lasso)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+# Regularised Regression
+
+The function `dml_enet()` defaults to elastic net regression with a `mixture = 0.5`. Setting `mixture = 1` gives lasso regression, while `mixture = 0` gives ridge regression.
+
+The penalty parameter (lambda) is also required as an input parameter, and can vary between the two nuisance models (not yet chosen via cross-validation, #FIXME).
+
+```{r setup, evaluate=FALSE}
+library(tiDML)
+
+df <- diamonds_sample()
+
+fit_lasso <- dml_enet(
+  data = df,
+  y = "price",
+  d = "is_rated_ideal",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+  store_models = TRUE,
+  mixture = 1,
+  penalty_g = 0.1,
+  penalty_m = 0.1
+)
+
+fit_ridge <- dml_enet(
+  data = df,
+  y = "price",
+  d = "is_rated_ideal",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+  store_models = TRUE,
+  mixture = 0
+)
+```

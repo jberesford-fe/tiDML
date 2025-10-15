@@ -1,3 +1,4 @@
+#' Get feature importance from nuisance models
 #' @export
 #' @param dml_result A DML result object with stored nuisance models.
 #' @param which Which nuisance model coefficients to extract, either "treatment" or "outcome".
@@ -35,10 +36,11 @@ get_feature_importance <- function(
   return(dplyr::bind_rows(importance))
 }
 
+#' Get feature coefficients from nuisance models
 #' @export
 #' @importFrom dplyr mutate
 #' @importFrom purrr map_dfr
-#' @importFrom broom tidy
+#' @importFrom generics tidy
 #'
 #' @param dml_result A DML result object with stored nuisance models.
 #' @param which Which nuisance model coefficients to extract, either "treatment" or "outcome".
@@ -54,7 +56,7 @@ get_feature_coefs <- function(dml_result, model = c("treatment", "outcome")) {
   stopifnot(!is.null(fits))
 
   purrr::map_dfr(seq_along(fits), function(i) {
-    tidy(fits[[i]]) |>
+    generics::tidy(fits[[i]]) |>
       dplyr::mutate(
         fold = i,
         model = model,

@@ -52,8 +52,7 @@ fit_lasso <- dml_enet(
   mixture = 1
 )
 
-get_feature_coefs(fit_lasso, model="treatment")
-
+get_feature_coefs(fit_lasso)
 ```
 
 # Extracting feature importance (tree based models)

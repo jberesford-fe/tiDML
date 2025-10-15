@@ -35,7 +35,7 @@ test_that("dml_rf runs on simulated data and recovers the effect", {
   # close to true theta (allow some noise)
   expect_equal(unname(fit$estimate), 2.0, tolerance = 0.3)
 
-  # broom methods
+  # generics methods
   tt <- generics::tidy(fit)
   expect_s3_class(tt, "tbl_df")
   expect_true(all(
