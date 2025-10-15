@@ -58,12 +58,13 @@ treatment_model <- parsnip::rand_forest(trees = 500) |>
 
 ```
 
-2.  Handle any pre-processing steps, for both stages, using [`recipes`](https://recipes.tidymodels.org/). For example, standardising all numeric predictors, turning nominals to dummies, log-transforming the outcome variable etc
+2.  Handle any pre-processing steps, for both stages, using [`recipes`](https://recipes.tidymodels.org/). For example, imputing missing values in numeric predictors for the treatment model:
 
 ``` r
-treatment_recipe <- recipes::recipe(d_var ~ x1 + x2 + x3, data = df)
+treatment_recipe <- recipes::recipe(d_var ~ x1 + x2 + x3, data = df) |>
+  recipes::step_impute_knn(recipes::all_numeric_predictors()) 
 
-outcome_recipe <- recipes::recipe(y_var ~ x1 + x2 + x3, data = df)
+outcome_recipe <- recipes::recipe(y_var ~ x1 + x2 + x3, data = df) 
 ```
 
 

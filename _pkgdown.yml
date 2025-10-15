@@ -12,9 +12,13 @@ articles:
   - title: Default Model Types
     navbar: Default Models
     contents:
-      - neural-network
-      - random-forest
       - elastic-net
+      - random-forest
+      - neural-network
+  - title: Custom Models
+    navbar: Custom Models
+    contents:
+      - user-defined
   - title: How-to
     navbar: How-to
     contents:

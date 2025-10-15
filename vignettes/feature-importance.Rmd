@@ -19,7 +19,7 @@ In either the default `dml_XX()` functions, or when running a custom `run_dml()`
 
 Warning: this can use a lot of memory, especially if you are using a large number of folds and reps.
 
-### `store_models = TRUE`
+### Saving with `store_models = TRUE`
 
 ```{r setup, warnings=FALSE, message=FALSE}
 library(tiDML)
