@@ -18,7 +18,6 @@ articles:
   - title: How-to
     navbar: How-to
     contents:
-      - user-defined-recipies
       - examine-outputs
       - feature-importance
   - title: Replication

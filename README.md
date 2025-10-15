@@ -14,17 +14,14 @@ In short, while tiDML simplifies some default models, it's main contribution is 
 
 ## Installation
 
-You can install the development version of tiDML from [GitHub](https://github.com/jberesford-fe/tiDML) via `pak`, `pacman` or `remotes`:
+You can install the development version of tiDML from [GitHub](https://github.com/jberesford-fe/tiDML) via `pak` or `remotes`:
 
 ``` r
 # Using pak (recommended)
 pak::pak("jberesford-fe/tiDML")
 
-# using remotes
+# Using remotes
 remotes::install_github("jberesford-fe/tiDML")
-
-# not currently working:
-pacman::p_load_gh("jberesford-fe/tiDML")
 ```
 
 ## Default model example
@@ -83,5 +80,4 @@ run_dml(
   n_rep = 2,
 )
 ```
-
 See the [getting started](https://jberesford-fe.github.io/tiDML/articles/tiDML.html) vignette for more detailed examples.
