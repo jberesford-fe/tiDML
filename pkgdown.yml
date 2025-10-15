@@ -9,7 +9,8 @@ articles:
   package-rep: package-rep.html
   random-forest: random-forest.html
   tiDML: tiDML.html
-last_built: 2025-10-15T11:29Z
+  user-defined: user-defined.html
+last_built: 2025-10-15T13:03Z
 urls:
   reference: https://jberesford-fe.github.io/tiDML/reference
   article: https://jberesford-fe.github.io/tiDML/articles

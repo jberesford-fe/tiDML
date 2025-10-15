@@ -41,9 +41,12 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Default Models</h6></li>
-    <li><a class="dropdown-item" href="../articles/neural-network.html">Neural Network</a></li>
-    <li><a class="dropdown-item" href="../articles/random-forest.html">Random Forest</a></li>
     <li><a class="dropdown-item" href="../articles/elastic-net.html">Elastic Net (ridge/lasso)</a></li>
+    <li><a class="dropdown-item" href="../articles/random-forest.html">Random Forest</a></li>
+    <li><a class="dropdown-item" href="../articles/neural-network.html">Neural Network</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Custom Models</h6></li>
+    <li><a class="dropdown-item" href="../articles/user-defined.html">User Defined Models</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>How-to</h6></li>
     <li><a class="dropdown-item" href="../articles/examine-outputs.html">Examine model outputs</a></li>
@@ -84,9 +87,12 @@
 <h2 id="regularised-regression">Regularised Regression<a class="anchor" aria-label="anchor" href="#regularised-regression"></a>
 </h2>
 <p>The function <code><a href="../reference/dml_enet.html">dml_enet()</a></code> defaults to elastic net
-regression with a <code>mixture = 0.5</code>. Setting
-<code>mixture = 1</code> gives lasso regression, while
-<code>mixture = 0</code> gives ridge regression.</p>
+regression with a <code>mixture = 0.5</code>.</p>
+<ul>
+<li>Setting <code>mixture = 1</code> gives lasso regression</li>
+<li>
+<code>mixture = 0</code> gives ridge regression.</li>
+</ul>
 <p>The penalty parameter (lambda) is also required as an input
 parameter, and can vary between the two nuisance models (not yet chosen
 via cross-validation, #FIXME).</p>
@@ -104,16 +110,11 @@ via cross-validation, #FIXME).</p>
 <span>  mixture <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  penalty_g <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  penalty_m <span class="op">=</span> <span class="fl">0.1</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">fit_ridge</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dml_enet.html">dml_enet</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">df</span>,</span>
-<span>  y <span class="op">=</span> <span class="st">"price"</span>,</span>
-<span>  d <span class="op">=</span> <span class="st">"is_rated_ideal"</span>,</span>
-<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"carat"</span>, <span class="st">"depth"</span>, <span class="st">"table"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>,</span>
-<span>  store_models <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  mixture <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p>Because Elastic Net is a linear model, we can use
+<code>get_feature_coefs(fit_lasso, model="treatment")</code> or
+<code>get_feature_coefs(fit_lasso, model="outcome")</code> to inspect
+the coefficients of the selected features.</p>
 </div>
   </main>
 </div>
