@@ -23,4 +23,4 @@ articles:
   - title: Replication
     navbar: Replication
     contents:
-      - package-replication
+      - package-rep
