@@ -1,8 +1,8 @@
 ---
-title: "DoubleML Package"
+title: "DoubleML Replication"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{package-replication}
+  %\VignetteIndexEntry{DoubleML Replication}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,17 +13,15 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
 # Replication of DoubleML results with tiDML
 
-I use the 401k data from Chernozhukov et al. (2018) to replicate results from their package under a few different specifications.
+I use the 401k data from Chernozhukov et al. (2018) to replicate results from [name of paper]. Note I'm following the example given in the package documenation for the [DoubleML Package] GET LINK. 
 
-The goal is to show that `tiDML::dml_plr()` can produce comparable results with much less code.
-
+The goal is to show that `tiDML` produces comparable results, with less code and a more interpretable output.
 
 # Get data and import packages
 
-Note I use the same data (401k) and variables across both specifications. 
+To important the 401k data, load the DoubleML (and other required packages) and call:  
 
 ```{r setup, warning = FALSE, message = FALSE}
 library(tiDML)
@@ -36,16 +34,19 @@ library(mlr3)
 library(mlr3learners)
 
 df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
+```
 
-y_col  <- "net_tfa"   # or "tw" depending on the example
+I define  the outcome, treatment, and control variables following Chernozhukov et al. (2018) exactly. 
+
+```{r define-cols}
+y_col  <- "net_tfa"
 d_col  <- "e401"
 x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
-
 ```
 
 # `tiDML` approach as a function
 
-Following Chernozhukov, I use random forest in both stages but the first is classification while the second is regression. 
+Again following Chernozhukov, I use random forest in both stages. Since e401 is a dummy variable, the first stage is classification while the second is regression. 
 
 ```{r run-tidml, warning = FALSE, message = FALSE}
 run_tidml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
@@ -134,9 +135,9 @@ This wrapper function runs both methods and returns a combined data frame.
 
 ```{r run-rep, warning = FALSE, message = FALSE}
 
-replications <- 50L
+replications <- 2L
 
-run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 5L, n_rep = 2L) {
+run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 2L, n_rep = 1L) {
   tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
   dml_row   <- run_dml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
   bind_rows(tidml_row, dml_row)
@@ -159,7 +160,6 @@ print(res %>%
 
 # T-Test for difference in means
 print(t.test(theta ~ method, data = res))
-# this doesn't work
 ```
 
 # Method-by-method densities

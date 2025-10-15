@@ -31,16 +31,34 @@ fit_rf <- dml_rf(
   y = "price",
   d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
-  n_folds = 5,
-  n_rep = 3,
   store_models = TRUE
 )
+```
+# Extracting coefficients (linear models)
+
+For linear models (e.g. Lasso), you can extract regression coefficients directly. Under the default settings (5 cross folds, 1 rep) there are 10 sets of regression coefficients: five for treatment and five for outcome. 
+
+To access the treatment model for, say, the third crossfold, save your lasso regression as `fit <- dml_XX(...)` and then use the `generics` package to extract the coefficients: `generics::tidy(fit$m_fit[[3]])`.
+
+tiDML's `get_feature_coefs()` function is a wrapper around this which maps across all cross folds to give a single tibble with coefficients for all folds and reps. 
+
+```{r feature-coefs-linear, warnings=FALSE, message=FALSE}
+fit_lasso <- dml_enet(
+  data = df,
+  y = "price",
+  d = "is_rated_ideal",
+  x = c("carat", "depth", "table", "x", "y", "z"),
+  store_models = TRUE,
+  mixture = 1
+)
+
+get_feature_coefs(fit_lasso, model="treatment")
 
 ```
 
-# Extracting feature importance
+# Extracting feature importance (tree based models)
 
-Feature importance can be only be extracted for tree based models (decision trees, random forests, or gradient boosted trees). For Lasso regression, the coefficients themselves can be used to assess variable importance.
+Feature importance can be only be extracted for tree based models (decision trees, random forests, or gradient boosted trees). 
 
 ```{r feature-importance-linear}
 print("not yet implemented")
@@ -64,3 +82,4 @@ feature_importance |>
   geom_violin(fill="#425a7f", colour="#425a7f") +
   labs(x="Distribution of importance across folds", y="Feature")
 ```
+
