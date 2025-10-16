@@ -115,7 +115,8 @@ run_both <- function(
 
 
 set.seed(401)
-reps <- 5L
+reps <- 100L
+
 seeds <- 401 + 0:(reps - 1L)
 dml401k_rresplications <- map_dfr(
   seeds,
@@ -136,8 +137,8 @@ dml401k_rresplications <- map_dfr(
       "hown"
     ),
     trees_grid = 1200,
-    n_folds = 2L,
-    n_rep = 1L
+    n_folds = 5L,
+    n_rep = 2L
   )
 )
 
@@ -149,3 +150,6 @@ usethis::use_data(
   compress = "xz",
   overwrite = TRUE
 )
+
+devtools::unload()
+devtools::document()
