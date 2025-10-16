@@ -245,11 +245,11 @@ to show that they overlap and have very similar means.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">method</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>mean_theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">theta</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">mean_theta</span>, color <span class="op">=</span> <span class="va">method</span><span class="op">)</span>,</span>
-<span>    linetype <span class="op">=</span> <span class="st">"dashed"</span>, size <span class="op">=</span> <span class="fl">1</span></span>
+<span>    linetype <span class="op">=</span> <span class="st">"dashed"</span>, size <span class="op">=</span> <span class="fl">1</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"DML-PLR estimates across seeds"</span>,</span>
-<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/influence.measures.html" class="external-link">hat</a></span><span class="op">(</span><span class="va">theta</span><span class="op">)</span><span class="op">)</span>, y <span class="op">=</span> <span class="st">"Density"</span>, fill <span class="op">=</span> <span class="st">"Method"</span>, colour<span class="op">=</span> <span class="st">"Method"</span></span>
+<span>    x <span class="op">=</span> <span class="st">"Theta"</span>, y <span class="op">=</span> <span class="st">"Density"</span>, fill <span class="op">=</span> <span class="st">"Method"</span>, colour<span class="op">=</span> <span class="st">"Method"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></code></pre></div>
 <p><img src="package-rep_files/figure-html/plot-results-1.png" alt="DML estimates across packages" width="700"></p>
@@ -268,24 +268,20 @@ error, or confidence intervals.</p>
 <span><span class="va">same_theta</span> <span class="op">&lt;-</span> <span class="fu">is_not_significant</span><span class="op">(</span><span class="st">"theta"</span>, <span class="st">"method"</span>, <span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">same_se</span>    <span class="op">&lt;-</span> <span class="fu">is_not_significant</span><span class="op">(</span><span class="st">"se"</span>,    <span class="st">"method"</span>, <span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">same_lwr</span>    <span class="op">&lt;-</span> <span class="fu">is_not_significant</span><span class="op">(</span><span class="st">"lwr"</span>, <span class="st">"method"</span>, <span class="va">res</span><span class="op">)</span></span>
-<span><span class="va">same_upr</span>    <span class="op">&lt;-</span> <span class="fu">is_not_significant</span><span class="op">(</span><span class="st">"upr"</span>, <span class="st">"method"</span>, <span class="va">res</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  theta_equal <span class="op">=</span> <span class="va">same_theta</span>,</span>
-<span>  se_equal    <span class="op">=</span> <span class="va">same_se</span>,</span>
-<span>  lwr_equal    <span class="op">=</span> <span class="va">same_lwr</span>,</span>
-<span>  upr_equal    <span class="op">=</span> <span class="va">same_upr</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; $theta_equal</span></span>
+<span><span class="va">same_upr</span>    <span class="op">&lt;-</span> <span class="fu">is_not_significant</span><span class="op">(</span><span class="st">"upr"</span>, <span class="st">"method"</span>, <span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<p>Theta’s are equal:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">same_theta</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>Standard error’s are equal:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">same_se</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>Upper and lower bound confidence interval’s are equal:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">same_lwr</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $se_equal</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $lwr_equal</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $upr_equal</span></span>
+<span><span class="va">same_upr</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
