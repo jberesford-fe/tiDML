@@ -1,6 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://jberesford-fe.github.io/tiDML/404.html</loc></url>
-<url><loc>https://jberesford-fe.github.io/tiDML/LICENSE.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/LICENSE-text.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/articles/elastic-net.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/articles/examine-outputs.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/articles/feature-importance.html</loc></url>
@@ -24,6 +24,7 @@
 <url><loc>https://jberesford-fe.github.io/tiDML/reference/make_folds_stratified.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/reference/oob_error.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/reference/oof_crossfit.html</loc></url>
+<url><loc>https://jberesford-fe.github.io/tiDML/reference/replication_results.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/reference/run_dml.html</loc></url>
 <url><loc>https://jberesford-fe.github.io/tiDML/reference/treated_level.html</loc></url>
 </urlset>
