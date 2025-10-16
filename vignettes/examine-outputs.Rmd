@@ -105,16 +105,19 @@ model_spec_g$args
 # Evaluation metrics
 
 This should all be done on the out of fold predictions. Running `augment()` on your fitted model will give you:
+
 + The actual values for Y and D
 + The predicted (hat) values for Y and D 
 + The residuals for Y and D (i.e. actual - predicted)
 
 From these consider plotting the following:
+
 + A scatter plot of actual vs predicted for Y and D
 + A histogram of the residuals for Y and D
 + A QQ plot of the residuals for Y and D
 
 Then consider calculating the following metrics:
+
 + Mean Squared Error (MSE) for Y and D
 + R-squared for Y and D
 + Correlation between actual and predicted for Y and D

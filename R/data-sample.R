@@ -21,3 +21,11 @@ diamonds_sample <- function(n = 10000, seed = 1) {
 
   return(result)
 }
+
+
+#' Precomputed DoubleML replication results (internal)
+#' @return A tibble/data.frame with columns: method, seed, theta, se, lwr, upr
+#' @export
+replication_results <- function() {
+  get("dml401k_replications", envir = asNamespace("tiDML"))
+}

@@ -5,31 +5,30 @@ vignette: >
   %\VignetteIndexEntry{DoubleML Replication}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+params:
+  run_long: false
 ---
 
 ```{r, include = FALSE}
+run_long <- isTRUE(params$run_long)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  cache = TRUE,
-  eval = identical(Sys.getenv("NOT_CRAN"), "true")
+  cache = FALSE
 )
 ```
 # Replication of DoubleML results with tiDML
 
-I use 401k data to replicate results from <a href="hhttps://arxiv.org/abs/1608.00060">Chernozhukov et al. (2018)</a>. Note that this is the example given in their <a href="https://docs.doubleml.org/stable/examples/py_double_ml_pension.html">package documentation</a>. 
+I use 401k data to replicate results from <a href="https://arxiv.org/abs/1608.00060">Chernozhukov et al. (2018)</a>. Note that this is the example given in their <a href="https://docs.doubleml.org/stable/examples/py_double_ml_pension.html">package documentation</a>. 
 
-The goal is to show that `tiDML` produces identical results, with less code and a more interpretable output.
+The goal is to show that - over 100 iterations - `tiDML` produces identical results, with less code and a more interpretable output.
 
-This code takes several hours to run. For ease, I have saved the results in the `inst/extdata` folder of the package. To generate the results yourself, set `run_long  <- TRUE`.
-
-```{r run-long}
-run_long <- FALSE
-```
+This code takes several hours to run. For ease, I have saved the results from 100 iterations (5 cross folds, 2 reps) in `inst/extdata` folder. To regenerate these yourself, clone this repo and set `run_long` to `true` in params.
 
 # Get data and import packages
 
-To important the 401k data, load the DoubleML (and other required packages) and call:  
+To import the 401k data, load the DoubleML (and other required packages).  
 
 ```{r load-packages, warning = FALSE, message = FALSE}
 library(tiDML)
@@ -45,7 +44,7 @@ library(mlr3learners)
 df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
 ```
 
-I define  the outcome, treatment, and control variables following Chernozhukov et al. (2018) exactly. 
+Define  the outcome, treatment, and control variables following Chernozhukov et al. (2018) exactly. 
 
 ```{r define-cols, warning = FALSE, message = FALSE, eval = run_long}
 y_col  <- "net_tfa"
@@ -53,7 +52,7 @@ d_col  <- "e401"
 x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
 ```
 
-# `tiDML` approach as a function
+# `tiDML` approach
 
 Again following Chernozhukov, I use random forest in both stages. Since e401 is a dummy variable, the first stage is classification while the second is regression. 
 
@@ -87,7 +86,7 @@ run_tidml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
 
 ```
 
-# DoubleML approach as a function
+# DoubleML approach
 
 Next I use the `DoubleML` package to run the model.
 
@@ -159,10 +158,9 @@ res <- map_dfr(
 )
 ```
 
-```{r quick-results, warning = FALSE, message = FALSE, eval = run_long, echo = FALSE}
-if ~run_long {
-  res <- read_rds(system.file("extdata", "dml_replication.rds", package = "tiDML"))
-}
+If you do not want to run the long code above, you can load the saved results here:
+```{r quick-results, warning = FALSE, message = FALSE, eval = !run_long}
+res <- tiDML::replication_results()
 ```
 
 
@@ -191,13 +189,21 @@ ggplot(res, aes(theta, fill = method)) +
 There is no statistically significant difference in mean, standard error, or confidence intervals. 
 
 ```{r t-test, warning = FALSE, message = FALSE}
-# No difference in means
-print(t.test(theta ~ method, data = res))
+is_not_significant <- function(x, group, data, alpha = 0.05) {
+  pval <- stats::t.test(stats::reformulate(group, x), data = data)$p.value
+  pval >= alpha
+}
 
-# No difference in standard errors
-print(t.test(mean_se ~ method, data = res))
+same_theta <- is_not_significant("theta", "method", res)
+same_se    <- is_not_significant("se",    "method", res)
+same_lwr    <- is_not_significant("lwr", "method", res)
+same_upr    <- is_not_significant("upr", "method", res)
 
-# No difference in confidence interval width
-res <- res |> mutate(ci_width = upr - lwr)
-print(t.test(ci_width ~ method, data = res))
+list(
+  theta_equal = same_theta,
+  se_equal    = same_se,
+  lwr_equal    = same_lwr,
+  upr_equal    = same_upr
+)
+
 ```
