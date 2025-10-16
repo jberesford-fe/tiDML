@@ -174,11 +174,11 @@ ggplot(res, aes(theta, fill = method)) +
   geom_vline(
     data = res %>% group_by(method) %>% summarize(mean_theta = mean(theta)),
     aes(xintercept = mean_theta, color = method),
-    linetype = "dashed", size = 1
+    linetype = "dashed", size = 1, show.legend = FALSE
   ) +
   labs(
     title = "DML-PLR estimates across seeds",
-    x = expression(hat(theta)), y = "Density", fill = "Method", colour= "Method"
+    x = "Theta", y = "Density", fill = "Method", colour= "Method"
   ) +
   theme_minimal(base_size = 12)
 
@@ -198,12 +198,18 @@ same_theta <- is_not_significant("theta", "method", res)
 same_se    <- is_not_significant("se",    "method", res)
 same_lwr    <- is_not_significant("lwr", "method", res)
 same_upr    <- is_not_significant("upr", "method", res)
+```
 
-list(
-  theta_equal = same_theta,
-  se_equal    = same_se,
-  lwr_equal    = same_lwr,
-  upr_equal    = same_upr
-)
-
+Theta's are equal:
+```{r t-test-theta, warning = FALSE, message = FALSE}
+same_theta
+```
+Standard error's are equal:
+```{r t-test-se, warning = FALSE, message = FALSE}
+same_se
+```
+Upper and lower bound confidence interval's are equal:
+```{r t-test-lwr, warning = FALSE, message = FALSE}
+same_lwr
+same_upr
 ```
