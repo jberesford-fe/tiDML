@@ -1,19 +1,26 @@
 ---
-title: "User Defined Models"
+title: "User Defined"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{User Defined Models}
+  %\VignetteIndexEntry{User Defined}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knit-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  cache = TRUE
 )
 ```
 # Three steps to your own model
+
+To define your own DML procedure, you need to do three things:
+
+1. Define your model specifications (using `parsnip`)
+1. Define your own recipes (using `recipes`)
+1. Run the DML procedure (using `run_dml()`)
 
 ## 1. Define your model specs
 
@@ -23,7 +30,7 @@ We define these using the `parsnip` package. There are literally thousands of av
 library(tiDML)
 
 # Test dml_rf
-df = diamonds_sample(n=500)
+df = diamonds_sample(n=500, seed=123)
 
 # parsnip model spec 
 g_spec = parsnip::rand_forest(trees = 100) |>
@@ -54,7 +61,7 @@ m_rec <- recipes::recipe(is_rated_ideal ~ carat + depth + table + x + y + z, dat
 
 Use the model specs and recipes defined above as inputs to `run_dml()`. Not the dataframe going into `run_dml()` must be the same as the one used to define the recipes.
 
-```{r run-dml, warnings=FALSE, message=FALSE}
+```{r combine-to-run}
 fit <- run_dml(
   data = df,
   outcome_recipe = g_rec,
@@ -62,7 +69,4 @@ fit <- run_dml(
   outcome_model = g_spec,
   treatment_model = m_spec,
 )
-
-
-fit
 ```

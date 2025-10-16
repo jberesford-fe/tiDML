@@ -2,17 +2,14 @@
 % Please edit documentation in R/utils.R
 \name{oob_error}
 \alias{oob_error}
-\title{Get out of bad error}
+\title{Get out of bag error}
 \usage{
 oob_error(fitted_wf)
-}
-\arguments{
-\item{d_vec}{Treatment vector}
 }
 \value{
 Treatment type string
 }
 \description{
-Get out of bad error
+Get out of bag error
 }
 \keyword{internal}

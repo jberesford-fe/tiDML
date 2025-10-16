@@ -17,7 +17,7 @@ is_valid_treatment <- function(x) {
   }
   if (is.numeric(x) || is.integer(x)) {
     unique_vals <- unique(x[!is.na(x)])
-    return(length(unique_vals) > 1L && var(x, na.rm = TRUE) > 0)
+    return(length(unique_vals) > 1L && stats::var(x, na.rm = TRUE) > 0)
   }
   FALSE
 }

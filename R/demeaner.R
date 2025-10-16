@@ -29,7 +29,7 @@ demean_panel <- function(
   # overall means (named list for quick lookup)
   overall_means <- data |>
     dplyr::summarise(dplyr::across(
-      all_of(var_names),
+      dplyr::all_of(var_names),
       ~ mean(.x, na.rm = na.rm)
     ))
   overall_means <- as.list(overall_means[1, , drop = TRUE])
@@ -39,7 +39,7 @@ demean_panel <- function(
     dplyr::group_by(!!unit) |>
     dplyr::summarise(
       dplyr::across(
-        all_of(var_names),
+        dplyr::all_of(var_names),
         ~ mean(.x, na.rm = na.rm),
         .names = "{.col}__unit_mean"
       ),
@@ -51,7 +51,7 @@ demean_panel <- function(
     dplyr::group_by(!!time) |>
     dplyr::summarise(
       dplyr::across(
-        all_of(var_names),
+        dplyr::all_of(var_names),
         ~ mean(.x, na.rm = na.rm),
         .names = "{.col}__time_mean"
       ),
@@ -70,7 +70,7 @@ demean_panel <- function(
     ) |>
     dplyr::mutate(
       dplyr::across(
-        all_of(var_names),
+        dplyr::all_of(var_names),
         ~ {
           u <- get(paste0(cur_column(), "__unit_mean"))
           t <- get(paste0(cur_column(), "__time_mean"))

@@ -42,6 +42,8 @@ dml_nnet(
 \item{max_weights}{Max allowable weights for nnet engine (\code{MaxNWts}) to avoid overflow.}
 
 \item{trace}{Logical; print nnet training trace.}
+
+\item{store_models}{If TRUE, keep fitted nuisance models inside the result.}
 }
 \description{
 Uses a small MLP for both nuisances. Adds dummy encoding for nominal X

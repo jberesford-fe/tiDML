@@ -1,7 +1,7 @@
 #' Get feature importance from nuisance models
 #' @export
 #' @param dml_result A DML result object with stored nuisance models.
-#' @param which Which nuisance model coefficients to extract, either "treatment" or "outcome".
+#' @param model Which nuisance model coefficients to extract, either "treatment" or "outcome".
 get_feature_importance <- function(
   dml_result,
   model = c("treatment", "outcome")
@@ -43,7 +43,7 @@ get_feature_importance <- function(
 #' @importFrom generics tidy
 #'
 #' @param dml_result A DML result object with stored nuisance models.
-#' @param which Which nuisance model coefficients to extract, either "treatment" or "outcome".
+#' @param model Which nuisance model coefficients to extract, either "treatment" or "outcome".
 get_feature_coefs <- function(dml_result, model = c("treatment", "outcome")) {
   model <- match.arg(model)
 

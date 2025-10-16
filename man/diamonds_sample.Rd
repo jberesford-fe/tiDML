@@ -12,7 +12,7 @@ diamonds_sample(n = 10000, seed = 1)
 \item{seed}{RNG seed for reproducibility.}
 }
 \value{
-A tibble with columns from \code{ggplot2::diamonds} plus \code{D} (factor {0,1}).
+A tibble with columns from \code{ggplot2::diamonds} plus \code{D} (factor \{0,1\}).
 }
 \description{
 Sample ggplot2::diamonds with a treatment column

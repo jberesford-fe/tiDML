@@ -9,7 +9,7 @@ get_feature_importance(dml_result, model = c("treatment", "outcome"))
 \arguments{
 \item{dml_result}{A DML result object with stored nuisance models.}
 
-\item{which}{Which nuisance model coefficients to extract, either "treatment" or "outcome".}
+\item{model}{Which nuisance model coefficients to extract, either "treatment" or "outcome".}
 }
 \description{
 Get feature importance from nuisance models

@@ -15,7 +15,7 @@ test_that("dml_rf runs on simulated data and recovers the effect", {
   dat <- tibble::tibble(y = y, d = d, x1 = x1, x2 = x2)
 
   # same stratified folds
-  folds <- make_folds_stratified(dat, d = "d", v = 3)
+  folds <- make_folds_stratified(dat, d = "d", n_folds = 3)
 
   fit <- dml_rf(
     data = dat,
@@ -42,7 +42,7 @@ test_that("dml_rf runs on simulated data and recovers the effect", {
     c("estimate", "std.error", "conf.low", "conf.high") %in% names(tt)
   ))
 
-  aug <- augment(fit) # no data arg
+  aug <- augment(fit)
   expect_s3_class(aug, "tbl_df")
   expect_equal(nrow(aug), n)
   expect_true(all(

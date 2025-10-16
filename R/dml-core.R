@@ -1,5 +1,5 @@
 #' Core DML-PLR using workflows
-#' @export
+#' @keywords internal
 #' @importFrom workflows pull_workflow_preprocessor
 dml_core_wf <- function(
   data,

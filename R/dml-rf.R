@@ -6,8 +6,11 @@
 #' @param folds_outer Optional rsample rset. If NULL, folds made internally (stratified on D).
 #' @param n_folds Number of outer folds when `folds_outer` is NULL.
 #' @param n_rep Number of repetitions when `folds_outer` is NULL.
+#' @param mtry_m Number of variables randomly sampled as candidates at each split for the m-model (treatment). Default: floor(p/3).
+#' @param mtry_g Number of variables randomly sampled as candidates at each split for the g-model (outcome). Default: floor(p/3).
 #' @param vcov_type Sandwich variance type (e.g., "HC2" or "HC3").
 #' @param trees_grid Optional grid of number of trees to try (for both m- and g-models).
+#' @param store_models If TRUE, keep fitted nuisance models inside the result.
 #' @export
 dml_rf <- function(
   data,

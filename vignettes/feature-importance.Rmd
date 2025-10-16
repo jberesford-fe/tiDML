@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knit-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -24,7 +24,7 @@ Warning: this can use a lot of memory, especially if you are using a large numbe
 ```{r setup, warnings=FALSE, message=FALSE}
 library(tiDML)
 
-df <- diamonds_sample(n=500, seed=42)
+df <- diamonds_sample(n=500, seed=123)
 
 fit_rf <- dml_rf(
   data = df,
@@ -57,13 +57,7 @@ get_feature_coefs(fit_lasso)
 
 # Extracting feature importance (tree based models)
 
-Feature importance can be only be extracted for tree based models (decision trees, random forests, or gradient boosted trees). 
-
-```{r feature-importance-linear}
-print("not yet implemented")
-```
-
-The function `get_feature_importance()` extracts feature importance measures from all the fitted models and returns a tidy data frame.
+Feature importance can be only be extracted for tree based models (decision trees, random forests, or gradient boosted trees). The function `get_feature_importance()` extracts feature importance measures from all the fitted models and returns a tidy data frame.
 
 ```{r feature-importance-impurity}
 feature_importance <- get_feature_importance(fit_rf, model = "outcome")

@@ -9,3 +9,7 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^\.github$
+^dev$
+^tiDML_hex\.png$
+^data-raw$

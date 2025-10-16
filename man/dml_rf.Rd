@@ -34,9 +34,15 @@ dml_rf(
 
 \item{n_rep}{Number of repetitions when \code{folds_outer} is NULL.}
 
+\item{mtry_m}{Number of variables randomly sampled as candidates at each split for the m-model (treatment). Default: floor(p/3).}
+
+\item{mtry_g}{Number of variables randomly sampled as candidates at each split for the g-model (outcome). Default: floor(p/3).}
+
 \item{vcov_type}{Sandwich variance type (e.g., "HC2" or "HC3").}
 
 \item{trees_grid}{Optional grid of number of trees to try (for both m- and g-models).}
+
+\item{store_models}{If TRUE, keep fitted nuisance models inside the result.}
 }
 \description{
 DML-PLR with Random Forest

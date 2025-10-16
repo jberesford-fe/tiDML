@@ -36,8 +36,7 @@ make_folds_stratified <- function(data, d, n_folds = 5, n_rep = 1) {
   }
 }
 
-#' Get out of bad error
-#' @param d_vec Treatment vector
+#' Get out of bag error
 #' @return Treatment type string
 #' @keywords internal
 oob_error <- function(fitted_wf) {

@@ -17,6 +17,27 @@ run_dml(
   store_models = FALSE
 )
 }
+\arguments{
+\item{data}{Data frame}
+
+\item{outcome_recipe}{Recipe for outcome (g) model}
+
+\item{treatment_recipe}{Recipe for treatment (m) model}
+
+\item{outcome_model}{parsnip model spec for outcome (g) model}
+
+\item{treatment_model}{parsnip model spec for treatment (m) model}
+
+\item{folds_outer}{Optional rsample rset.}
+
+\item{n_folds}{Number of outer folds when \code{folds_outer} is NULL.}
+
+\item{n_rep}{Number of repetitions when \code{folds_outer} is NULL.}
+
+\item{vcov_type}{Sandwich variance type (e.g., "HC2" or "HC3").}
+
+\item{store_models}{If TRUE, keep fitted nuisance models inside the result}
+}
 \description{
 Run DML-PLR with user-supplied recipes and parsnip models
 }

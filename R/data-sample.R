@@ -2,7 +2,7 @@
 #'
 #' @param n Number of rows to sample (default 10,000).
 #' @param seed RNG seed for reproducibility.
-#' @return A tibble with columns from `ggplot2::diamonds` plus `D` (factor {0,1}).
+#' @return A tibble with columns from \code{ggplot2::diamonds} plus \code{D} (factor \{0,1\}).
 #' @export
 diamonds_sample <- function(n = 10000, seed = 1) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {

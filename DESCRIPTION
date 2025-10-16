@@ -20,8 +20,8 @@ RoxygenNote: 7.3.2
 Imports: 
     dplyr,
     generics,
-    glmnet,
     parsnip,
+    purrr,
     recipes,
     rlang,
     rsample,
@@ -33,11 +33,15 @@ Imports:
 Suggests: 
     DoubleML,
     ggplot2,
+    glmnet,
     ranger,
     randomForest,
     knitr,
     pkgdown,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    spelling
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+Language: en-US
+LazyData: true

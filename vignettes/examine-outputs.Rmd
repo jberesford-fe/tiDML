@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knit-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -24,7 +24,7 @@ These functions from `generics` will return the coefficients, models settings, a
 library(tiDML)
 library(generics)
 
-df <- diamonds_sample(n=500)
+df <- diamonds_sample(n=500, seed=123)
 
 fit_rf <- dml_rf(
   data = df,
@@ -53,18 +53,30 @@ The workflow is defined using the `workflows` package. This combines pre-process
 
 ## Get the recipe/preprocessor
 
+Extract preprocessor from the outcome (g) model:
+
 ```{r recipe}
 recipe_g <- workflows::extract_preprocessor(fit_rf$g_workflow)
+```
 
-# See the recipe
+See the recipe
+```{r print-recipe}
 print(recipe_g)
-# See a summary of all steps
+```
+
+See a summary of all steps
+```{r summary-recipe}
 summary(recipe_g)
+```
 
-# See what variables are involved
+See what variables are involved
+```{r var-info}
 recipe_g$var_info
+```
 
-# If you want to see what the recipe does to data:
+
+If you want to see what the recipe does to data:
+```{r bake-recipe}
 prepped <- recipes::prep(recipe_g, df)
 processed <- recipes::bake(prepped, df)
 processed |> head() 
@@ -74,10 +86,12 @@ processed |> head()
 ```{r model-specs}
 model_spec_g <- workflows::extract_spec_parsnip(fit_rf$g_workflow)
 model_spec_m <- workflows::extract_spec_parsnip(fit_rf$m_workflow)
-
 print(model_spec_g)
+```
 
-# Key properties
+To see the key properties
+
+```{r model-props}
 model_spec_g$engine    # "ranger" is used in the default random forest
 model_spec_g$mode      # "regression" for the outcome model
 model_spec_m$mode      # "classification" for the treatment model, since it's binary  
@@ -107,7 +121,8 @@ Then consider calculating the following metrics:
 + Correlation between residuals for Y and D
 
 You can use the `yardstick` package to calculate these metrics. For example:
-```{r, eval=FALSE}
+
+```{r yardstick-eval, eval=FALSE}
 library(yardstick)
 # Mean Squared Error
 mse_y <- mse(data, truth = Y, estimate = .pred_Y)

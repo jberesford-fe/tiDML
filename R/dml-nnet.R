@@ -13,6 +13,7 @@
 #' @param epochs Max iterations (passed to `nnet::nnet()` via parsnip).
 #' @param max_weights Max allowable weights for nnet engine (`MaxNWts`) to avoid overflow.
 #' @param trace Logical; print nnet training trace.
+#' @param store_models If TRUE, keep fitted nuisance models inside the result.
 #' @export
 dml_nnet <- function(
   data,

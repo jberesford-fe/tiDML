@@ -9,6 +9,7 @@
 #' @param vcov_type Sandwich variance type (e.g., "HC2" or "HC3").
 #' @param penalty_m Optional single penalty (lambda) for the m-model (treatment).
 #' @param penalty_g Optional single penalty (lambda) for the g-model (outcome).
+#' @param penalties_grid Optional list of penalty grids for hyperparameter tuning (W.I.P.)
 #' @param mixture Elastic net mixing parameter (0 = ridge, 1 = lasso).
 #' @param store_models If TRUE, keep fitted nuisance models inside the result.
 #' @export

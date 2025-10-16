@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knit-options, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -26,23 +26,28 @@ library(parsnip)
 
 # Random forest with default settings
 
+Import small sample of data from ggplot2's diamonds dataset (500 rows).
 ```{r rf-default}
-df <- diamonds_sample(n=500)
+df <- diamonds_sample(n=500, seed=123)
+```
 
+The most basic setup for Random Forest is:
+
+``` {r base-rf, evaluate=FALSE}
 fit_rf <- dml_rf(
   data = df,
   y = "price",
   d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
 )
-
-tidy(fit_rf)
 ```
+
+
 # Random Forest with custom settings
 
 You can also customise the default `dml_rf()` to some degree. Here I set a custom grid of number of trees to try during hyperparameter tuning (NB this tests 100 and 200, rather than everything in between). You can also set the number of folds for cross-fitting and the type of robust standard errors to use (choice of "HC0", "HC1", "HC2", "HC3", or "HC4").
 
-```{r rf-custom}
+```{r rf-custom, warnings=FALSE, message=FALSE}
 fit_rf <- dml_rf(
   data = df,
   y = "price",

@@ -1,5 +1,15 @@
 #' Run DML-PLR with user-supplied recipes and parsnip models
 #' @export
+#' @param data Data frame
+#' @param outcome_recipe Recipe for outcome (g) model
+#' @param treatment_recipe Recipe for treatment (m) model
+#' @param outcome_model parsnip model spec for outcome (g) model
+#' @param treatment_model parsnip model spec for treatment (m) model
+#' @param folds_outer Optional rsample rset.
+#' @param n_folds Number of outer folds when `folds_outer` is NULL.
+#' @param n_rep Number of repetitions when `folds_outer` is NULL.
+#' @param vcov_type Sandwich variance type (e.g., "HC2" or "HC3").
+#' @param store_models If TRUE, keep fitted nuisance models inside the result
 run_dml <- function(
   data,
   outcome_recipe,

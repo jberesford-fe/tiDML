@@ -10,20 +10,28 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  cache = TRUE,
+  eval = identical(Sys.getenv("NOT_CRAN"), "true")
 )
 ```
 # Replication of DoubleML results with tiDML
 
-I use the 401k data from Chernozhukov et al. (2018) to replicate results from [name of paper]. Note I'm following the example given in the package documenation for the [DoubleML Package] GET LINK. 
+I use 401k data to replicate results from <a href="hhttps://arxiv.org/abs/1608.00060">Chernozhukov et al. (2018)</a>. Note that this is the example given in their <a href="https://docs.doubleml.org/stable/examples/py_double_ml_pension.html">package documentation</a>. 
 
-The goal is to show that `tiDML` produces comparable results, with less code and a more interpretable output.
+The goal is to show that `tiDML` produces identical results, with less code and a more interpretable output.
+
+This code takes several hours to run. For ease, I have saved the results in the `inst/extdata` folder of the package. To generate the results yourself, set `run_long  <- TRUE`.
+
+```{r run-long}
+run_long <- FALSE
+```
 
 # Get data and import packages
 
 To important the 401k data, load the DoubleML (and other required packages) and call:  
 
-```{r setup, warning = FALSE, message = FALSE}
+```{r load-packages, warning = FALSE, message = FALSE}
 library(tiDML)
 library(dplyr)
 library(purrr)
@@ -32,13 +40,14 @@ library(ggplot2)
 library(DoubleML)
 library(mlr3)
 library(mlr3learners)
-
+```
+```{r import-data, warning = FALSE, message = FALSE, eval = run_long}
 df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
 ```
 
 I define  the outcome, treatment, and control variables following Chernozhukov et al. (2018) exactly. 
 
-```{r define-cols}
+```{r define-cols, warning = FALSE, message = FALSE, eval = run_long}
 y_col  <- "net_tfa"
 d_col  <- "e401"
 x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
@@ -48,7 +57,7 @@ x_cols <- c("age","inc","educ","fsize","marr","twoearn","db","pira","hown")
 
 Again following Chernozhukov, I use random forest in both stages. Since e401 is a dummy variable, the first stage is classification while the second is regression. 
 
-```{r run-tidml, warning = FALSE, message = FALSE}
+```{r run-tidml, warning = FALSE, message = FALSE, eval = run_long}
 run_tidml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
   set.seed(seed)
   
@@ -82,7 +91,7 @@ run_tidml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
 
 Next I use the `DoubleML` package to run the model.
 
-```{r run-dml, warning = FALSE, message = FALSE}
+```{r run-dml, warning = FALSE, message = FALSE, eval = run_long}
 run_dml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
   set.seed(seed)
   ## DoubleML :: PLR with ranger
@@ -133,11 +142,11 @@ run_dml <- function(seed, df, y, d, x, trees_grid, n_folds, n_rep) {
 
 This wrapper function runs both methods and returns a combined data frame.
 
-```{r run-rep, warning = FALSE, message = FALSE}
+```{r run-rep, warning = FALSE, message = FALSE, eval = run_long}
 
-replications <- 2L
+replications <- 100L
 
-run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 2L, n_rep = 1L) {
+run_both <- function(seed, df, y, d, x, trees_grid = 1200, n_folds = 2L, n_rep = 2L) {
   tidml_row <- run_tidml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
   dml_row   <- run_dml(seed, df, y, d, x, trees_grid, n_folds, n_rep)
   bind_rows(tidml_row, dml_row)
@@ -148,19 +157,14 @@ res <- map_dfr(
   seeds,
   ~ run_both(.x, df = df401k, y = y_col, d = d_col, x = x_cols)
 )
-
-print(res %>%
-  group_by(method) %>%
-  summarize(
-    mean_theta = mean(theta),
-    mean_se = mean(se),
-    mean_lwr = mean(lwr),
-    mean_upr = mean(upr)
-  ))
-
-# T-Test for difference in means
-print(t.test(theta ~ method, data = res))
 ```
+
+```{r quick-results, warning = FALSE, message = FALSE, eval = run_long, echo = FALSE}
+if ~run_long {
+  res <- read_rds(system.file("extdata", "dml_replication.rds", package = "tiDML"))
+}
+```
+
 
 # Method-by-method densities
 
@@ -180,4 +184,20 @@ ggplot(res, aes(theta, fill = method)) +
   ) +
   theme_minimal(base_size = 12)
 
+```
+
+# T-Test shows no differences between packages 
+
+There is no statistically significant difference in mean, standard error, or confidence intervals. 
+
+```{r t-test, warning = FALSE, message = FALSE}
+# No difference in means
+print(t.test(theta ~ method, data = res))
+
+# No difference in standard errors
+print(t.test(mean_se ~ method, data = res))
+
+# No difference in confidence interval width
+res <- res |> mutate(ci_width = upr - lwr)
+print(t.test(ci_width ~ method, data = res))
 ```

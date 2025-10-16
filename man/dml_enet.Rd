@@ -43,6 +43,8 @@ dml_enet(
 
 \item{mixture}{Elastic net mixing parameter (0 = ridge, 1 = lasso).}
 
+\item{penalties_grid}{Optional list of penalty grids for hyperparameter tuning (W.I.P.)}
+
 \item{store_models}{If TRUE, keep fitted nuisance models inside the result.}
 }
 \description{
