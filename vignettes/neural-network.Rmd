@@ -22,10 +22,11 @@ library(tiDML)
 library(dplyr)
 library(recipes)
 library(parsnip)
+```
+Import the first 500 rows of the diamonds data from `ggplot2`.
 
-# Import first 10k rows of diamonds data
+```{r import-data}
 df <- diamonds_sample(n=500)
-
 ```
 
 # Neural network with default settings
@@ -36,8 +37,6 @@ fit_nnet <- dml_nnet(
   d = "is_rated_ideal",
   x = c("carat", "depth", "table", "x", "y", "z"),
 )
-
-tidy(fit_nnet)
 ```
 
 # Run a neural network with custom settings
@@ -65,6 +64,5 @@ fit_nnet <- dml_nnet(
 )
 
 fit_nnet |> tidy()
-
 ```
 

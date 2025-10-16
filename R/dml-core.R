@@ -22,9 +22,11 @@ dml_core_wf <- function(
   y_name <- recipe_outcome_name(g_rec, "output_recipe")
 
   assert_cols(data, c(y_name, d_name))
+
   if (!is.numeric(data[[y_name]])) {
     stop("Outcome `", y_name, "` must be numeric.", call. = FALSE)
   }
+
   if (!is_valid_treatment(data[[d_name]])) {
     stop(
       "Treatment `",
@@ -57,6 +59,7 @@ dml_core_wf <- function(
     d_name = d_name,
     store_models = store_models
   )
+
   inf <- plr_estimate(cf$y_res, cf$d_res, vcov_type = vcov_type)
 
   structure(

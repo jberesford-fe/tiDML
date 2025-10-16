@@ -16,12 +16,9 @@ knitr::opts_chunk$set(
 
 
 # Load packages and data
-```{r setup}
-library(tiDML)
+```{r setup, warnings=FALSE, message=FALSE}
 library(tiDML)
 library(dplyr)
-library(recipes)
-library(parsnip)
 ```
 
 # Random forest with default settings
