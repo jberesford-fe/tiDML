@@ -115,7 +115,7 @@ run_both <- function(
 
 
 set.seed(401)
-reps <- 2L
+reps <- 5L
 seeds <- 401 + 0:(reps - 1L)
 res <- map_dfr(
   seeds,
@@ -141,6 +141,9 @@ res <- map_dfr(
   )
 )
 
-dir.create("inst/extdata", recursive = TRUE, showWarnings = FALSE)
-
-saveRDS(res, file = "inst/extdata/dml401k_replications.rds")
+usethis::use_data(
+  dml401k_replications,
+  internal = TRUE,
+  compress = "xz",
+  overwrite = TRUE
+)
