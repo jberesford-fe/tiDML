@@ -55,6 +55,7 @@ fit_rf <- dml_rf(
   vcov_type = "HC2",
   trees_grid = c(100, 200))
 
+library(generics)
 tidy(fit_rf)
 
 ```
