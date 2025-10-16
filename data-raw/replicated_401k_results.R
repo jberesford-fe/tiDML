@@ -117,7 +117,7 @@ run_both <- function(
 set.seed(401)
 reps <- 5L
 seeds <- 401 + 0:(reps - 1L)
-res <- map_dfr(
+dml401k_replications <- map_dfr(
   seeds,
   ~ run_both(
     .x,
@@ -142,8 +142,12 @@ res <- map_dfr(
 )
 
 usethis::use_data(
-  dml401k_replications,
+  dml401k_resreplications,
   internal = TRUE,
   compress = "xz",
   overwrite = TRUE
 )
+
+
+load("R/sysdata.rda")
+res
