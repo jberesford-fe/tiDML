@@ -147,7 +147,3 @@ usethis::use_data(
   compress = "xz",
   overwrite = TRUE
 )
-
-
-load("R/sysdata.rda")
-res
