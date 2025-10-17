@@ -8,7 +8,6 @@
 # Output:
 #   inst/extdata/dml401k_replications.rds## code to prepare `replicated_401k_results` dataset goes here
 
-library(tiDML)
 library(DoubleML)
 library(dplyr)
 library(purrr)
@@ -16,6 +15,7 @@ library(tibble)
 library(mlr3)
 library(mlr3learners)
 
+devtools::load_all()
 df401k <- DoubleML::fetch_401k(return_type = "data.frame", instrument = FALSE)
 
 # DoubmleML Function
@@ -142,7 +142,8 @@ dml401k_rresplications <- map_dfr(
   )
 )
 
-dml401k_replications <- res
+
+dml401k_replications <- dml401k_rresplications
 
 usethis::use_data(
   dml401k_replications,
@@ -151,5 +152,9 @@ usethis::use_data(
   overwrite = TRUE
 )
 
+
+
 devtools::unload()
 devtools::document()
+devtools::load_all()
+tiDML::replication_results()
