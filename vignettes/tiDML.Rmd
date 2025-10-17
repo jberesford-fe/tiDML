@@ -19,6 +19,7 @@ In the simplest case, you can use the package under complete default settings. P
 
 - `dml_rf()` for random forest, and
 - `dml_nnet()` for a neural network.
+- `dml_enet()` for elastic net regression.
 
 Here I use the `diamonds` data from `ggplot2` to estimate the effect of being rated "ideal" on a diamonds' price, after having controlled for caret, depth, and size.
 
@@ -65,19 +66,6 @@ Augment returns a tibble with the original data, predicted values, and residuals
 
 ```{r examine-augment}
 generics::augment(fit_rf) |> head()
-```
-
-## Examine the workflow (recipe and model specs)
-
-The workflows package is used to manage the preprocessing and model fitting steps. You can extract the (unfitted) workflow object and examine it. *Note that while the fitted workflow can be extracted, isn't useful here since DML uses cross-fitting.* 
-
-```{r examine-workflow}
-# Examine the treatment model workflow
-print("Treatment model workflow:")
-fit_rf$m_workflow
-
-print("Outcome model workflow:")
-fit_rf$g_workflow
 ```
 
 Much more detail is given in the Articles section. See `vignette("examine-outputs")`.

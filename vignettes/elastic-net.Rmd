@@ -40,3 +40,5 @@ fit_lasso <- dml_enet(
 ```
 
 Because Elastic Net is a linear model, we can use `get_feature_coefs(fit_lasso, model="treatment")` or `get_feature_coefs(fit_lasso, model="outcome")` to inspect the coefficients of the selected features.
+
+See more details in `vignette("feature-importance")`

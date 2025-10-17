@@ -57,7 +57,7 @@ m_rec <- recipes::recipe(is_rated_ideal ~ carat + depth + table + x + y + z, dat
   recipes::step_dummy(recipes::all_nominal(), -recipes::all_outcomes())
 ```
 
-## Finally, run the DML procedure
+## 3. Finally, run the DML procedure
 
 Use the model specs and recipes defined above as inputs to `run_dml()`. Not the dataframe going into `run_dml()` must be the same as the one used to define the recipes.
 
