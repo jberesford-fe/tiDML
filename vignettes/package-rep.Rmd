@@ -164,7 +164,9 @@ res <- tiDML::replication_results()
 ```
 
 
-# Method-by-method densities
+# Method-by-method comparison
+
+## The central estimate (theta)
 
 There is randomness in both methods so the estimates vary across seeds. Below I plot the densities of estimates across the replications to show that they overlap and have very similar means.
 
@@ -184,32 +186,53 @@ ggplot(res, aes(theta, fill = method)) +
 
 ```
 
-# T-Test shows no differences between packages 
-
-There is no statistically significant difference in mean, standard error, or confidence intervals. 
+No statistically significant difference can be identified between the two distributions, even at the 10% level.
 
 ```{r t-test, warning = FALSE, message = FALSE}
-is_not_significant <- function(x, group, data, alpha = 0.05) {
+is_not_significant <- function(x, group, data, alpha) {
   pval <- stats::t.test(stats::reformulate(group, x), data = data)$p.value
   pval >= alpha
 }
 
-same_theta <- is_not_significant("theta", "method", res)
-same_se    <- is_not_significant("se",    "method", res)
-same_lwr    <- is_not_significant("lwr", "method", res)
-same_upr    <- is_not_significant("upr", "method", res)
+same_theta <- is_not_significant("theta", "method", res, alpha=0.10)
 ```
 
-Theta's are equal:
-```{r t-test-theta, warning = FALSE, message = FALSE}
-same_theta
+## Confidence intervals
+
+The percentage differences are given below. While the difference between the central estiamtes (theta) is only 0.22%, there is a slightly larger (1.68%) difference in the standard error, although this is statistically insignificant at the 1% level. The differences in the lower and upper bounds of the 95% confidence intervals (0.98% and -0.2%, respectively) are relatively small and statistically insignificant at the 1% level.
+
+```{r ci-diff, warning = FALSE, message = FALSE}
+res |>
+  select(seed, method, theta, se, lwr, upr) |>
+  pivot_wider(names_from = method, values_from = c(theta, se, lwr, upr)) |>
+  summarise(
+    theta_delta_pct = 100 * mean(theta_tiDML / theta_DoubleML - 1),
+    se_delta_pct = 100 * mean(se_tiDML / se_DoubleML - 1),
+    lwr_delta_pct = 100 * mean(lwr_tiDML / lwr_DoubleML - 1),
+    upr_delta_pct = 100 * mean(upr_tiDML / upr_DoubleML - 1)
+  )
+
+is_not_significant("lwr", "method", res, alpha=0.01)
+is_not_significant("upr", "method", res, alpha=0.01)
+
 ```
-Standard error's are equal:
-```{r t-test-se, warning = FALSE, message = FALSE}
-same_se
-```
-Upper and lower bound confidence interval's are equal:
-```{r t-test-lwr, warning = FALSE, message = FALSE}
-same_lwr
-same_upr
+
+The density plots below show the very high degree of overlap in the distributions across 100 replications.
+
+```{r plot-ci, warning = FALSE, message = FALSE, fig.alt="DML CI estimates across packages"}
+res |>
+  select(-theta, -se) |>
+  rename("Lower Bound"=lwr, "Upper Bound"=upr) |>
+  gather(key = type, value=val, -seed, -method) |>
+  ggplot(aes(val, fill = method)) +
+  geom_density(alpha = 0.35) +
+  facet_wrap(. ~ type, scales = "free") +
+  labs(
+    title = "DML-PLR estimates of the 95% CI across seeds",
+    x = NA,
+    y = "Density",
+    fill = "Method",
+    colour = "Method"
+  ) +
+  theme_minimal(base_size = 12)
 ```
