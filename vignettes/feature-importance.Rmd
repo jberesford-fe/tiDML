@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 # Storing fitted models
 
-In either the default `dml_XX()` functions, or when running a custom `run_dml()`, you have the option to store all fitted models (across both folds and reps) by setting `store_models = TRUE`. This allows you to extract feature importance measures from the underlying models. 
+In either the default `dml_XX()` functions, or when running a custom run_dml(), you have the option to store all fitted models (across both folds and reps) by setting `store_models = TRUE`. This allows you to extract feature importance measures from the underlying models. 
 
 Warning: this can use a lot of memory, especially if you are using a large number of folds and reps.
 
@@ -40,7 +40,7 @@ For linear models (e.g. Lasso), you can extract regression coefficients directly
 
 To access the treatment model for, say, the third crossfold, save your lasso regression as `fit <- dml_XX(...)` and then use the `generics` package to extract the coefficients: `generics::tidy(fit$m_fit[[3]])`.
 
-tiDML's `get_feature_coefs()` function is a wrapper around this which maps across all cross folds to give a single tibble with coefficients for all folds and reps. 
+tiDML's get_feature_coefs() function is a wrapper around this which maps across all cross folds to give a single tibble with coefficients for all folds and reps. 
 
 ```{r feature-coefs-linear, warnings=FALSE, message=FALSE}
 fit_lasso <- dml_enet(

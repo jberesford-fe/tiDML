@@ -41,7 +41,7 @@ fit_nnet <- dml_nnet(
 
 # Run a neural network with custom settings
 
-It's possible to customise the default `dml_nnet()` to some degree. Here I set a custom penalty rate, number of epochs, and maximum number of weights. 
+It's possible to customise the default dml_nnet() to some degree. Here I set a custom penalty rate, number of epochs, and maximum number of weights. 
 
 I also choose the number of layers (**not yet true, currently it's single layer**) and hidden units (nodes per layer) . Setting hidden units to `NULL` will let the function choose the number of hidden units automatically.
 

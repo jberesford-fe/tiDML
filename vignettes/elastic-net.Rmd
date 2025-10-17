@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 # Regularised Regression
 
-The function `dml_enet()` defaults to elastic net regression with a `mixture = 0.5`. 
+The function dml_enet() defaults to elastic net regression with a `mixture = 0.5`. 
 
 + Setting `mixture = 1` gives lasso regression
 + `mixture = 0` gives ridge regression.
@@ -39,6 +39,6 @@ fit_lasso <- dml_enet(
 )
 ```
 
-Because Elastic Net is a linear model, we can use `get_feature_coefs(fit_lasso, model="treatment")` or `get_feature_coefs(fit_lasso, model="outcome")` to inspect the coefficients of the selected features.
+Because Elastic Net is a linear model, we can use get_feature_coefs() to inspect the coefficients of the selected features, setting `model="treatment"` or `model="outcome"`.
 
 See more details in `vignette("feature-importance")`

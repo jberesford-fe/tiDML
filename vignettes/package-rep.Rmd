@@ -202,19 +202,24 @@ same_theta <- is_not_significant("theta", "method", res, alpha=0.10)
 The percentage differences are given below. While the difference between the central estiamtes (theta) is only 0.22%, there is a slightly larger (1.68%) difference in the standard error, although this is statistically insignificant at the 1% level. The differences in the lower and upper bounds of the 95% confidence intervals (0.98% and -0.2%, respectively) are relatively small and statistically insignificant at the 1% level.
 
 ```{r ci-diff, warning = FALSE, message = FALSE}
-res |>
-  select(seed, method, theta, se, lwr, upr) |>
-  pivot_wider(names_from = method, values_from = c(theta, se, lwr, upr)) |>
-  summarise(
-    theta_delta_pct = 100 * mean(theta_tiDML / theta_DoubleML - 1),
-    se_delta_pct = 100 * mean(se_tiDML / se_DoubleML - 1),
-    lwr_delta_pct = 100 * mean(lwr_tiDML / lwr_DoubleML - 1),
-    upr_delta_pct = 100 * mean(upr_tiDML / upr_DoubleML - 1)
-  )
+wide <- reshape(
+  res[, c("seed", "method", "theta", "se", "lwr", "upr")],
+  idvar   = "seed",
+  timevar = "method",
+  direction = "wide"
+)
+
+out <- data.frame(
+  theta_delta_pct = 100 * mean(wide$theta.tiDML   / wide$theta.DoubleML   - 1),
+  se_delta_pct    = 100 * mean(wide$se.tiDML      / wide$se.DoubleML      - 1),
+  lwr_delta_pct   = 100 * mean(wide$lwr.tiDML     / wide$lwr.DoubleML     - 1),
+  upr_delta_pct   = 100 * mean(wide$upr.tiDML     / wide$upr.DoubleML     - 1)
+)
+
+print(out)
 
 is_not_significant("lwr", "method", res, alpha=0.01)
 is_not_significant("upr", "method", res, alpha=0.01)
-
 ```
 
 The density plots below show the very high degree of overlap in the distributions across 100 replications.
