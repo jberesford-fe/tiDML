@@ -18,6 +18,9 @@ dml_core_wf <- function(
     stop("Both workflows must use recipes as preprocessors.", call. = FALSE)
   }
 
+  check_same_data(m_rec, data)
+  check_same_data(g_rec, data)
+
   d_name <- recipe_outcome_name(m_rec, "treatment_recipe")
   y_name <- recipe_outcome_name(g_rec, "output_recipe")
 
